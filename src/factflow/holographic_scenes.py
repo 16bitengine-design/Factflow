@@ -38,30 +38,81 @@ def draw_holographic_scene(draw: Any, scene: int, progress: float,
               fill=(75, 226, 255, 35), width=2)
 
     if scene == 0:
-        # White sunlight enters a holographic prism and separates into seven colours.
-        _label(draw, (92, 365), "WHITE SUNLIGHT", fonts["label"], WHITE)
-        sx, sy = 125, 540
-        for r, a in ((48, 25), (37, 55), (25, 120)):
-            draw.ellipse((sx-r, sy-r, sx+r, sy+r),
-                         outline=(255, 242, 190, a), width=4)
-        draw.ellipse((sx-17, sy-17, sx+17, sy+17), fill=(255, 250, 220, 245))
-        beam_x = int(220 + progress * 65)
-        draw.line((145, sy, beam_x, sy), fill=(255, 255, 238, 220), width=7)
-        # Wireframe prism.
-        p1, p2, p3 = (beam_x, 450), (beam_x+115, sy), (beam_x, 630)
-        draw.line((p1, p2, p3, p1), fill=CYAN, width=4, joint="curve")
-        draw.line((beam_x, sy, beam_x+115, sy), fill=(160, 245, 255, 150), width=2)
+        # A white solar beam crosses space and enters Earth's curved atmosphere.
+        # The visible wavelengths are shown as coloured components, not as a
+        # claim that the atmosphere acts like a prism: scene 1 explains their
+        # wavelength-dependent scattering by air molecules.
+        _label(draw, (82, 315), "SUNLIGHT APPROACHING EARTH", fonts["label"], WHITE)
+
+        # Holographic Earth limb and two transparent atmospheric shells.
+        earth_cx, earth_cy = 405, 1015
+        earth_r = 405
+        for radius, alpha, width in ((earth_r + 55, 35, 3), (earth_r + 34, 75, 4),
+                                     (earth_r + 15, 125, 5)):
+            draw.arc((earth_cx-radius, earth_cy-radius,
+                      earth_cx+radius, earth_cy+radius),
+                     205, 335, fill=(75, 205, 255, alpha), width=width)
+        draw.ellipse((earth_cx-earth_r, earth_cy-earth_r,
+                      earth_cx+earth_r, earth_cy+earth_r),
+                     outline=(73, 226, 255, 175), width=3)
+        # A dark, translucent planetary surface gives the atmospheric edge depth.
+        draw.pieslice((earth_cx-earth_r, earth_cy-earth_r,
+                       earth_cx+earth_r, earth_cy+earth_r),
+                      205, 335, fill=(5, 30, 66, 115),
+                      outline=(73, 226, 255, 150), width=3)
+
+        # Sun source with layered holographic corona.
+        sx, sy = 112, 430
+        for radius, alpha in ((55, 28), (43, 55), (31, 100)):
+            draw.ellipse((sx-radius, sy-radius, sx+radius, sy+radius),
+                         outline=(255, 225, 155, alpha), width=4)
+        draw.ellipse((sx-20, sy-20, sx+20, sy+20),
+                     fill=(255, 250, 220, 250))
+        _label(draw, (77, 505), "SUN", fonts["tiny"], (255, 225, 155, 230))
+
+        # Entry point on the atmospheric limb; pulse and animate the incoming
+        # white beam so the viewer can follow the light into the atmosphere.
+        entry = (345, 630)
+        draw.ellipse((entry[0]-42, entry[1]-42, entry[0]+42, entry[1]+42),
+                     outline=(73, 226, 255, 70), width=3)
+        draw.ellipse((entry[0]-25, entry[1]-25, entry[0]+25, entry[1]+25),
+                     outline=(73, 226, 255, 145), width=3)
+        draw.line((sx+24, sy+18, entry[0], entry[1]),
+                  fill=(255, 255, 238, 65), width=24)
+        draw.line((sx+24, sy+18, entry[0], entry[1]),
+                  fill=(255, 255, 238, 245), width=6)
+        for i in range(6):
+            travel = (progress * 1.35 + i / 6) % 1.0
+            px = int(sx+24 + (entry[0]-(sx+24))*travel)
+            py = int(sy+18 + (entry[1]-(sy+18))*travel)
+            rr = 5 + int(2 * math.sin(seconds*8+i))
+            draw.ellipse((px-rr*2, py-rr*2, px+rr*2, py+rr*2),
+                         fill=(255, 244, 190, 65))
+            draw.ellipse((px-rr, py-rr, px+rr, py+rr),
+                         fill=(255, 255, 245, 250))
+
+        _label(draw, (365, 570), "ATMOSPHERE", fonts["tiny"])
+        # At the entry point reveal the beam's component wavelengths. The
+        # spectrum fans through the air; the next scene shows blue scattering
+        # more strongly than red (rather than implying prism-like refraction).
         labels = ["RED", "ORANGE", "YELLOW", "GREEN", "BLUE", "INDIGO", "VIOLET"]
+        spread = 0.25 + 0.75 * progress
         for i, color in enumerate(SPECTRUM):
-            y = 390 + i*48
-            end_x = int(570 + 12*math.sin(seconds*2+i))
-            draw.line((beam_x+115, sy, end_x, y), fill=(*color[:3], 65), width=13)
-            draw.line((beam_x+115, sy, end_x, y), fill=color, width=4)
-            draw.ellipse((end_x-5, y-5, end_x+5, y+5), fill=color)
-            _label(draw, (end_x-5, y+10), labels[i], fonts["tiny"], color)
-        _label(draw, (235, 710), "VISIBLE LIGHT SPECTRUM", fonts["heading"])
-        _label(draw, (210, 758), "WHITE LIGHT = MANY WAVELENGTHS", fonts["small"], WHITE)
-        return "ONE BEAM. MANY COLOURS.", "Sunlight contains the full visible spectrum"
+            offset = i - 3
+            end_x = int(625 + 12 * math.sin(seconds*1.8+i))
+            end_y = int(entry[1] + offset * 48 * spread)
+            mid_x = int(entry[0] + 95 * progress)
+            mid_y = int(entry[1] + offset * 18 * spread)
+            draw.line((entry[0], entry[1], end_x, end_y),
+                      fill=(*color[:3], 55), width=15)
+            draw.line((entry[0], entry[1], end_x, end_y),
+                      fill=color, width=4)
+            draw.ellipse((end_x-5, end_y-5, end_x+5, end_y+5), fill=color)
+            _label(draw, (end_x-2, end_y+9), labels[i], fonts["tiny"], color)
+        _label(draw, (155, 835), "ONE WHITE BEAM", fonts["heading"], WHITE)
+        _label(draw, (155, 885), "MANY VISIBLE WAVELENGTHS", fonts["small"])
+        _label(draw, (155, 930), "ENTERING THE ATMOSPHERE", fonts["small"], WHITE)
+        return "SUNLIGHT ENTERS THE ATMOSPHERE", "White sunlight contains many visible wavelengths"
 
     if scene == 1:
         # Molecule field and blue/red scattering comparison.
