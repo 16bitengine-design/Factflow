@@ -2,6 +2,14 @@ name: Render QuantaTale sample video
 
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - ".github/workflows/render-sample.yml"
+      - "src/factflow/video_render.py"
+      - "src/factflow/cli.py"
+      - "examples/videos/**"
+      - "tests/test_video_render.py"
+      - "pyproject.toml"
 
 permissions:
   contents: read
