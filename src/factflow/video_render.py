@@ -117,6 +117,17 @@ def _wrap_text(draw: Any, text: str, font: Any, max_width: int) -> list[str]:
     return lines
 
 
+
+def _fit_font(draw: Any, text: str, font: Any, max_width: int, min_size: int = 18) -> Any:
+    """Return a smaller variant of a TrueType font when text would overflow."""
+    fitted = font
+    while draw.textbbox((0, 0), text, font=fitted)[2] > max_width:
+        size = getattr(fitted, "size", min_size)
+        if size <= min_size:
+            break
+        fitted = fitted.font_variant(size=max(min_size, size - 1))
+    return fitted
+
 def _draw_frame(spec: dict[str, Any], seconds: float, duration: float, caption: str, fonts: dict[str, Any], stars: list[tuple[int, int, int]]) -> Any:
     """Render a narration-led frame using only holographic scientific imagery."""
     from PIL import Image, ImageDraw
@@ -149,8 +160,12 @@ def _draw_frame(spec: dict[str, Any], seconds: float, duration: float, caption: 
     panel = (48, 985, WIDTH-48, 1080)
     draw.rounded_rectangle(panel, radius=18, fill=(3, 15, 36, 225),
                            outline=(73, 226, 255, 175), width=2)
-    draw.text((70, 1000), headline, font=fonts["heading"], fill=CYAN)
-    draw.text((70, 1044), subline, font=fonts["small"], fill=WHITE)
+    headline_font = _fit_font(draw, headline, fonts["heading"], panel[2] - panel[0] - 44)
+    headline_width = draw.textbbox((0, 0), headline, font=headline_font)[2]
+    draw.text(((WIDTH-headline_width)//2, 1000), headline, font=headline_font, fill=CYAN)
+    subline_font = _fit_font(draw, subline, fonts["small"], panel[2] - panel[0] - 44)
+    subline_width = draw.textbbox((0, 0), subline, font=subline_font)[2]
+    draw.text(((WIDTH-subline_width)//2, 1044), subline, font=subline_font, fill=WHITE)
 
     # Synchronized caption area remains separate from scene labels.
     caption_lines = _wrap_text(draw, caption, fonts["caption"], WIDTH-112)[:2]
