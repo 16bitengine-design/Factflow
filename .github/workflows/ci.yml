@@ -51,6 +51,9 @@ jobs:
       - name: Extract source-backed claim candidates
         run: quantatale research-candidates build/discovery-candidates.json --limit 10 --output build/research-candidates.json
 
+      - name: Discover scholarly metadata through Crossref and Europe PMC
+        run: quantatale scholarly-discover build/research-candidates.json --claim-limit 20 --results-per-provider 5 --output build/scholarly-leads.json
+
       - name: Discover related evidence and build review dossiers
         run: quantatale evidence-dossier build/research-candidates.json --feed-limit 100 --article-limit 20 --output build/evidence-dossiers.json
 
