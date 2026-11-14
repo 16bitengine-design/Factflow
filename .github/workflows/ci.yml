@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   validate:
-    name: Test project, validate topic and assess evidence
+    name: Test, validate, assess evidence and discover leads
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -44,3 +44,14 @@ jobs:
         run: |
           mkdir -p build
           factflow research-report examples/topics/why-the-sky-is-blue.json --output build/research-report.json
+
+      - name: Discover candidate story leads
+        run: factflow discover --limit 30 --output build/discovery-candidates.json
+
+      - name: Upload discovery and research reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: factflow-stage-3-reports
+          path: build/*.json
+          if-no-files-found: error
+          retention-days: 7
