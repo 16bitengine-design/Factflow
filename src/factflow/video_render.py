@@ -44,14 +44,12 @@ def validate_sample_spec(spec: dict[str, Any]) -> None:
 
 
 def _scene_state(seconds: float, duration: float) -> tuple[int, float]:
-    """Return a three-shot scene index and eased progress within that shot."""
+    """Return a four-scene storyboard index and eased progress within the scene."""
     progress = min(1.0, max(0.0, seconds / max(duration, 0.1)))
-    index = min(2, int(progress * 3))
-    local = progress * 3 - index
+    index = min(3, int(progress * 4))
+    local = progress * 4 - index
     eased = local * local * (3 - 2 * local)
     return index, eased
-
-
 def _generate_kokoro_audio(text: str, output_path: Path, voice: str = "af_heart") -> None:
     """Generate natural narration with the open-weight Kokoro model."""
     try:
@@ -120,127 +118,55 @@ def _wrap_text(draw: Any, text: str, font: Any, max_width: int) -> list[str]:
 
 
 def _draw_frame(spec: dict[str, Any], seconds: float, duration: float, caption: str, fonts: dict[str, Any], stars: list[tuple[int, int, int]]) -> Any:
+    """Render a narration-led frame using only holographic scientific imagery."""
     from PIL import Image, ImageDraw
+    from .holographic_scenes import draw_holographic_scene
 
     image = Image.new("RGB", (WIDTH, HEIGHT), NAVY)
     draw = ImageDraw.Draw(image, "RGBA")
 
-    # Subtle technical grid and fixed star field.
+    # Dark holographic chamber: technical grid, stars and animated scan plane.
     for x in range(24, WIDTH, 48):
         draw.line((x, 0, x, HEIGHT), fill=(27, 68, 98, 35), width=1)
     for y in range(20, HEIGHT, 48):
         draw.line((0, y, WIDTH, y), fill=(27, 68, 98, 28), width=1)
     for x, y, radius in stars:
-        pulse = 110 + int(90 * (0.5 + 0.5 * math.sin(seconds * 2 + x * 0.03)))
-        draw.ellipse((x-radius, y-radius, x+radius, y+radius), fill=(93, 204, 255, pulse))
+        alpha = 110 + int(90 * (0.5 + 0.5 * math.sin(seconds * 2 + x * 0.03)))
+        draw.ellipse((x-radius, y-radius, x+radius, y+radius),
+                     fill=(93, 204, 255, alpha))
 
     draw.text((48, 55), "QUANTATALE", font=fonts["small"], fill=CYAN)
-    draw.text((48, 105), spec["title"].upper(), font=fonts["title"], fill=WHITE, stroke_width=1, stroke_fill=(25, 88, 120))
-    draw.line((48, 177, WIDTH-48, 177), fill=(73, 226, 255, 130), width=2)
+    draw.text((48, 105), spec["title"].upper(), font=fonts["title"], fill=WHITE,
+              stroke_width=1, stroke_fill=(25, 88, 120))
+    draw.line((48, 177, WIDTH-48, 177), fill=(73, 226, 255, 150), width=2)
 
-    phase = seconds / max(duration, 0.1)
     scene_index, scene_progress = _scene_state(seconds, duration)
-    center_x, center_y = WIDTH // 2, 630
-    pulse = 1.0 + 0.12 * math.sin(seconds * 3.1)
-
-    # A luminous Sun and a white-light beam entering a stylized atmosphere.
-    # The opening shot tracks the incoming sunlight; later shots hold the
-    # source near the edge while the scattering diagram takes over.
-    sun_x = int(92 + 112 * min(phase / 0.48, 1.0))
-    sun_y = int(425 + 22 * math.sin(seconds * 1.7))
-    sun_radius = int(48 * pulse)
-    for grow, alpha in ((22, 18), (14, 30), (7, 55)):
-        draw.ellipse((sun_x-sun_radius-grow, sun_y-sun_radius-grow,
-                      sun_x+sun_radius+grow, sun_y+sun_radius+grow),
-                     outline=(255, 207, 122, alpha), width=5)
-    draw.ellipse((sun_x-sun_radius, sun_y-sun_radius,
-                  sun_x+sun_radius, sun_y+sun_radius), fill=(255, 220, 153, 245))
-    draw.text((62, 505), "SUNLIGHT", font=fonts["label"], fill=(255, 222, 165))
-
-    # Atmosphere / Earth limb.
-    earth_box = (center_x-270, 760, center_x+270, 1300)
-    draw.ellipse(earth_box, fill=(5, 24, 55, 255), outline=(72, 204, 255, 230), width=5)
-    draw.arc((center_x-292, 735, center_x+292, 1320), 190, 350, fill=(83, 210, 255, 190), width=12)
-    draw.arc((center_x-310, 715, center_x+310, 1340), 190, 350, fill=(105, 113, 255, 80), width=4)
-
-    # Incoming white beam, then a changing emphasis on blue scattered light.
-    beam_end = (int(center_x - 170 + 90 * math.sin(seconds * 0.75)), 770)
-    beam_points = (sun_x+36, sun_y+30, beam_end[0], beam_end[1])
-    draw.line(beam_points, fill=(255, 244, 207, 85), width=34)
-    draw.line(beam_points, fill=(255, 255, 239, 235), width=5)
-    # Travelling photons make the light path visibly move through the scene.
-    for photon_index in range(7):
-        travel = (seconds * 0.72 + photon_index / 7) % 1.0
-        px = int((sun_x+36) + (beam_end[0]-(sun_x+36))*travel)
-        py = int((sun_y+30) + (beam_end[1]-(sun_y+30))*travel)
-        glow = 7 + int(4 * math.sin(seconds * 8 + photon_index))
-        draw.ellipse((px-glow*2, py-glow*2, px+glow*2, py+glow*2),
-                     fill=(255, 220, 150, 45))
-        draw.ellipse((px-glow, py-glow, px+glow, py+glow),
-                     fill=(255, 255, 230, 245))
-
-    # Molecules and scattering rays animate outward from the atmospheric shell.
-    molecule_centers = [
-        (300, 470), (410, 520), (525, 435), (245, 620), (455, 675),
-        (565, 585), (330, 720), (515, 790), (185, 700),
-    ]
-    for index, (mx, my) in enumerate(molecule_centers):
-        orbit = seconds * (0.85 + index * 0.035) + index * 0.72
-        drift = math.sin(orbit) * 18
-        vertical_drift = math.cos(orbit * 0.8) * 13
-        x, y = int(mx + drift), int(my + vertical_drift)
-        r = 7 if index % 2 else 9
-        draw.ellipse((x-r-5, y-r-5, x+r+5, y+r+5), outline=(74, 218, 255, 70), width=2)
-        draw.ellipse((x-r, y-r, x+r, y+r), fill=(110, 226, 255, 225))
-        if phase > 0.18:
-            angle = seconds * 1.65 + index * 1.9
-            length = 45 + int(48 * (0.5 + 0.5 * math.sin(seconds * 3.0 + index)))
-            dx = int(math.cos(angle) * length)
-            dy = int(math.sin(angle) * length)
-            draw.line((x, y, x+dx, y+dy), fill=(65, 160, 255, 185), width=4)
-            draw.ellipse((x+dx-6, y+dy-6, x+dx+6, y+dy+6), fill=(90, 180, 255, 245))
-            # Expanding wavefronts visualize light scattering into the sky.
-            ring_radius = int((seconds * 46 + index * 31) % 92)
-            draw.ellipse((x-ring_radius, y-ring_radius, x+ring_radius, y+ring_radius),
-                         outline=(72, 177, 255, max(25, 125-ring_radius)), width=2)
-
-    # Blue wavelength motif and explanatory callout.
-    wave_y = 300
-    points = []
-    wave_amplitude = 17 + 8 * math.sin(seconds * 1.9)
-    for x in range(58, WIDTH-58, 4):
-        y = wave_y + int(wave_amplitude * math.sin((x-58) / 27 - seconds * 5.2))
-        points.append((x, y))
-    if len(points) > 1:
-        draw.line(points, fill=(76, 174, 255, 205), width=4)
-    draw.text((58, 342), "SHORTER BLUE WAVELENGTHS", font=fonts["label"], fill=(115, 190, 255))
-
-    scene_copy = (
-        ("FOLLOW THE SUNLIGHT", "A beam of white light enters the atmosphere"),
-        ("WATCH THE MOLECULES", "Air molecules redirect shorter blue wavelengths"),
-        ("SEE THE SCATTERING", "Blue light travels outward in every direction"),
+    headline, subline = draw_holographic_scene(
+        draw, scene_index, scene_progress, seconds, fonts
     )
-    headline, subline = scene_copy[scene_index]
-    box = (48, 835, WIDTH-48, 945)
-    draw.rounded_rectangle(box, radius=20, fill=(5, 20, 43, 225), outline=(73, 226, 255, 170), width=2)
-    draw.text((72, 855), headline, font=fonts["heading"], fill=CYAN)
-    draw.text((72, 905), subline, font=fonts["small"], fill=WHITE)
 
-    # Captions are burned into the picture and also exported as an SRT sidecar.
-    caption_lines = _wrap_text(draw, caption, fonts["caption"], WIDTH-112)
-    caption_lines = caption_lines[:2]
-    cap_top = 1030
-    cap_height = 44 * max(1, len(caption_lines)) + 40
+    # Scene identity is explicit and changes with the narrated explanation.
+    panel = (48, 985, WIDTH-48, 1080)
+    draw.rounded_rectangle(panel, radius=18, fill=(3, 15, 36, 225),
+                           outline=(73, 226, 255, 175), width=2)
+    draw.text((70, 1000), headline, font=fonts["heading"], fill=CYAN)
+    draw.text((70, 1044), subline, font=fonts["small"], fill=WHITE)
+
+    # Synchronized caption area remains separate from scene labels.
+    caption_lines = _wrap_text(draw, caption, fonts["caption"], WIDTH-112)[:2]
+    cap_top = 1110
+    cap_height = 42 * max(1, len(caption_lines)) + 30
     draw.rounded_rectangle((34, cap_top, WIDTH-34, cap_top+cap_height),
-                           radius=16, fill=(1, 7, 19, 225), outline=(86, 190, 235, 120), width=2)
+                           radius=16, fill=(1, 7, 19, 235),
+                           outline=(86, 190, 235, 150), width=2)
     for line_index, line in enumerate(caption_lines):
         bbox = draw.textbbox((0, 0), line, font=fonts["caption"])
         text_width = bbox[2] - bbox[0]
-        draw.text(((WIDTH-text_width)//2, cap_top+18+line_index*44), line,
+        draw.text(((WIDTH-text_width)//2, cap_top+14+line_index*42), line,
                   font=fonts["caption"], fill=WHITE)
 
-    draw.text((48, 1215), "KNOW MORE. SEE DIFFERENTLY.", font=fonts["tiny"], fill=MUTED)
-    draw.text((WIDTH-235, 1215), "RESEARCH DEMO", font=fonts["tiny"], fill=VIOLET)
+    draw.text((48, 1230), "KNOW MORE. SEE DIFFERENTLY.", font=fonts["tiny"], fill=MUTED)
+    draw.text((WIDTH-235, 1230), "HOLOGRAPHIC DEMO", font=fonts["tiny"], fill=VIOLET)
     return image
 
 
@@ -353,7 +279,7 @@ def render_sample_video(spec_path: str | Path, output_dir: str | Path) -> dict[s
         "audio_codec": audio_stream.get("codec_name"),
         "narration_engine": "Kokoro-82M",
         "narration_voice": voice,
-        "animation": "three-shot procedural Python/Pillow motion graphics",
+        "animation": "four-scene procedural holographic Python/Pillow storyboard",\n        "visual_scenes": ["visible_light_spectrum_prism", "atmospheric_molecular_scattering", "holographic_human_eye", "holographic_earth_and_blue_sky"],
         "render_engine": "FFmpeg",
         "sources": spec["sources"],
         "publication_status": "sample_not_approved_for_publication",
