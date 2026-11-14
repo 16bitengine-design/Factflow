@@ -92,7 +92,7 @@ def main() -> int:
             return 1
         output_path = Path(args.output)
         output_path.parent.mkdir(parents=True, exist_ok=True)
-        output_path.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\\n", encoding="utf-8")
+        output_path.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
         print(f"Retrieved {report['passage_count']} unreviewed passages from {report['retrieved_article_count']} open-access articles.")
         print(f"Scholarly passage report: {output_path}")
         return 0
