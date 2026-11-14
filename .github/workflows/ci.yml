@@ -60,6 +60,9 @@ jobs:
       - name: Discover related evidence and build review dossiers
         run: quantatale evidence-dossier build/research-candidates.json --feed-limit 100 --article-limit 20 --output build/evidence-dossiers.json
 
+      - name: Compare collected evidence passages with claim candidates
+        run: quantatale evidence-compare build/research-candidates.json --scholarly build/scholarly-passages.json --dossiers build/evidence-dossiers.json --passage-limit-per-claim 100 --output build/evidence-comparisons.json
+
       - name: Upload discovery and research reports
         uses: actions/upload-artifact@v4
         with:
