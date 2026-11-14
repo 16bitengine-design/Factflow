@@ -8,7 +8,7 @@
     },
     {
       "publisher_id": "USGS",
-      "url": "https://www.usgs.gov/news/feed"
+      "url": "https://www.usgs.gov/news/all/feed"
     },
     {
       "publisher_id": "WHO",
@@ -16,7 +16,7 @@
     },
     {
       "publisher_id": "WORLD_BANK",
-      "url": "https://www.worldbank.org/en/news/all?format=rss"
+      "url": "https://blogs.worldbank.org/feed"
     }
   ]
 }
