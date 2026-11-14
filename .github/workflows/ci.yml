@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   validate:
-    name: Test project and validate example topic
+    name: Test project, validate topic and assess evidence
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -39,3 +39,8 @@ jobs:
 
       - name: Validate sample topic
         run: factflow validate examples/topics/why-the-sky-is-blue.json
+
+      - name: Generate evidence assessment report
+        run: |
+          mkdir -p build
+          factflow research-report examples/topics/why-the-sky-is-blue.json --output build/research-report.json
