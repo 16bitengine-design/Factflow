@@ -50,6 +50,7 @@ No API keys or paid-provider credentials should be required for the core workflo
 │   ├── __init__.py
 │   ├── cli.py
 │   ├── discovery.py
+│   ├── fact_research.py
 │   ├── research.py
 │   └── topic.py
 ├── tests/
@@ -101,11 +102,26 @@ Each result is labeled `candidate_unreviewed`. FactFlow stores the headline, sou
 
 Feed availability, formats, rate limits and terms can change. A failed feed is reported without silently substituting an unapproved source. Discovery is best-effort and the workflow can still complete when one configured feed is unavailable.
 
+## Stage 4A: source retrieval and claim-candidate extraction
+
+FactFlow can now fetch a limited number of discovered article pages from their registered publisher domains and extract sentence-shaped claim candidates from article paragraphs. Each candidate retains its original source passage, publisher ID, original and final URL, page title and extraction timestamp.
+
+Run it after Stage 3 discovery:
+
+```bash
+factflow research-candidates build/discovery-candidates.json --limit 10 --output build/research-candidates.json
+```
+
+The first implementation uses deterministic Python standard-library parsing and requires no AI API, paid search service or additional package. It applies a page-size limit, checks publisher domains and rejects redirects outside the registered publisher domains. CI uploads `research-candidates.json` with the other reports.
+
+**Important:** extracted sentences are unreviewed candidates, not verified claims. Extraction does not establish truth, source relevance, support, corroboration or contradiction. Human review of the original source remains mandatory. Independent-source discovery and structured contradiction assessment are later Stage 4 milestones.
+
 ## Current limits
 
 - Topic discovery is currently feed-based, not a general-purpose search engine.
 - Feed metadata is only a lead; it is not evidence verification.
-- Claims still require structured evidence and human review.
+- Extracted claim candidates still require source review and structured evidence assessment.
+- Independent corroboration search and contradiction detection are not yet implemented.
 - No automatic narration, voice generation, animation or MP4 rendering has been implemented yet.
 
 ## Development roadmap
