@@ -7,6 +7,7 @@ import sys
 from pathlib import Path
 
 from factflow.discovery import discover_candidates, load_feed_config
+from factflow.evidence_dossier import build_evidence_dossier
 from factflow.fact_research import research_discovery_candidates
 from factflow.research import build_research_report, load_source_registry
 from factflow.topic import TopicValidationError, load_topic
@@ -35,17 +36,55 @@ def build_parser() -> argparse.ArgumentParser:
     discover_parser.add_argument("--limit", type=int, default=30, help="Maximum candidate leads (1-200).")
     discover_parser.add_argument("--output", default="build/discovery-candidates.json", help="JSON output path.")
 
-    candidates_parser = subparsers.add_parser("research-candidates", help="Fetch discovered articles and extract unreviewed claim candidates.")
+    candidates_parser = subparsers.add_parser(
+        "research-candidates", help="Fetch discovered articles and extract unreviewed claim candidates."
+    )
     candidates_parser.add_argument("discovery_report", help="Stage 3 discovery-candidates JSON file.")
     candidates_parser.add_argument("--registry", default=None, help="Optional publisher registry JSON.")
     candidates_parser.add_argument("--limit", type=int, default=10, help="Maximum article pages to retrieve (1-50).")
     candidates_parser.add_argument("--max-candidates-per-source", type=int, default=12)
     candidates_parser.add_argument("--output", default="build/research-candidates.json", help="JSON output path.")
+
+    dossier_parser = subparsers.add_parser(
+        "evidence-dossier", help="Discover related feed evidence and flag possible differences for review."
+    )
+    dossier_parser.add_argument("research_report", help="Stage 4A research-candidates JSON file.")
+    dossier_parser.add_argument("--feeds", default=None, help="Optional discovery feed configuration.")
+    dossier_parser.add_argument("--registry", default=None, help="Optional publisher registry JSON.")
+    dossier_parser.add_argument("--feed-limit", type=int, default=100, help="Maximum feed leads to inspect (1-200).")
+    dossier_parser.add_argument("--article-limit", type=int, default=20, help="Maximum related pages to retrieve (1-50).")
+    dossier_parser.add_argument("--output", default="build/evidence-dossiers.json", help="JSON output path.")
     return parser
 
 
 def main() -> int:
     args = build_parser().parse_args()
+
+    if args.command == "evidence-dossier":
+        if not 1 <= args.feed_limit <= 200 or not 1 <= args.article_limit <= 50:
+            print("DOSSIER ERROR: feed-limit must be 1-200 and article-limit must be 1-50.", file=sys.stderr)
+            return 1
+        try:
+            research = json.loads(Path(args.research_report).read_text(encoding="utf-8"))
+            registry = load_source_registry(args.registry) if args.registry else load_source_registry()
+            feeds = load_feed_config(args.feeds) if args.feeds else load_feed_config()
+            report = build_evidence_dossier(
+                research, registry, feeds,
+                feed_limit=args.feed_limit, article_limit=args.article_limit,
+            )
+        except (OSError, json.JSONDecodeError, ValueError) as exc:
+            print(f"DOSSIER ERROR: {exc}", file=sys.stderr)
+            return 1
+        output_path = Path(args.output)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        discovery = report["discovery"]
+        print(
+            f"Built {report['dossier_count']} evidence dossiers; "
+            f"retrieved {discovery['retrieved_article_count']} related articles."
+        )
+        print(f"Evidence dossier report: {output_path}")
+        return 0
 
     if args.command == "research-candidates":
         if not 1 <= args.limit <= 50:
