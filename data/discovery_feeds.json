@@ -1,0 +1,22 @@
+{
+  "feed_config_version": 1,
+  "description": "Curated official publisher feeds used only to discover candidate story leads. Feed availability and terms can change.",
+  "feeds": [
+    {
+      "publisher_id": "NASA",
+      "url": "https://www.nasa.gov/news-release/feed/"
+    },
+    {
+      "publisher_id": "USGS",
+      "url": "https://www.usgs.gov/news/feed"
+    },
+    {
+      "publisher_id": "WHO",
+      "url": "https://www.who.int/rss-feeds/news-english.xml"
+    },
+    {
+      "publisher_id": "WORLD_BANK",
+      "url": "https://www.worldbank.org/en/news/all?format=rss"
+    }
+  ]
+}
