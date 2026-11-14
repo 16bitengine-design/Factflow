@@ -72,7 +72,7 @@ def draw_holographic_scene(draw: Any, scene: int, progress: float,
 
         # Entry point on the atmospheric limb; pulse and animate the incoming
         # white beam so the viewer can follow the light into the atmosphere.
-        entry = (345, 630)
+        entry = (345, 575)
         draw.ellipse((entry[0]-42, entry[1]-42, entry[0]+42, entry[1]+42),
                      outline=(73, 226, 255, 70), width=3)
         draw.ellipse((entry[0]-25, entry[1]-25, entry[0]+25, entry[1]+25),
@@ -91,7 +91,7 @@ def draw_holographic_scene(draw: Any, scene: int, progress: float,
             draw.ellipse((px-rr, py-rr, px+rr, py+rr),
                          fill=(255, 255, 245, 250))
 
-        _label(draw, (365, 570), "ATMOSPHERE", fonts["tiny"])
+        _label(draw, (375, 535), "ATMOSPHERE", fonts["tiny"])
         # At the entry point reveal the beam's component wavelengths. The
         # spectrum fans through the air; the next scene shows blue scattering
         # more strongly than red (rather than implying prism-like refraction).
@@ -101,8 +101,6 @@ def draw_holographic_scene(draw: Any, scene: int, progress: float,
             offset = i - 3
             end_x = int(625 + 12 * math.sin(seconds*1.8+i))
             end_y = int(entry[1] + offset * 48 * spread)
-            mid_x = int(entry[0] + 95 * progress)
-            mid_y = int(entry[1] + offset * 18 * spread)
             draw.line((entry[0], entry[1], end_x, end_y),
                       fill=(*color[:3], 55), width=15)
             draw.line((entry[0], entry[1], end_x, end_y),
