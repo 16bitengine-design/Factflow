@@ -62,6 +62,9 @@ The current Python import package and legacy command remain `factflow` for compa
 │   ├── cli.py
 │   ├── discovery.py
 │   ├── fact_research.py
+│   ├── evidence_dossier.py
+│   ├── scholarly_discovery.py
+│   ├── scholarly_fulltext.py
 │   ├── research.py
 │   └── topic.py
 ├── tests/
