@@ -122,14 +122,14 @@ quantatale research-candidates build/discovery-candidates.json --limit 10 --outp
 
 The implementation uses deterministic Python standard-library parsing and requires no AI API, paid search service or additional package. It applies a page-size limit, checks publisher domains and rejects redirects outside the registered publisher domains. CI uploads the report with the other research artifacts.
 
-**Important:** extracted sentences are unreviewed candidates, not verified claims. Extraction does not establish truth, source relevance, support, corroboration or contradiction. Human review of the original source remains mandatory. Independent-source discovery and structured contradiction assessment are later Stage 4 milestones.
+**Important:** extracted sentences are unreviewed candidates, not verified claims. Extraction does not establish truth, source relevance, support, corroboration or contradiction. Human review of the original source remains mandatory. Stage 4B adds a separate, heuristic evidence-discovery and review-dossier workflow.
 
 ## Current limits
 
 - Topic discovery is currently feed-based, not a general-purpose search engine.
 - Feed metadata is only a lead; it is not evidence verification.
 - Extracted claim candidates still require source review and structured evidence assessment.
-- Independent corroboration search and contradiction detection are not yet implemented.
+- Feed-based evidence dossiers and heuristic possible-difference flags are implemented; broad scholarly metadata discovery is available through Crossref and Europe PMC. Neither establishes corroboration or verifies claims.
 - Automatic narration, voice generation, animation and MP4 rendering have not yet been implemented.
 
 ## Development roadmap
@@ -139,7 +139,7 @@ The implementation uses deterministic Python standard-library parsing and requir
 - [x] Add a curated publisher registry and evidence-assessment workflow.
 - [x] Add curated RSS/Atom topic discovery and candidate collection.
 - [x] Retrieve source pages and extract unreviewed claim candidates.
-- [ ] Discover independent evidence and identify possible contradictions.
+- [x] Add initial feed-based evidence discovery, source grouping and heuristic conflict-review dossiers.\n- [x] Add free Crossref and Europe PMC scholarly metadata discovery; leads remain unreviewed.
 - [ ] Expand discovery coverage and add topic scoring/diversity controls.
 - [ ] Generate narration scripts and scene plans.
 - [ ] Add fully cloud-runnable, open-source text-to-speech.
@@ -166,4 +166,4 @@ quantatale evidence-dossier build/research-candidates.json --feed-limit 100 --ar
 
 The output is `build/evidence-dossiers.json`. CI includes this report in the seven-day research artifact.
 
-**Important limitations:** discovery currently searches only configured feeds, not the entire web. Matching uses deterministic keyword overlap; it can miss relevant evidence and retrieve false matches. Independence groups are registry metadata, not proof of institutional independence. Difference flags are heuristic review signals, not confirmed contradictions. Human reviewers must compare full passages, dates, methods, definitions and units. Every dossier remains blocked from publication pending editorial review.
+**Important limitations:** feed discovery searches configured feeds, not the entire web. Matching uses deterministic keyword overlap and can miss relevant evidence or retrieve false matches. Independence groups are registry metadata, not proof of institutional independence. Difference flags are heuristic review signals, not confirmed contradictions. Human reviewers must compare full passages, dates, methods, definitions and units. Every dossier remains blocked from publication pending editorial review.\n\n### Stage 4B-2: free scholarly metadata discovery\n\nQuantaTale also searches the public Crossref REST API and Europe PMC REST API for bibliographic records related to Stage 4A candidates. Both services expose public metadata endpoints without a mandatory paid API subscription. Crossref records metadata deposited by its members; Europe PMC indexes biomedical and life-sciences publications. See the [Crossref REST API documentation](https://www.crossref.org/documentation/retrieve-metadata/rest-api/) and [Europe PMC REST API documentation](https://dev.europepmc.org/RestfulWebService).\n\nRun the search:\n\n```bash\nquantatale scholarly-discover build/research-candidates.json --claim-limit 20 --results-per-provider 5 --output build/scholarly-leads.json\n```\n\nThe output contains metadata leads, DOI/PMID/PMCID identifiers when available, dates, journal metadata, API provenance and provider errors. Metadata leads are not source passages, verified publishers, supporting evidence or corroboration. Publisher identity and the original full text must be checked before a record can enter an evidence dossier. API failures are recorded per provider and do not discard successful results from the other provider.
