@@ -41,21 +41,19 @@ No API keys or paid-provider credentials should be required for the core workflo
 
 ```text
 .
-├── .github/
-│   └── workflows/
-│       └── ci.yml
+├── .github/workflows/ci.yml
 ├── data/
+│   ├── discovery_feeds.json
 │   └── source_registry.json
-├── examples/
-│   └── topics/
-│       └── why-the-sky-is-blue.json
-├── src/
-│   └── factflow/
-│       ├── __init__.py
-│       ├── cli.py
-│       ├── research.py
-│       └── topic.py
+├── examples/topics/why-the-sky-is-blue.json
+├── src/factflow/
+│   ├── __init__.py
+│   ├── cli.py
+│   ├── discovery.py
+│   ├── research.py
+│   └── topic.py
 ├── tests/
+│   ├── test_discovery.py
 │   └── test_topic.py
 ├── .gitignore
 └── pyproject.toml
@@ -67,55 +65,57 @@ The first milestone established a Python package, a topic JSON specification, a 
 
 ## Stage 2: evidence and fact assessment
 
-FactFlow now has a curated starting registry of reputable publishers, including scientific, government, health, historical, educational and statistical institutions. The registry is stored in `data/source_registry.json` and can be expanded as new subject areas are added.
+FactFlow has a curated starting registry of reputable publishers, including scientific, government, health, historical, educational and statistical institutions. The registry is stored in `data/source_registry.json`.
 
 Each factual claim records structured evidence:
 - `publisher_id`: publisher identifier from the curated registry.
 - `url`: page containing the evidence.
 - `title`: source page title.
 - `accessed_on`: date the source was reviewed.
-- `evidence_summary`: editor's summary of the relevant material (not an invented quotation).
+- `evidence_summary`: editor's summary of the relevant material.
 - `supports_claim`: set to `true` only after an editor confirms the source directly supports the claim.
 
-### Generate an evidence report
-
-The report is generated automatically in GitHub Actions. To run the command in another environment:
+Generate an evidence report:
 
 ```bash
 factflow research-report examples/topics/why-the-sky-is-blue.json
 ```
 
-To save the report:
+Add `--check-links` to check whether source URLs respond. A reachable page is not necessarily accurate, authoritative or relevant.
+
+Evidence statuses are workflow signals, not truth scores. Even two independent registered publishers marked as supporting a claim do not automatically approve it. An editor must read the cited material, check wording and context, and approve the claim before publication.
+
+## Stage 3: automated topic discovery
+
+FactFlow now collects candidate story leads from a small, curated set of public RSS and Atom feeds. The configuration is in `data/discovery_feeds.json`; every feed and article URL must match the registered domains for its publisher.
+
+Run discovery locally or in another Python environment:
 
 ```bash
-factflow research-report examples/topics/why-the-sky-is-blue.json --output build/research-report.json
+factflow discover --limit 30 --output build/discovery-candidates.json
 ```
 
-To also check whether source URLs respond:
+The GitHub Actions workflow runs this command automatically and uploads the JSON reports as an artifact named `factflow-stage-3-reports` (retained for seven days). Open the repository's **Actions** tab, select the latest successful workflow run, and download the artifact.
 
-```bash
-factflow research-report examples/topics/why-the-sky-is-blue.json --check-links
-```
+Each result is labeled `candidate_unreviewed`. FactFlow stores the headline, source URL, publication date when provided, and a short feed description. It does **not** turn a headline into a factual claim, copy feed descriptions into narration, or mark a source as supporting a claim. The original article must be opened and reviewed before claims are extracted.
 
-Link checking requires outbound internet access. A reachable page is not necessarily accurate, authoritative or relevant.
+Feed availability, formats, rate limits and terms can change. A failed feed is reported without silently substituting an unapproved source. Discovery is best-effort and the workflow can still complete when one configured feed is unavailable.
 
-### How claim statuses work
+## Current limits
 
-- `corroborated_pending_editorial_review`: at least two independent registered publisher groups are recorded as supporting the claim.
-- `single_registered_source_pending_editorial_review`: one registered publisher group is recorded as supporting it.
-- `evidence_not_yet_confirmed`: source records exist, but no source has been marked as directly supporting the claim.
-- `unsupported_or_unregistered`: no usable registered evidence was found, or publisher/domain information failed registry checks.
-
-The registry records independence groups so two websites belonging to the same publisher group are not automatically counted as independent corroboration.
-
-**Critical limitation:** these are evidence-workflow statuses, not truth scores. Automated checks cannot reliably establish that a source's content proves a claim. An editor must read the cited material, check the exact wording and context, and approve the claim before publication. FactFlow's publication gate remains blocked pending editorial review.
+- Topic discovery is currently feed-based, not a general-purpose search engine.
+- Feed metadata is only a lead; it is not evidence verification.
+- Claims still require structured evidence and human review.
+- No automatic narration, voice generation, animation or MP4 rendering has been implemented yet.
 
 ## Development roadmap
 
 - [x] Establish repository foundation and cloud CI.
 - [x] Define and validate the first topic specification.
 - [x] Add a curated publisher registry and evidence-assessment workflow.
-- [ ] Add topic discovery and source collection.
+- [x] Add curated RSS/Atom topic discovery and candidate collection.
+- [ ] Expand discovery coverage and add topic scoring/diversity controls.
+- [ ] Extract candidate claims with source passages and evidence provenance.
 - [ ] Generate narration scripts and scene plans.
 - [ ] Add fully cloud-runnable, open-source text-to-speech.
 - [ ] Build reusable code-generated 2D animation components.
