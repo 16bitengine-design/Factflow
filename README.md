@@ -139,7 +139,8 @@ The implementation uses deterministic Python standard-library parsing and requir
 - [x] Add a curated publisher registry and evidence-assessment workflow.
 - [x] Add curated RSS/Atom topic discovery and candidate collection.
 - [x] Retrieve source pages and extract unreviewed claim candidates.
-- [x] Add initial feed-based evidence discovery, source grouping and heuristic conflict-review dossiers.\n- [x] Add free Crossref and Europe PMC scholarly metadata discovery; leads remain unreviewed.
+- [x] Add initial feed-based evidence discovery, source grouping and heuristic conflict-review dossiers.
+- [x] Add free Crossref and Europe PMC scholarly metadata discovery; leads remain unreviewed.
 - [ ] Expand discovery coverage and add topic scoring/diversity controls.
 - [ ] Generate narration scripts and scene plans.
 - [ ] Add fully cloud-runnable, open-source text-to-speech.
@@ -166,4 +167,16 @@ quantatale evidence-dossier build/research-candidates.json --feed-limit 100 --ar
 
 The output is `build/evidence-dossiers.json`. CI includes this report in the seven-day research artifact.
 
-**Important limitations:** feed discovery searches configured feeds, not the entire web. Matching uses deterministic keyword overlap and can miss relevant evidence or retrieve false matches. Independence groups are registry metadata, not proof of institutional independence. Difference flags are heuristic review signals, not confirmed contradictions. Human reviewers must compare full passages, dates, methods, definitions and units. Every dossier remains blocked from publication pending editorial review.\n\n### Stage 4B-2: free scholarly metadata discovery\n\nQuantaTale also searches the public Crossref REST API and Europe PMC REST API for bibliographic records related to Stage 4A candidates. Both services expose public metadata endpoints without a mandatory paid API subscription. Crossref records metadata deposited by its members; Europe PMC indexes biomedical and life-sciences publications. See the [Crossref REST API documentation](https://www.crossref.org/documentation/retrieve-metadata/rest-api/) and [Europe PMC REST API documentation](https://dev.europepmc.org/RestfulWebService).\n\nRun the search:\n\n```bash\nquantatale scholarly-discover build/research-candidates.json --claim-limit 20 --results-per-provider 5 --output build/scholarly-leads.json\n```\n\nThe output contains metadata leads, DOI/PMID/PMCID identifiers when available, dates, journal metadata, API provenance and provider errors. Metadata leads are not source passages, verified publishers, supporting evidence or corroboration. Publisher identity and the original full text must be checked before a record can enter an evidence dossier. API failures are recorded per provider and do not discard successful results from the other provider.
+**Important limitations:** feed discovery searches configured feeds, not the entire web. Matching uses deterministic keyword overlap and can miss relevant evidence or retrieve false matches. Independence groups are registry metadata, not proof of institutional independence. Difference flags are heuristic review signals, not confirmed contradictions. Human reviewers must compare full passages, dates, methods, definitions and units. Every dossier remains blocked from publication pending editorial review.
+
+### Stage 4B-2: free scholarly metadata discovery
+
+QuantaTale also searches the public Crossref REST API and Europe PMC REST API for bibliographic records related to Stage 4A candidates. Both services expose public metadata endpoints without a mandatory paid API subscription. Crossref records metadata deposited by its members; Europe PMC indexes biomedical and life-sciences publications. See the [Crossref REST API documentation](https://www.crossref.org/documentation/retrieve-metadata/rest-api/) and [Europe PMC REST API documentation](https://dev.europepmc.org/RestfulWebService).
+
+Run the search:
+
+```bash
+quantatale scholarly-discover build/research-candidates.json --claim-limit 20 --results-per-provider 5 --output build/scholarly-leads.json
+```
+
+The output contains metadata leads, DOI/PMID/PMCID identifiers when available, dates, journal metadata, API provenance and provider errors. Metadata leads are not source passages, verified publishers, supporting evidence or corroboration. Publisher identity and the original full text must be checked before a record can enter an evidence dossier. API failures are recorded per provider and do not discard successful results from the other provider.
