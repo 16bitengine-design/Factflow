@@ -1,6 +1,8 @@
 """Free, procedural sample-video renderer for QuantaTale.
 
-Requires Pillow plus system executables ffmpeg, ffprobe and espeak-ng.
+Requires Pillow, Kokoro TTS, CPU PyTorch, soundfile and system executables ffmpeg/ffprobe/espeak-ng.
+Kokoro's open-weight model is downloaded by its runtime on first use. eSpeak NG is retained only as a phonemization dependency used by Kokoro, not as a voice.
+
 The renderer is deliberately separate from research assessment: the bundled
 sample is a demonstration asset and is not cleared for public release.
 """
@@ -11,7 +13,6 @@ import math
 import random
 import shutil
 import subprocess
-import wave
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -40,6 +41,40 @@ def validate_sample_spec(spec: dict[str, Any]) -> None:
     for source in spec["sources"]:
         if not isinstance(source, dict) or not str(source.get("url", "")).startswith("https://"):
             raise ValueError("Every source must include an HTTPS URL.")
+
+
+def _scene_state(seconds: float, duration: float) -> tuple[int, float]:
+    """Return a three-shot scene index and eased progress within that shot."""
+    progress = min(1.0, max(0.0, seconds / max(duration, 0.1)))
+    index = min(2, int(progress * 3))
+    local = progress * 3 - index
+    eased = local * local * (3 - 2 * local)
+    return index, eased
+
+
+def _generate_kokoro_audio(text: str, output_path: Path, voice: str = "af_heart") -> None:
+    """Generate natural narration with the open-weight Kokoro model."""
+    try:
+        import numpy as np
+        import soundfile as sf
+        from kokoro import KPipeline
+    except ImportError as exc:
+        raise RuntimeError(
+            "Kokoro narration dependencies are missing. Install the optional "
+            "'tts' extra (kokoro, soundfile and CPU PyTorch)."
+        ) from exc
+
+    language_code = "b" if voice.startswith(("bf_", "bm_")) else "a"
+    pipeline = KPipeline(lang_code=language_code)
+    audio_chunks = [
+        np.asarray(audio, dtype=np.float32)
+        for _, _, audio in pipeline(text, voice=voice, speed=1.0)
+        if audio is not None and len(audio)
+    ]
+    if not audio_chunks:
+        raise RuntimeError("Kokoro did not return any narration audio.")
+    combined = np.concatenate(audio_chunks)
+    sf.write(str(output_path), combined, 24000, subtype="PCM_16")
 
 
 def _timestamp(seconds: float) -> str:
@@ -104,11 +139,15 @@ def _draw_frame(spec: dict[str, Any], seconds: float, duration: float, caption: 
     draw.line((48, 177, WIDTH-48, 177), fill=(73, 226, 255, 130), width=2)
 
     phase = seconds / max(duration, 0.1)
+    scene_index, scene_progress = _scene_state(seconds, duration)
     center_x, center_y = WIDTH // 2, 630
-    pulse = 1.0 + 0.035 * math.sin(seconds * 2.2)
+    pulse = 1.0 + 0.12 * math.sin(seconds * 3.1)
 
     # A luminous Sun and a white-light beam entering a stylized atmosphere.
-    sun_x, sun_y = 125, 430
+    # The opening shot tracks the incoming sunlight; later shots hold the
+    # source near the edge while the scattering diagram takes over.
+    sun_x = int(92 + 112 * min(phase / 0.48, 1.0))
+    sun_y = int(425 + 22 * math.sin(seconds * 1.7))
     sun_radius = int(48 * pulse)
     for grow, alpha in ((22, 18), (14, 30), (7, 55)):
         draw.ellipse((sun_x-sun_radius-grow, sun_y-sun_radius-grow,
@@ -125,9 +164,20 @@ def _draw_frame(spec: dict[str, Any], seconds: float, duration: float, caption: 
     draw.arc((center_x-310, 715, center_x+310, 1340), 190, 350, fill=(105, 113, 255, 80), width=4)
 
     # Incoming white beam, then a changing emphasis on blue scattered light.
-    beam_end = (center_x-85, 770)
-    draw.line((sun_x+36, sun_y+30, beam_end[0], beam_end[1]), fill=(255, 244, 207, 115), width=20)
-    draw.line((sun_x+36, sun_y+30, beam_end[0], beam_end[1]), fill=(255, 255, 239, 235), width=3)
+    beam_end = (int(center_x - 170 + 90 * math.sin(seconds * 0.75)), 770)
+    beam_points = (sun_x+36, sun_y+30, beam_end[0], beam_end[1])
+    draw.line(beam_points, fill=(255, 244, 207, 85), width=34)
+    draw.line(beam_points, fill=(255, 255, 239, 235), width=5)
+    # Travelling photons make the light path visibly move through the scene.
+    for photon_index in range(7):
+        travel = (seconds * 0.72 + photon_index / 7) % 1.0
+        px = int((sun_x+36) + (beam_end[0]-(sun_x+36))*travel)
+        py = int((sun_y+30) + (beam_end[1]-(sun_y+30))*travel)
+        glow = 7 + int(4 * math.sin(seconds * 8 + photon_index))
+        draw.ellipse((px-glow*2, py-glow*2, px+glow*2, py+glow*2),
+                     fill=(255, 220, 150, 45))
+        draw.ellipse((px-glow, py-glow, px+glow, py+glow),
+                     fill=(255, 255, 230, 245))
 
     # Molecules and scattering rays animate outward from the atmospheric shell.
     molecule_centers = [
@@ -135,34 +185,42 @@ def _draw_frame(spec: dict[str, Any], seconds: float, duration: float, caption: 
         (565, 585), (330, 720), (515, 790), (185, 700),
     ]
     for index, (mx, my) in enumerate(molecule_centers):
-        drift = math.sin(seconds * 1.3 + index) * 5
-        x, y = int(mx + drift), my
+        orbit = seconds * (0.85 + index * 0.035) + index * 0.72
+        drift = math.sin(orbit) * 18
+        vertical_drift = math.cos(orbit * 0.8) * 13
+        x, y = int(mx + drift), int(my + vertical_drift)
         r = 7 if index % 2 else 9
         draw.ellipse((x-r-5, y-r-5, x+r+5, y+r+5), outline=(74, 218, 255, 70), width=2)
         draw.ellipse((x-r, y-r, x+r, y+r), fill=(110, 226, 255, 225))
         if phase > 0.18:
-            length = 55 + int(22 * math.sin(seconds * 2 + index))
-            dx = (-1 if index % 2 else 1) * length
-            dy = -int(length * (0.55 + 0.25 * math.sin(index)))
-            draw.line((x, y, x+dx, y+dy), fill=(65, 160, 255, 155), width=3)
-            draw.ellipse((x+dx-4, y+dy-4, x+dx+4, y+dy+4), fill=(90, 180, 255, 220))
+            angle = seconds * 1.65 + index * 1.9
+            length = 45 + int(48 * (0.5 + 0.5 * math.sin(seconds * 3.0 + index)))
+            dx = int(math.cos(angle) * length)
+            dy = int(math.sin(angle) * length)
+            draw.line((x, y, x+dx, y+dy), fill=(65, 160, 255, 185), width=4)
+            draw.ellipse((x+dx-6, y+dy-6, x+dx+6, y+dy+6), fill=(90, 180, 255, 245))
+            # Expanding wavefronts visualize light scattering into the sky.
+            ring_radius = int((seconds * 46 + index * 31) % 92)
+            draw.ellipse((x-ring_radius, y-ring_radius, x+ring_radius, y+ring_radius),
+                         outline=(72, 177, 255, max(25, 125-ring_radius)), width=2)
 
     # Blue wavelength motif and explanatory callout.
     wave_y = 300
     points = []
+    wave_amplitude = 17 + 8 * math.sin(seconds * 1.9)
     for x in range(58, WIDTH-58, 4):
-        y = wave_y + int(17 * math.sin((x-58) / 27 - seconds * 3.0))
+        y = wave_y + int(wave_amplitude * math.sin((x-58) / 27 - seconds * 5.2))
         points.append((x, y))
     if len(points) > 1:
         draw.line(points, fill=(76, 174, 255, 205), width=4)
     draw.text((58, 342), "SHORTER BLUE WAVELENGTHS", font=fonts["label"], fill=(115, 190, 255))
 
-    if phase < 0.32:
-        headline, subline = "WHITE LIGHT ENTERS", "Sunlight contains many colours"
-    elif phase < 0.72:
-        headline, subline = "BLUE SCATTERS MORE", "Tiny air molecules redirect blue light"
-    else:
-        headline, subline = "THE SKY GLOWS BLUE", "Scattered light reaches us from every direction"
+    scene_copy = (
+        ("FOLLOW THE SUNLIGHT", "A beam of white light enters the atmosphere"),
+        ("WATCH THE MOLECULES", "Air molecules redirect shorter blue wavelengths"),
+        ("SEE THE SCATTERING", "Blue light travels outward in every direction"),
+    )
+    headline, subline = scene_copy[scene_index]
     box = (48, 835, WIDTH-48, 945)
     draw.rounded_rectangle(box, radius=20, fill=(5, 20, 43, 225), outline=(73, 226, 255, 170), width=2)
     draw.text((72, 855), headline, font=fonts["heading"], fill=CYAN)
@@ -220,12 +278,10 @@ def render_sample_video(spec_path: str | Path, output_dir: str | Path) -> dict[s
     srt_path = output_dir / "captions.srt"
     metadata_path = output_dir / "sample-metadata.json"
 
-    subprocess.run(
-        ["espeak-ng", "-v", "en-us", "-s", "148", "-w", str(audio_path), spec["narration"]],
-        check=True, capture_output=True, text=True,
-    )
-    with wave.open(str(audio_path), "rb") as audio:
-        duration = audio.getnframes() / float(audio.getframerate())
+    voice = str(spec.get("voice", "af_heart"))
+    _generate_kokoro_audio(spec["narration"], audio_path, voice=voice)
+    import soundfile as sf
+    duration = float(sf.info(str(audio_path)).duration)
     if not 8 <= duration <= 90:
         raise RuntimeError(f"Sample narration duration {duration:.1f}s is outside the safe 8-90s range.")
 
@@ -295,8 +351,9 @@ def render_sample_video(spec_path: str | Path, output_dir: str | Path) -> dict[s
         "duration_seconds": round(encoded_duration, 3),
         "video_codec": video_stream.get("codec_name"),
         "audio_codec": audio_stream.get("codec_name"),
-        "narration_engine": "eSpeak NG",
-        "animation": "procedural Python/Pillow graphics",
+        "narration_engine": "Kokoro-82M",
+        "narration_voice": voice,
+        "animation": "three-shot procedural Python/Pillow motion graphics",
         "render_engine": "FFmpeg",
         "sources": spec["sources"],
         "publication_status": "sample_not_approved_for_publication",
