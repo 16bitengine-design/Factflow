@@ -1,0 +1,20 @@
+{
+  "registry_version": 1,
+  "description": "Curated starting list of reputable publishers. Inclusion is a research aid, not an automatic endorsement of every page or claim.",
+  "publishers": [
+    {"id": "NASA", "name": "National Aeronautics and Space Administration", "domains": ["nasa.gov"], "areas": ["space", "astronomy", "earth science", "physics", "technology"]},
+    {"id": "NOAA", "name": "National Oceanic and Atmospheric Administration", "domains": ["noaa.gov"], "areas": ["weather", "climate", "oceans", "atmosphere"]},
+    {"id": "USGS", "name": "United States Geological Survey", "domains": ["usgs.gov"], "areas": ["earth science", "geology", "natural hazards", "water"]},
+    {"id": "NIST", "name": "National Institute of Standards and Technology", "domains": ["nist.gov"], "areas": ["measurement", "physics", "technology", "engineering"]},
+    {"id": "WHO", "name": "World Health Organization", "domains": ["who.int"], "areas": ["health", "medicine", "public health"]},
+    {"id": "CDC", "name": "Centers for Disease Control and Prevention", "domains": ["cdc.gov"], "areas": ["health", "medicine", "public health"]},
+    {"id": "NIH", "name": "National Institutes of Health", "domains": ["nih.gov"], "areas": ["health", "medicine", "biology"]},
+    {"id": "NCBI", "name": "National Center for Biotechnology Information", "domains": ["nih.gov"], "areas": ["biology", "medicine", "genetics"]},
+    {"id": "BRITANNICA", "name": "Encyclopaedia Britannica", "domains": ["britannica.com"], "areas": ["history", "geography", "science", "general reference"]},
+    {"id": "LOC", "name": "Library of Congress", "domains": ["loc.gov"], "areas": ["history", "culture", "archives"]},
+    {"id": "UK_NATIONAL_ARCHIVES", "name": "The National Archives (United Kingdom)", "domains": ["nationalarchives.gov.uk"], "areas": ["history", "government", "archives"]},
+    {"id": "UNESCO", "name": "UNESCO", "domains": ["unesco.org"], "areas": ["education", "culture", "science", "heritage"]},
+    {"id": "WORLD_BANK", "name": "World Bank", "domains": ["worldbank.org"], "areas": ["economics", "development", "statistics"]},
+    {"id": "OUR_WORLD_IN_DATA", "name": "Our World in Data", "domains": ["ourworldindata.org"], "areas": ["statistics", "health", "economics", "environment", "history"]}
+  ]
+}
