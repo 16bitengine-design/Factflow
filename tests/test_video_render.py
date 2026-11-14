@@ -32,8 +32,73 @@ def test_srt_timestamp_formats_milliseconds():
 
 
 
-def test_scene_state_advances_through_three_distinct_shots():
-    assert _scene_state(0, 30)[0] == 0
-    assert _scene_state(12, 30)[0] == 1
-    assert _scene_state(24, 30)[0] == 2
-    assert 0.0 <= _scene_state(15, 30)[1] <= 1.0
+def test_scene_state_advances_through_four_distinct_scenes():
+    assert [_scene_state(value, 40)[0] for value in (0, 10, 20, 30)] == [0, 1, 2, 3]
+    assert 0.0 <= _scene_state(15, 40)[1] <= 1.0
+
+
+def test_holographic_storyboard_contains_required_visual_scenes():
+    pytest.importorskip("PIL")
+    from factflow.holographic_scenes import draw_holographic_scene
+    from PIL import Image, ImageDraw, ImageFont
+
+    image = Image.new("RGBA", (720, 1280))
+    draw = ImageDraw.Draw(image)
+    font = ImageFont.load_default()
+    fonts = {name: font for name in ("label", "tiny", "heading", "small")}
+    scenes = [draw_holographic_scene(draw, index, 0.5, 2.0, fonts) for index in range(4)]
+    assert [item[0] for item in scenes] == [
+        "SUNLIGHT ENTERS THE ATMOSPHERE",
+        "MOLECULES REDIRECT THE LIGHT",
+        "LIGHT ENTERS YOUR EYE",
+        "WHY THE SKY LOOKS BLUE",
+    ]
+
+
+def test_sunlight_scene_renders_white_beam_and_all_spectrum_colours():
+    pytest.importorskip("PIL")
+    from factflow.holographic_scenes import SPECTRUM, draw_holographic_scene
+    from PIL import Image, ImageDraw, ImageFont
+
+    image = Image.new("RGBA", (720, 1280), (1, 7, 19, 255))
+    draw = ImageDraw.Draw(image)
+    font = ImageFont.load_default()
+    fonts = {name: font for name in ("label", "tiny", "heading", "small")}
+    draw_holographic_scene(draw, 0, 0.75, 2.0, fonts)
+    pixels = list(image.getdata())
+
+    # Exact opaque core strokes ensure every visible wavelength is actually drawn.
+    for colour in SPECTRUM:
+        assert pixels.count(colour) > 0
+    # The incoming solar beam has a near-white core, distinct from the spectrum.
+    assert any(r > 240 and g > 240 and b > 220 for r, g, b, _ in pixels)
+
+
+def test_scene_callout_text_is_fitted_inside_panel():
+    pytest.importorskip("PIL")
+    from PIL import Image, ImageDraw, ImageFont
+    from factflow.video_render import _fit_font
+
+    image = Image.new("RGB", (720, 1280))
+    draw = ImageDraw.Draw(image)
+    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 30)
+    headline = "SUNLIGHT ENTERS THE ATMOSPHERE"
+    fitted = _fit_font(draw, headline, font, 532)
+    assert draw.textbbox((0, 0), headline, font=fitted)[2] <= 532
+
+
+def test_sunlight_spectrum_uses_a_legend_not_a_prism_fan():
+    pytest.importorskip("PIL")
+    from factflow.holographic_scenes import SPECTRUM, draw_holographic_scene
+    from PIL import Image, ImageDraw, ImageFont
+
+    image = Image.new("RGBA", (720, 1280), (1, 7, 19, 255))
+    draw = ImageDraw.Draw(image)
+    font = ImageFont.load_default()
+    fonts = {name: font for name in ("label", "tiny", "heading", "small")}
+    draw_holographic_scene(draw, 0, 0.75, 2.0, fonts)
+
+    # Every visible wavelength is represented in the compact legend band.
+    for colour in SPECTRUM:
+        assert any(image.getpixel((x, y)) == colour
+                   for x in range(150, 600) for y in range(785, 805))
