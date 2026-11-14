@@ -6,6 +6,7 @@ remain unreviewed leads and are never treated as verified support or corroborati
 from __future__ import annotations
 
 import re
+from datetime import datetime, timezone
 from typing import Any, Callable
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
@@ -165,7 +166,7 @@ def retrieve_open_access_passages(
 
     return {
         "schema_version": 1,
-        "retrieved_at": __import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat(),
+        "retrieved_at": datetime.now(timezone.utc).isoformat(),
         "eligible_open_access_articles_seen": eligible_seen,
         "article_result_count": len(results),
         "retrieved_article_count": sum(1 for item in results if item["status"] == "retrieved"),
