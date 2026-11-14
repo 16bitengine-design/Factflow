@@ -85,3 +85,20 @@ def test_scene_callout_text_is_fitted_inside_panel():
     headline = "SUNLIGHT ENTERS THE ATMOSPHERE"
     fitted = _fit_font(draw, headline, font, 532)
     assert draw.textbbox((0, 0), headline, font=fitted)[2] <= 532
+
+
+def test_sunlight_spectrum_uses_a_legend_not_a_prism_fan():
+    pytest.importorskip("PIL")
+    from factflow.holographic_scenes import SPECTRUM, draw_holographic_scene
+    from PIL import Image, ImageDraw, ImageFont
+
+    image = Image.new("RGBA", (720, 1280), (1, 7, 19, 255))
+    draw = ImageDraw.Draw(image)
+    font = ImageFont.load_default()
+    fonts = {name: font for name in ("label", "tiny", "heading", "small")}
+    draw_holographic_scene(draw, 0, 0.75, 2.0, fonts)
+
+    # Every visible wavelength is represented in the compact legend band.
+    for colour in SPECTRUM:
+        assert any(image.getpixel((x, y)) == colour
+                   for x in range(150, 600) for y in range(785, 805))
