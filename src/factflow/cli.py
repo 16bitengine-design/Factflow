@@ -11,6 +11,7 @@ from factflow.evidence_dossier import build_evidence_dossier
 from factflow.fact_research import research_discovery_candidates
 from factflow.research import build_research_report, load_source_registry
 from factflow.scholarly_discovery import discover_scholarly_metadata
+from factflow.scholarly_fulltext import retrieve_open_access_passages
 from factflow.topic import TopicValidationError, load_topic
 
 
@@ -62,11 +63,39 @@ def build_parser() -> argparse.ArgumentParser:
     scholarly_parser.add_argument("--claim-limit", type=int, default=20, help="Maximum claim candidates to search (1-50).")
     scholarly_parser.add_argument("--results-per-provider", type=int, default=5, help="Results per API and claim (1-10).")
     scholarly_parser.add_argument("--output", default="build/scholarly-leads.json", help="JSON output path.")
+
+    fulltext_parser = subparsers.add_parser(
+        "scholarly-retrieve", help="Retrieve bounded full-text passages from explicitly open-access Europe PMC records."
+    )
+    fulltext_parser.add_argument("scholarly_report", help="Stage 4B-2 scholarly-leads JSON file.")
+    fulltext_parser.add_argument("--article-limit", type=int, default=20, help="Maximum OA articles to retrieve (1-50).")
+    fulltext_parser.add_argument("--passages-per-article", type=int, default=40, help="Maximum passages per article (1-40).")
+    fulltext_parser.add_argument("--output", default="build/scholarly-passages.json", help="JSON output path.")
     return parser
 
 
 def main() -> int:
     args = build_parser().parse_args()
+
+    if args.command == "scholarly-retrieve":
+        if not 1 <= args.article_limit <= 50 or not 1 <= args.passages_per_article <= 40:
+            print("SCHOLARLY RETRIEVAL ERROR: limits out of range.", file=sys.stderr)
+            return 1
+        try:
+            scholarly = json.loads(Path(args.scholarly_report).read_text(encoding="utf-8"))
+            report = retrieve_open_access_passages(
+                scholarly, article_limit=args.article_limit,
+                passages_per_article=args.passages_per_article,
+            )
+        except (OSError, json.JSONDecodeError, ValueError) as exc:
+            print(f"SCHOLARLY RETRIEVAL ERROR: {exc}", file=sys.stderr)
+            return 1
+        output_path = Path(args.output)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\\n", encoding="utf-8")
+        print(f"Retrieved {report['passage_count']} unreviewed passages from {report['retrieved_article_count']} open-access articles.")
+        print(f"Scholarly passage report: {output_path}")
+        return 0
 
     if args.command == "scholarly-discover":
         if not 1 <= args.claim_limit <= 50 or not 1 <= args.results_per_provider <= 10:
