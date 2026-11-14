@@ -10,6 +10,7 @@ from factflow.discovery import discover_candidates, load_feed_config
 from factflow.evidence_dossier import build_evidence_dossier
 from factflow.fact_research import research_discovery_candidates
 from factflow.research import build_research_report, load_source_registry
+from factflow.scholarly_discovery import discover_scholarly_metadata
 from factflow.topic import TopicValidationError, load_topic
 
 
@@ -54,11 +55,36 @@ def build_parser() -> argparse.ArgumentParser:
     dossier_parser.add_argument("--feed-limit", type=int, default=100, help="Maximum feed leads to inspect (1-200).")
     dossier_parser.add_argument("--article-limit", type=int, default=20, help="Maximum related pages to retrieve (1-50).")
     dossier_parser.add_argument("--output", default="build/evidence-dossiers.json", help="JSON output path.")
+    scholarly_parser = subparsers.add_parser(
+        "scholarly-discover", help="Find unreviewed scholarly metadata leads via free Crossref and Europe PMC APIs."
+    )
+    scholarly_parser.add_argument("research_report", help="Stage 4A research-candidates JSON file.")
+    scholarly_parser.add_argument("--claim-limit", type=int, default=20, help="Maximum claim candidates to search (1-50).")
+    scholarly_parser.add_argument("--results-per-provider", type=int, default=5, help="Results per API and claim (1-10).")
+    scholarly_parser.add_argument("--output", default="build/scholarly-leads.json", help="JSON output path.")
     return parser
 
 
 def main() -> int:
     args = build_parser().parse_args()
+
+    if args.command == "scholarly-discover":
+        if not 1 <= args.claim_limit <= 50 or not 1 <= args.results_per_provider <= 10:
+            print("SCHOLARLY DISCOVERY ERROR: limits out of range.", file=sys.stderr)
+            return 1
+        try:
+            research = json.loads(Path(args.research_report).read_text(encoding="utf-8"))
+            report = discover_scholarly_metadata(research, claim_limit=args.claim_limit,
+                                                 results_per_provider=args.results_per_provider)
+        except (OSError, json.JSONDecodeError, ValueError) as exc:
+            print(f"SCHOLARLY DISCOVERY ERROR: {exc}", file=sys.stderr)
+            return 1
+        output_path = Path(args.output)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        print(f"Collected {report['lead_count']} unreviewed scholarly metadata leads.")
+        print(f"Scholarly discovery report: {output_path}")
+        return 0
 
     if args.command == "evidence-dossier":
         if not 1 <= args.feed_limit <= 200 or not 1 <= args.article_limit <= 50:
