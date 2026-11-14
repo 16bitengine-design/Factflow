@@ -48,8 +48,27 @@ def test_holographic_storyboard_contains_required_visual_scenes():
     fonts = {name: font for name in ("label", "tiny", "heading", "small")}
     scenes = [draw_holographic_scene(draw, index, 0.5, 2.0, fonts) for index in range(4)]
     assert [item[0] for item in scenes] == [
-        "ONE BEAM. MANY COLOURS.",
+        "SUNLIGHT ENTERS THE ATMOSPHERE",
         "MOLECULES REDIRECT THE LIGHT",
         "LIGHT ENTERS YOUR EYE",
         "WHY THE SKY LOOKS BLUE",
     ]
+
+
+def test_sunlight_scene_renders_white_beam_and_all_spectrum_colours():
+    pytest.importorskip("PIL")
+    from factflow.holographic_scenes import SPECTRUM, draw_holographic_scene
+    from PIL import Image, ImageDraw, ImageFont
+
+    image = Image.new("RGBA", (720, 1280), (1, 7, 19, 255))
+    draw = ImageDraw.Draw(image)
+    font = ImageFont.load_default()
+    fonts = {name: font for name in ("label", "tiny", "heading", "small")}
+    draw_holographic_scene(draw, 0, 0.75, 2.0, fonts)
+    pixels = list(image.getdata())
+
+    # Exact opaque core strokes ensure every visible wavelength is actually drawn.
+    for colour in SPECTRUM:
+        assert pixels.count(colour) > 0
+    # The incoming solar beam has a near-white core, distinct from the spectrum.
+    assert any(r > 240 and g > 240 and b > 220 for r, g, b, _ in pixels)
