@@ -295,7 +295,7 @@ def render_sample_video(spec_path: str | Path, output_dir: str | Path) -> dict[s
         "narration_engine": "Kokoro-82M",
         "narration_voice": voice,
         "animation": "four-scene procedural holographic Python/Pillow storyboard",
-        "visual_scenes": ["visible_light_spectrum_prism", "atmospheric_molecular_scattering", "holographic_human_eye", "holographic_earth_and_blue_sky"],
+        "visual_scenes": ["sunlight_visible_spectrum", "atmospheric_molecular_scattering", "holographic_human_eye", "holographic_earth_and_blue_sky"],
         "render_engine": "FFmpeg",
         "sources": spec["sources"],
         "publication_status": "sample_not_approved_for_publication",
