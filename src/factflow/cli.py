@@ -7,6 +7,7 @@ import sys
 from pathlib import Path
 
 from factflow.discovery import discover_candidates, load_feed_config
+from factflow.fact_research import research_discovery_candidates
 from factflow.research import build_research_report, load_source_registry
 from factflow.topic import TopicValidationError, load_topic
 
@@ -33,12 +34,39 @@ def build_parser() -> argparse.ArgumentParser:
     discover_parser.add_argument("--registry", default=None, help="Optional publisher registry JSON.")
     discover_parser.add_argument("--limit", type=int, default=30, help="Maximum candidate leads (1-200).")
     discover_parser.add_argument("--output", default="build/discovery-candidates.json", help="JSON output path.")
+
+    candidates_parser = subparsers.add_parser("research-candidates", help="Fetch discovered articles and extract unreviewed claim candidates.")
+    candidates_parser.add_argument("discovery_report", help="Stage 3 discovery-candidates JSON file.")
+    candidates_parser.add_argument("--registry", default=None, help="Optional publisher registry JSON.")
+    candidates_parser.add_argument("--limit", type=int, default=10, help="Maximum article pages to retrieve (1-50).")
+    candidates_parser.add_argument("--max-candidates-per-source", type=int, default=12)
+    candidates_parser.add_argument("--output", default="build/research-candidates.json", help="JSON output path.")
     return parser
 
 
 def main() -> int:
     args = build_parser().parse_args()
 
+    if args.command == "research-candidates":
+        if not 1 <= args.limit <= 50:
+            print("RESEARCH ERROR: --limit must be between 1 and 50.", file=sys.stderr)
+            return 1
+        try:
+            discovery = json.loads(Path(args.discovery_report).read_text(encoding="utf-8"))
+            registry = load_source_registry(args.registry) if args.registry else load_source_registry()
+            report = research_discovery_candidates(
+                discovery, registry, limit=args.limit,
+                max_candidates_per_source=args.max_candidates_per_source,
+            )
+        except (OSError, json.JSONDecodeError, ValueError) as exc:
+            print(f"RESEARCH ERROR: {exc}", file=sys.stderr)
+            return 1
+        output_path = Path(args.output)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        print(f"Extracted {report['claim_candidate_count']} unreviewed claim candidates from {report['source_count']} sources.")
+        print(f"Research candidate report: {output_path}")
+        return 0
     if args.command == "discover":
         if not 1 <= args.limit <= 200:
             print("DISCOVERY ERROR: --limit must be between 1 and 200.", file=sys.stderr)
