@@ -6,7 +6,6 @@ from pathlib import Path
 from factflow.research import evaluate_claims, load_source_registry
 from factflow.topic import load_topic, validate_topic
 
-
 ROOT = Path(__file__).resolve().parents[1]
 EXAMPLE_PATH = ROOT / "examples/topics/why-the-sky-is-blue.json"
 
@@ -50,26 +49,48 @@ def test_load_topic_returns_parsed_document(tmp_path):
     assert load_topic(topic_file)["id"] == "why-the-sky-is-blue"
 
 
-def test_one_registered_publisher_is_not_called_corroborated():
-    topic = read_example()
-    registry = load_source_registry()
-    reports = evaluate_claims(topic, registry)
-    assert reports[0]["status"] == "single_registered_source_pending_editorial_review"
+def test_unreviewed_source_is_not_counted_as_support():
+    reports = evaluate_claims(read_example(), load_source_registry())
+    assert reports[0]["status"] == "evidence_not_yet_confirmed"
+    assert reports[0]["supporting_independent_group_count"] == 0
 
 
 def test_two_independent_registered_publishers_are_corroborated_pending_review():
     topic = read_example()
+    first = topic["claims"][0]["sources"][0]
+    first["supports_claim"] = True
+    first["evidence_summary"] = "Editor reviewed the relevant passage and recorded its support."
+    first["publisher_id"] = "NASA"
     topic["claims"][0]["sources"].append({
         "publisher_id": "NOAA",
         "url": "https://www.noaa.gov/education/resource-collections/weather-atmosphere",
         "title": "Weather and atmosphere education resources",
         "accessed_on": "2026-11-14",
-        "evidence_summary": "Additional independent educational source to be checked by an editor.",
+        "evidence_summary": "Editor reviewed this independent source and recorded its support.",
         "supports_claim": True
     })
     reports = evaluate_claims(topic, load_source_registry())
     assert reports[0]["status"] == "corroborated_pending_editorial_review"
-    assert reports[0]["supporting_publisher_count"] == 2
+    assert reports[0]["supporting_independent_group_count"] == 2
+
+
+def test_nih_and_ncbi_are_not_counted_as_independent_publishers():
+    topic = read_example()
+    topic["claims"][0]["sources"] = [
+        {
+            "publisher_id": "NIH", "url": "https://www.nih.gov/",
+            "title": "NIH", "accessed_on": "2026-11-14",
+            "evidence_summary": "Reviewed evidence note.", "supports_claim": True
+        },
+        {
+            "publisher_id": "NCBI", "url": "https://www.ncbi.nlm.nih.gov/",
+            "title": "NCBI", "accessed_on": "2026-11-14",
+            "evidence_summary": "Reviewed evidence note.", "supports_claim": True
+        }
+    ]
+    report = evaluate_claims(topic, load_source_registry())[0]
+    assert report["supporting_independent_group_count"] == 1
+    assert report["status"] == "single_registered_source_pending_editorial_review"
 
 
 def test_unregistered_publisher_is_flagged():
