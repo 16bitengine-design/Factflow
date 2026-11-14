@@ -214,3 +214,27 @@ quantatale evidence-compare build/research-candidates.json --scholarly build/sch
 The scholarly and dossier reports are optional inputs; without them, the command still emits a blocked review report for each candidate. The CI workflow runs this comparison and includes `evidence-comparisons.json` in the research artifact.
 
 **Important limitations:** relation labels such as `possible_support_signal` and `possible_opposition_signal` are deterministic text signals, not judgments that a source supports or refutes a claim. Negation detection is incomplete and lexical overlap can be misleading. Numeric differences preserve nearby context, but matching units do not make values comparable: reviewers must check dates, populations, definitions, methods, precision and measurement context. Scholarly metadata providers are not assumed to be publishers. Only publisher group metadata from the curated registry is reported, and it is not proof of independence. All comparisons remain unreviewed and publication-blocked.
+
+
+## Sample video rendering
+
+QuantaTale includes an optional, cloud-runnable procedural short-video renderer. The first demonstration explains why the sky appears blue. It uses original Python/Pillow graphics, eSpeak NG narration, FFmpeg encoding and burned-in captions; it does not use stock footage, paid APIs or external generation services.
+
+The sample is a **9:16 vertical video at 720×1280 and 24 fps**. Its script references NASA Space Place and NOAA. The renderer also creates a WAV narration track, SRT captions, thumbnail and machine-readable metadata. Every sample is explicitly marked `sample_not_approved_for_publication`; the demo does not bypass the human editorial gate.
+
+### Run in GitHub Actions
+
+Open **Actions → Render QuantaTale sample video → Run workflow**. The workflow installs the free Ubuntu packages `ffmpeg`, `espeak-ng` and `fonts-dejavu-core`, installs the optional Pillow extra, renders the video, verifies the MP4 with `ffprobe`, and uploads the output as a downloadable workflow artifact.
+
+### Optional command
+
+On a compatible Linux runner with the listed system tools installed:
+
+```bash
+python -m pip install -e ".[render]"
+quantatale render-sample examples/videos/why-the-sky-is-blue.json --output-dir build/sample-video
+```
+
+Rendering requires FFmpeg/ffprobe, eSpeak NG, DejaVu fonts and Pillow. These are free/open-source dependencies. The core research installation remains dependency-free; Pillow is an optional extra. GitHub-hosted runner time, CPU, artifact storage and retention remain subject to GitHub's current limits.
+
+The first renderer is a vertical proof of the production pipeline, not yet the complete hybrid 2D/3D animation system. Horizontal 16:9 rendering, richer scene planning, advanced motion design and audio mixing remain future upgrades.
