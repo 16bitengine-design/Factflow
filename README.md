@@ -132,7 +132,7 @@ The implementation uses deterministic Python standard-library parsing and requir
 - Topic discovery is currently feed-based, not a general-purpose search engine.
 - Feed metadata is only a lead; it is not evidence verification.
 - Extracted claim candidates still require source review and structured evidence assessment.
-- Feed-based evidence dossiers and heuristic possible-difference flags are implemented; broad scholarly metadata discovery is available through Crossref and Europe PMC. Neither establishes corroboration or verifies claims.
+- Feed-based evidence dossiers, heuristic possible-difference flags, Crossref/Europe PMC metadata discovery and bounded Europe PMC open-access passage retrieval are implemented. None establishes corroboration or verifies claims.
 - Automatic narration, voice generation, animation and MP4 rendering have not yet been implemented.
 
 ## Development roadmap
@@ -144,6 +144,7 @@ The implementation uses deterministic Python standard-library parsing and requir
 - [x] Retrieve source pages and extract unreviewed claim candidates.
 - [x] Add initial feed-based evidence discovery, source grouping and heuristic conflict-review dossiers.
 - [x] Add free Crossref and Europe PMC scholarly metadata discovery; leads remain unreviewed.
+- [x] Retrieve bounded Europe PMC open-access passages for human review; passages remain unreviewed.
 - [ ] Expand discovery coverage and add topic scoring/diversity controls.
 - [ ] Generate narration scripts and scene plans.
 - [ ] Add fully cloud-runnable, open-source text-to-speech.
