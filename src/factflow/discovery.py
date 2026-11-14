@@ -116,7 +116,7 @@ def load_feed_config(path: str | Path = DEFAULT_FEEDS) -> dict[str, Any]:
 
 
 def fetch_feed(url: str, timeout: int = 15) -> str:
-    request = Request(url, headers={"User-Agent": "QuantaTale/0.1 (+https://github.com/16bitengine-design/Factflow)", "Accept": "application/rss+xml, application/atom+xml, application/xml, text/xml"})
+    request = Request(url, headers={"User-Agent": "QuantaTale/0.1 (+https://github.com/16bitengine-design/QuantaTale)", "Accept": "application/rss+xml, application/atom+xml, application/xml, text/xml"})
     with urlopen(request, timeout=timeout) as response:
         if response.status >= 400:
             raise ValueError(f"Feed returned HTTP {response.status}")
