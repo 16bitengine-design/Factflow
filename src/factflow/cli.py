@@ -104,7 +104,7 @@ def main() -> int:
             return 1
         output_path = Path(args.output)
         output_path.parent.mkdir(parents=True, exist_ok=True)
-        output_path.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\\n", encoding="utf-8")
+        output_path.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
         print(f"Compared passages for {report['candidate_count']} claim candidates; all signals remain unreviewed.")
         print(f"Evidence comparison report: {output_path}")
         return 0
