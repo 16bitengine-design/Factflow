@@ -49,11 +49,19 @@ def _local_name(tag: str) -> str:
 
 
 def _child_text(element: ET.Element, names: set[str]) -> str:
+    """Return all text nested in the first matching child element.
+
+    RSS descriptions and Atom summaries may contain inline XML/HTML elements.
+    Reading only child.text silently truncates content at the first tag.
+    itertext preserves text before, inside and after those nested elements.
+    """
     for child in element.iter():
         if child is element:
             continue
-        if _local_name(child.tag) in names and child.text:
-            return child.text.strip()
+        if _local_name(child.tag) in names:
+            value = "".join(child.itertext()).strip()
+            if value:
+                return value
     return ""
 
 
