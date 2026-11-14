@@ -152,3 +152,18 @@ The implementation uses deterministic Python standard-library parsing and requir
 ## License
 
 A project license will be selected and added before public code reuse is encouraged. Individual dependencies and downloaded voice models may have separate licenses; QuantaTale must record and respect them.
+
+
+## Stage 4B: independent-feed evidence discovery and review dossiers
+
+The first Stage 4B increment searches the configured public RSS/Atom feeds for articles whose titles or descriptions overlap with Stage 4A claim candidates. It retrieves a bounded number of matching pages from registered publisher domains, extracts additional unreviewed passages, groups records by the registry's publisher independence group, and flags possible wording/polarity or numerical differences.
+
+Run it after Stage 4A:
+
+```bash
+quantatale evidence-dossier build/research-candidates.json --feed-limit 100 --article-limit 20 --output build/evidence-dossiers.json
+```
+
+The output is `build/evidence-dossiers.json`. CI includes this report in the seven-day research artifact.
+
+**Important limitations:** discovery currently searches only configured feeds, not the entire web. Matching uses deterministic keyword overlap; it can miss relevant evidence and retrieve false matches. Independence groups are registry metadata, not proof of institutional independence. Difference flags are heuristic review signals, not confirmed contradictions. Human reviewers must compare full passages, dates, methods, definitions and units. Every dossier remains blocked from publication pending editorial review.
