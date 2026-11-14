@@ -38,6 +38,7 @@ def test_scene_state_advances_through_four_distinct_scenes():
 
 
 def test_holographic_storyboard_contains_required_visual_scenes():
+    pytest.importorskip("PIL")
     from factflow.holographic_scenes import draw_holographic_scene
     from PIL import Image, ImageDraw, ImageFont
 
