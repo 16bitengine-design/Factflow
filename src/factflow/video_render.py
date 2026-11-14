@@ -1,7 +1,9 @@
 """Free, procedural sample-video renderer for QuantaTale.
 
 Requires Pillow, Kokoro TTS, CPU PyTorch, soundfile and system executables ffmpeg/ffprobe/espeak-ng.
-Kokoro's open-weight model is downloaded by its runtime on first use. eSpeak NG is retained only as a phonemization dependency used by Kokoro, not as a voice.\n\nThe renderer is deliberately separate from research assessment: the bundled
+Kokoro's open-weight model is downloaded by its runtime on first use. eSpeak NG is retained only as a phonemization dependency used by Kokoro, not as a voice.
+
+The renderer is deliberately separate from research assessment: the bundled
 sample is a demonstration asset and is not cleared for public release.
 """
 from __future__ import annotations
@@ -11,7 +13,6 @@ import math
 import random
 import shutil
 import subprocess
-import os
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
