@@ -6,6 +6,7 @@ on:
     paths:
       - ".github/workflows/render-sample.yml"
       - "src/factflow/video_render.py"
+      - "src/factflow/holographic_scenes.py"
       - "src/factflow/cli.py"
       - "examples/videos/**"
       - "tests/test_video_render.py"
