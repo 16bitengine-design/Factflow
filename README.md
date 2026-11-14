@@ -4,7 +4,7 @@
 
 FactFlow is a cloud-first, open-source production pipeline for creating short, narrated, fact-based videos across science, history, nature, technology, geography, health, engineering and other subjects.
 
-The visual identity is **cinematic, code-generated holographic animation**: animated diagrams, 2D motion graphics, procedural 3D scenes, simulations, labels and visual effects. The project does not depend on stock footage or paid AI-video services.
+Its visual identity is **cinematic, code-generated holographic animation**: animated diagrams, 2D motion graphics, procedural 3D scenes, simulations, labels and visual effects. The project does not depend on stock footage or paid AI-video services.
 
 ## Non-negotiable principles
 
@@ -16,11 +16,11 @@ The visual identity is **cinematic, code-generated holographic animation**: anim
 - **Reproducible builds:** inputs, settings and outputs are versioned or recorded.
 - **Honest limits:** free runners have time, storage and resource limits. FactFlow must respect them rather than promise unlimited production.
 
-## Planned production flow
+## Production flow
 
 1. **Discover:** choose an engaging topic and define the audience and learning objective.
-2. **Research:** collect source-backed claims and record source URLs, dates and confidence.
-3. **Verify:** check important claims against reputable independent sources; flag uncertainty and disagreement.
+2. **Research:** collect source-backed claims and record structured evidence.
+3. **Verify:** check publisher registration, source domains, independent corroboration and uncertainty; require editorial review.
 4. **Write:** create a concise narration with a hook, explanation and memorable close.
 5. **Plan scenes:** map each narration segment to an original animated visual.
 6. **Generate voice:** use an open-source, cloud-runnable text-to-speech engine.
@@ -31,9 +31,9 @@ The visual identity is **cinematic, code-generated holographic animation**: anim
 
 ## Cloud-only, zero-cost operating model
 
-The initial execution target is GitHub Actions on GitHub-hosted runners. The repository will use open-source tools and free public-repository runner capacity where available. Workflows must be efficient, avoid unnecessary repeated renders, and upload finished videos as temporary workflow artifacts.
+The initial execution target is GitHub Actions on GitHub-hosted runners. The repository uses open-source tools and free public-repository runner capacity where available. Workflows must be efficient, avoid unnecessary repeated renders and respect the limits of free compute and storage.
 
-**Important:** "100% free" means the project must not require paid services or subscriptions. It does not mean unlimited compute, storage, bandwidth or guaranteed availability. GitHub and upstream projects can change their free-tier policies. FactFlow will report resource limits clearly and fail safely when a job cannot complete.
+**Important:** "100% free" means the core project must not require paid services or subscriptions. It does not mean unlimited compute, storage, bandwidth or guaranteed availability. GitHub and upstream projects can change their free-tier policies. FactFlow will report resource limits clearly and fail safely when a job cannot complete.
 
 No API keys or paid-provider credentials should be required for the core workflow.
 
@@ -44,6 +44,8 @@ No API keys or paid-provider credentials should be required for the core workflo
 ├── .github/
 │   └── workflows/
 │       └── ci.yml
+├── data/
+│   └── source_registry.json
 ├── examples/
 │   └── topics/
 │       └── why-the-sky-is-blue.json
@@ -51,6 +53,7 @@ No API keys or paid-provider credentials should be required for the core workflo
 │   └── factflow/
 │       ├── __init__.py
 │       ├── cli.py
+│       ├── research.py
 │       └── topic.py
 ├── tests/
 │   └── test_topic.py
@@ -58,41 +61,63 @@ No API keys or paid-provider credentials should be required for the core workflo
 └── pyproject.toml
 ```
 
-## First milestone: project foundation
+## Stage 1: project foundation
 
-The first milestone establishes a small, testable topic specification and a command-line validator. It deliberately does not pretend that the full video engine is complete yet.
+The first milestone established a Python package, a topic JSON specification, a command-line validator, automated tests and a GitHub Actions workflow.
 
-### Run the validator in GitHub Actions
+## Stage 2: evidence and fact assessment
 
-1. Open the **Actions** tab in this repository.
-2. Select **FactFlow CI**.
-3. Choose **Run workflow** if the manual trigger is available, or push a change to run it automatically.
-4. The workflow installs the project and runs its tests, then validates the example topic.
+FactFlow now has a curated starting registry of reputable publishers, including scientific, government, health, historical, educational and statistical institutions. The registry is stored in `data/source_registry.json` and can be expanded as new subject areas are added.
 
-The same commands can be run locally by a contributor, but local setup is not required for cloud production.
+Each factual claim records structured evidence:
+- `publisher_id`: publisher identifier from the curated registry.
+- `url`: page containing the evidence.
+- `title`: source page title.
+- `accessed_on`: date the source was reviewed.
+- `evidence_summary`: editor's summary of the relevant material (not an invented quotation).
+- `supports_claim`: set to `true` only after an editor confirms the source directly supports the claim.
 
-## Topic format
+### Generate an evidence report
 
-A topic JSON file must include:
-- `id`: stable, lowercase identifier.
-- `title`: topic title.
-- `category`: subject category.
-- `target_duration_seconds`: desired Short duration.
-- `audience`: intended audience.
-- `hook`: opening line.
-- `narration`: narration text.
-- `claims`: factual claims with at least one source URL each.
-- `scenes`: ordered visual scene descriptions.
+The report is generated automatically in GitHub Actions. To run the command in another environment:
 
-A source URL is a research lead, not proof by itself. Later verification stages will add source quality checks, claim-to-source matching and editorial review.
+```bash
+factflow research-report examples/topics/why-the-sky-is-blue.json
+```
+
+To save the report:
+
+```bash
+factflow research-report examples/topics/why-the-sky-is-blue.json --output build/research-report.json
+```
+
+To also check whether source URLs respond:
+
+```bash
+factflow research-report examples/topics/why-the-sky-is-blue.json --check-links
+```
+
+Link checking requires outbound internet access. A reachable page is not necessarily accurate, authoritative or relevant.
+
+### How claim statuses work
+
+- `corroborated_pending_editorial_review`: at least two independent registered publisher groups are recorded as supporting the claim.
+- `single_registered_source_pending_editorial_review`: one registered publisher group is recorded as supporting it.
+- `evidence_not_yet_confirmed`: source records exist, but no source has been marked as directly supporting the claim.
+- `unsupported_or_unregistered`: no usable registered evidence was found, or publisher/domain information failed registry checks.
+
+The registry records independence groups so two websites belonging to the same publisher group are not automatically counted as independent corroboration.
+
+**Critical limitation:** these are evidence-workflow statuses, not truth scores. Automated checks cannot reliably establish that a source's content proves a claim. An editor must read the cited material, check the exact wording and context, and approve the claim before publication. FactFlow's publication gate remains blocked pending editorial review.
 
 ## Development roadmap
 
 - [x] Establish repository foundation and cloud CI.
 - [x] Define and validate the first topic specification.
-- [ ] Add source records and fact-checking workflow.
+- [x] Add a curated publisher registry and evidence-assessment workflow.
+- [ ] Add topic discovery and source collection.
 - [ ] Generate narration scripts and scene plans.
-- [ ] Add fully cloud-runnable, open-source TTS.
+- [ ] Add fully cloud-runnable, open-source text-to-speech.
 - [ ] Build reusable code-generated 2D animation components.
 - [ ] Add procedural 3D holographic-style scenes.
 - [ ] Assemble audio, animation and captions with FFmpeg.
