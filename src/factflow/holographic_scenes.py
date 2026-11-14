@@ -39,9 +39,9 @@ def draw_holographic_scene(draw: Any, scene: int, progress: float,
 
     if scene == 0:
         # A white solar beam crosses space and enters Earth's curved atmosphere.
-        # The visible wavelengths are shown as coloured components, not as a
-        # claim that the atmosphere acts like a prism: scene 1 explains their
-        # wavelength-dependent scattering by air molecules.
+        # Sunlight is white because it contains a range of visible wavelengths.
+        # Their different scattering is shown in scene 1; the atmosphere is not
+        # depicted as a prism splitting the beam into a rainbow.
         _label(draw, (82, 315), "SUNLIGHT APPROACHING EARTH", fonts["label"], WHITE)
 
         # Holographic Earth limb and two transparent atmospheric shells.
@@ -92,21 +92,19 @@ def draw_holographic_scene(draw: Any, scene: int, progress: float,
                          fill=(255, 255, 245, 250))
 
         _label(draw, (375, 535), "ATMOSPHERE", fonts["tiny"])
-        # At the entry point reveal the beam's component wavelengths. The
-        # spectrum fans through the air; the next scene shows blue scattering
-        # more strongly than red (rather than implying prism-like refraction).
-        labels = ["RED", "ORANGE", "YELLOW", "GREEN", "BLUE", "INDIGO", "VIOLET"]
-        spread = 0.25 + 0.75 * progress
-        for i, color in enumerate(SPECTRUM):
-            offset = i - 3
-            end_x = int(625 + 12 * math.sin(seconds*1.8+i))
-            end_y = int(entry[1] + offset * 48 * spread)
-            draw.line((entry[0], entry[1], end_x, end_y),
-                      fill=(*color[:3], 55), width=15)
-            draw.line((entry[0], entry[1], end_x, end_y),
-                      fill=color, width=4)
-            draw.ellipse((end_x-5, end_y-5, end_x+5, end_y+5), fill=color)
-            _label(draw, (end_x-2, end_y+9), labels[i], fonts["tiny"], color)
+        # White sunlight already contains a range of visible wavelengths.
+        # Show their colours as a compact legend, not as rays splitting at the
+        # atmospheric boundary. Scene 1 then visualizes wavelength-dependent
+        # scattering by air molecules.
+        _label(draw, (155, 755), "COLOURS WITHIN WHITE SUNLIGHT", fonts["small"], WHITE)
+        swatch_x, swatch_y = 155, 790
+        swatch_width, swatch_gap = 54, 7
+        for index, color in enumerate(SPECTRUM):
+            left = swatch_x + index * (swatch_width + swatch_gap)
+            draw.rounded_rectangle(
+                (left, swatch_y, left + swatch_width, swatch_y + 12),
+                radius=5, fill=color,
+            )
         _label(draw, (155, 835), "ONE WHITE BEAM", fonts["heading"], WHITE)
         _label(draw, (155, 885), "MANY VISIBLE WAVELENGTHS", fonts["small"])
         _label(draw, (155, 930), "ENTERING THE ATMOSPHERE", fonts["small"], WHITE)
