@@ -180,3 +180,18 @@ quantatale scholarly-discover build/research-candidates.json --claim-limit 20 --
 ```
 
 The output contains metadata leads, DOI/PMID/PMCID identifiers when available, dates, journal metadata, API provenance and provider errors. Metadata leads are not source passages, verified publishers, supporting evidence or corroboration. Publisher identity and the original full text must be checked before a record can enter an evidence dossier. API failures are recorded per provider and do not discard successful results from the other provider.
+
+
+### Stage 4B-3: bounded open-access full-text passage retrieval
+
+QuantaTale can now retrieve full-text XML from Europe PMC for scholarly metadata leads that include a valid PMCID and are explicitly marked open access by Europe PMC. The retrieval stage is bounded by article count, response size, timeout and passage count. It extracts abstract/body paragraphs with section context while skipping reference lists and common non-evidence sections. Invalid PMCID values are never inserted into request URLs; XML document/entity declarations are rejected.
+
+Run it after Stage 4B-2:
+
+```bash
+quantatale scholarly-retrieve build/scholarly-leads.json --article-limit 20 --passages-per-article 40 --output build/scholarly-passages.json
+```
+
+The output is `build/scholarly-passages.json` and is uploaded with the other CI research reports. Provider errors are recorded per article without discarding successful retrievals. Records without a PMCID or without an explicit open-access flag are skipped.
+
+**Important limitations:** Europe PMC's open-access metadata flag is not a substitute for checking the article's actual license and reuse terms. The API provider is not necessarily the publisher. Extracted passages remain unreviewed; source attribution, license, methods, relevance, context and claim support require human verification. No passage is counted as corroboration, automatically assigned as supporting or opposing evidence, or approved for narration. Full-text retrieval is limited to the Europe PMC open-access collection; Crossref metadata alone does not grant full-text access.
