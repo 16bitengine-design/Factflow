@@ -224,14 +224,15 @@ The sample is a **9:16 vertical video at 720×1280 and 24 fps**. Its script refe
 
 ### Run in GitHub Actions
 
-Open **Actions → Render QuantaTale sample video → Run workflow**. The workflow installs the free Ubuntu packages `ffmpeg`, `espeak-ng` and `fonts-dejavu-core`, installs the optional Pillow extra, renders the video, verifies the MP4 with `ffprobe`, and uploads the output as a downloadable workflow artifact.
+Open **Actions → Render QuantaTale sample video → Run workflow**. The workflow installs the free Ubuntu packages `ffmpeg`, `espeak-ng` (phonemization only) and `fonts-dejavu-core`, installs CPU-only PyTorch, Kokoro and the optional Pillow extra, renders the video, verifies the MP4 with `ffprobe`, and uploads the output as a downloadable workflow artifact.
 
 ### Optional command
 
 On a compatible Linux runner with the listed system tools installed:
 
 ```bash
-python -m pip install torch --index-url https://download.pytorch.org/whl/cpu\npython -m pip install -e ".[render,tts]"
+python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+python -m pip install -e ".[render,tts]"
 quantatale render-sample examples/videos/why-the-sky-is-blue.json --output-dir build/sample-video
 ```
 
