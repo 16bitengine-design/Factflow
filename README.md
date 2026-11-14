@@ -199,3 +199,18 @@ quantatale scholarly-retrieve build/scholarly-leads.json --article-limit 20 --pa
 The output is `build/scholarly-passages.json` and is uploaded with the other CI research reports. Provider errors are recorded per article without discarding successful retrievals. Records without a PMCID or without an explicit open-access flag are skipped.
 
 **Important limitations:** Europe PMC's open-access metadata flag is not a substitute for checking the article's actual license and reuse terms. The API provider is not necessarily the publisher. Extracted passages remain unreviewed; source attribution, license, methods, relevance, context and claim support require human verification. No passage is counted as corroboration, automatically assigned as supporting or opposing evidence, or approved for narration. Full-text retrieval is limited to the Europe PMC open-access collection; Crossref metadata alone does not grant full-text access.
+
+
+### Stage 4B-4: claim-to-passage evidence comparison
+
+QuantaTale now compares the collected Stage 4B-3 scholarly passages and Stage 4B feed-dossier passages against their assigned Stage 4A claim candidates. It records lexical relevance, possible polarity differences, qualifying language, numeric mentions with surrounding context, source identifiers and registry independence-group metadata.
+
+Run the comparison after the previous research stages:
+
+```bash
+quantatale evidence-compare build/research-candidates.json --scholarly build/scholarly-passages.json --dossiers build/evidence-dossiers.json --passage-limit-per-claim 100 --output build/evidence-comparisons.json
+```
+
+The scholarly and dossier reports are optional inputs; without them, the command still emits a blocked review report for each candidate. The CI workflow runs this comparison and includes `evidence-comparisons.json` in the research artifact.
+
+**Important limitations:** relation labels such as `possible_support_signal` and `possible_opposition_signal` are deterministic text signals, not judgments that a source supports or refutes a claim. Negation detection is incomplete and lexical overlap can be misleading. Numeric differences preserve nearby context, but matching units do not make values comparable: reviewers must check dates, populations, definitions, methods, precision and measurement context. Scholarly metadata providers are not assumed to be publishers. Only publisher group metadata from the curated registry is reported, and it is not proof of independence. All comparisons remain unreviewed and publication-blocked.
