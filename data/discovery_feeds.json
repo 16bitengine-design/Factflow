@@ -1,6 +1,6 @@
 {
   "feed_config_version": 1,
-  "description": "Curated official publisher feeds used only to discover candidate story leads. Feed availability and terms can change.",
+  "description": "Curated official publisher feeds used only to discover candidate story leads. Disabled feeds are documented separately until a stable official RSS/Atom endpoint is verified.",
   "feeds": [
     {
       "publisher_id": "NASA",
@@ -13,10 +13,12 @@
     {
       "publisher_id": "WHO",
       "url": "https://www.who.int/rss-feeds/news-english.xml"
-    },
+    }
+  ],
+  "disabled_feeds": [
     {
       "publisher_id": "WORLD_BANK",
-      "url": "https://blogs.worldbank.org/feed"
+      "reason": "Temporarily disabled: the previous news RSS endpoint returned malformed XML, and the alternate blog feed endpoint returned HTTP 404 in GitHub Actions. Re-enable only after a stable official RSS/Atom URL is verified."
     }
   ]
 }
