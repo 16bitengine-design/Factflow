@@ -32,8 +32,23 @@ def test_srt_timestamp_formats_milliseconds():
 
 
 
-def test_scene_state_advances_through_three_distinct_shots():
-    assert _scene_state(0, 30)[0] == 0
-    assert _scene_state(12, 30)[0] == 1
-    assert _scene_state(24, 30)[0] == 2
-    assert 0.0 <= _scene_state(15, 30)[1] <= 1.0
+def test_scene_state_advances_through_four_distinct_scenes():
+    assert [_scene_state(value, 40)[0] for value in (0, 10, 20, 30)] == [0, 1, 2, 3]
+    assert 0.0 <= _scene_state(15, 40)[1] <= 1.0
+
+
+def test_holographic_storyboard_contains_required_visual_scenes():
+    from factflow.holographic_scenes import draw_holographic_scene
+    from PIL import Image, ImageDraw, ImageFont
+
+    image = Image.new("RGBA", (720, 1280))
+    draw = ImageDraw.Draw(image)
+    font = ImageFont.load_default()
+    fonts = {name: font for name in ("label", "tiny", "heading", "small")}
+    scenes = [draw_holographic_scene(draw, index, 0.5, 2.0, fonts) for index in range(4)]
+    assert [item[0] for item in scenes] == [
+        "ONE BEAM. MANY COLOURS.",
+        "MOLECULES REDIRECT THE LIGHT",
+        "LIGHT ENTERS YOUR EYE",
+        "WHY THE SKY LOOKS BLUE",
+    ]
