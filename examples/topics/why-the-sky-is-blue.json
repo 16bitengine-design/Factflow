@@ -10,16 +10,28 @@
     {
       "text": "The atmosphere scatters shorter visible wavelengths more strongly than longer visible wavelengths; this is known as Rayleigh scattering.",
       "sources": [
-        "https://science.nasa.gov/earth/earth-atmosphere/"
-      ],
-      "verification_status": "needs_editorial_review"
+        {
+          "publisher_id": "NASA",
+          "url": "https://science.nasa.gov/earth/earth-atmosphere/",
+          "title": "Earth's Atmosphere",
+          "accessed_on": "2026-11-14",
+          "evidence_summary": "Research lead only: an editor must locate and review the passage that directly supports this precise claim.",
+          "supports_claim": false
+        }
+      ]
     },
     {
       "text": "Human vision is less sensitive to violet than to blue, which contributes to the sky appearing blue rather than violet.",
       "sources": [
-        "https://www.weather.gov/jetstream/optical"
-      ],
-      "verification_status": "needs_editorial_review"
+        {
+          "publisher_id": "NOAA",
+          "url": "https://www.weather.gov/jetstream/optical",
+          "title": "Optical phenomena",
+          "accessed_on": "2026-11-14",
+          "evidence_summary": "Research lead only: an editor must inspect the source and confirm that it directly supports this precise explanation.",
+          "supports_claim": false
+        }
+      ]
     }
   ],
   "scenes": [
