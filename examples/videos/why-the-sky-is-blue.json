@@ -1,0 +1,19 @@
+{
+  "title": "Why Is the Sky Blue?",
+  "narration": "Sunlight looks white, but it contains every colour. As it enters Earth's atmosphere, tiny gas molecules scatter shorter blue wavelengths more strongly than longer red wavelengths. Blue light spreads in many directions, reaching your eyes from across the sky. This effect is called Rayleigh scattering, and it explains why a clear daytime sky usually looks blue.",
+  "sources": [
+    {
+      "publisher": "NASA Space Place",
+      "title": "Why Is the Sky Blue?",
+      "url": "https://spaceplace.nasa.gov/blue-sky/en/",
+      "supports": "Sunlight is scattered by gases and particles in the atmosphere; blue light is scattered more than other colours because it has shorter wavelengths."
+    },
+    {
+      "publisher": "NOAA NESDIS",
+      "title": "Why Is the Sky Blue?",
+      "url": "https://www.nesdis.noaa.gov/about/k-12-education/atmosphere/why-the-sky-blue",
+      "supports": "Shorter blue wavelengths are scattered by atmospheric gas molecules, making the sky appear blue."
+    }
+  ],
+  "editorial_status": "Demonstration script prepared against the listed sources; requires human editorial approval before publication."
+}
