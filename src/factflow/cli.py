@@ -1,4 +1,4 @@
-"""Command-line interface for FactFlow."""
+"""Command-line interface for QuantaTale."""
 from __future__ import annotations
 
 import argparse
@@ -13,7 +13,7 @@ from factflow.topic import TopicValidationError, load_topic
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="factflow", description="FactFlow production tools.")
+    parser = argparse.ArgumentParser(prog="quantatale", description="QuantaTale production tools.")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     validate_parser = subparsers.add_parser("validate", help="Validate a topic JSON file.")

@@ -1,4 +1,4 @@
-"""Evidence-led claim assessment for FactFlow.
+"""Evidence-led claim assessment for QuantaTale.
 
 Checks evidence records against a curated publisher registry. These automated
 checks do not decide whether a cited source truly proves a claim.
@@ -130,7 +130,7 @@ def evaluate_claims(topic: dict[str, Any], registry: dict[str, Any]) -> list[dic
 
 def check_source_url(url: str, timeout: int = 12) -> dict[str, Any]:
     """Check URL reachability only; this does not validate source content."""
-    headers = {"User-Agent": "FactFlowResearchBot/0.1 (source-link-check)"}
+    headers = {"User-Agent": "QuantaTaleResearchBot/0.1 (source-link-check)"}
     request = Request(url, headers=headers, method="HEAD")
     try:
         with urlopen(request, timeout=timeout) as response:

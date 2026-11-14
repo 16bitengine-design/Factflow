@@ -3,19 +3,20 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "factflow"
+name = "quantatale"
 version = "0.1.0"
-description = "A cloud-first, open-source pipeline for narrated fact-based animated Shorts."
+description = "A free, cloud-first engine for evidence-led narrated explainers and holographic animated videos."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "TBD" }
-authors = [{ name = "FactFlow Contributors" }]
+authors = [{ name = "QuantaTale Contributors" }]
 dependencies = []
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0,<9.0"]
 
 [project.scripts]
+quantatale = "factflow.cli:main"
 factflow = "factflow.cli:main"
 
 [tool.setuptools.packages.find]

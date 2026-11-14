@@ -125,7 +125,7 @@ def fetch_article(url: str, publisher: dict[str, Any], timeout: int = DEFAULT_TI
     request = Request(
         url,
         headers={
-            "User-Agent": "FactFlowResearchBot/0.1 (+https://github.com/16bitengine-design/Factflow)",
+            "User-Agent": "QuantaTaleResearchBot/0.1 (+https://github.com/16bitengine-design/Factflow)",
             "Accept": "text/html,application/xhtml+xml",
         },
     )

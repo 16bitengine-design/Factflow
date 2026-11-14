@@ -1,3 +1,3 @@
-"""FactFlow: cloud-first narrated fact-video production."""
+"""QuantaTale engine (legacy Python import namespace: factflow)."""
 
 __version__ = "0.1.0"
