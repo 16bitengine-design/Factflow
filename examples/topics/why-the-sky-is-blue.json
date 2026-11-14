@@ -1,0 +1,42 @@
+{
+  "id": "why-the-sky-is-blue",
+  "title": "Why Is the Sky Blue?",
+  "category": "science",
+  "target_duration_seconds": 45,
+  "audience": "General audience",
+  "hook": "The sky isn't blue because it reflects the ocean. The real reason is happening in the air above you.",
+  "narration": "Sunlight looks white, but it contains many colours. As sunlight travels through Earth's atmosphere, tiny gas molecules scatter shorter wavelengths more strongly than longer wavelengths. Blue light is scattered across the sky and reaches your eyes from many directions. This process is called Rayleigh scattering. Violet light is scattered even more, but human vision is less sensitive to violet, and some violet is absorbed in the upper atmosphere. That is why the daytime sky usually looks blue.",
+  "claims": [
+    {
+      "text": "The atmosphere scatters shorter visible wavelengths more strongly than longer visible wavelengths; this is known as Rayleigh scattering.",
+      "sources": [
+        "https://science.nasa.gov/earth/earth-atmosphere/"
+      ],
+      "verification_status": "needs_editorial_review"
+    },
+    {
+      "text": "Human vision is less sensitive to violet than to blue, which contributes to the sky appearing blue rather than violet.",
+      "sources": [
+        "https://www.weather.gov/jetstream/optical"
+      ],
+      "verification_status": "needs_editorial_review"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Sunlight looks white, but it contains many colours.",
+      "visual_description": "A white beam enters frame and separates into a clean visible-spectrum holographic ribbon.",
+      "visual_style": "hybrid"
+    },
+    {
+      "narration_segment": "Tiny gas molecules scatter shorter wavelengths more strongly.",
+      "visual_description": "A procedural atmospheric volume with particles scattering blue light in multiple directions.",
+      "visual_style": "3d"
+    },
+    {
+      "narration_segment": "This process is called Rayleigh scattering.",
+      "visual_description": "A labelled holographic diagram compares shorter and longer wavelength scattering.",
+      "visual_style": "2d"
+    }
+  ]
+}
