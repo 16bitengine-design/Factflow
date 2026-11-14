@@ -10,15 +10,8 @@ from urllib.parse import urlparse
 
 
 REQUIRED_FIELDS = (
-    "id",
-    "title",
-    "category",
-    "target_duration_seconds",
-    "audience",
-    "hook",
-    "narration",
-    "claims",
-    "scenes",
+    "id", "title", "category", "target_duration_seconds",
+    "audience", "hook", "narration", "claims", "scenes",
 )
 
 
@@ -34,16 +27,14 @@ def _is_http_url(value: Any) -> bool:
 
 
 def validate_topic(data: Any) -> list[str]:
-    """Return validation errors; an empty list means the topic is valid."""
+    """Return structural errors; an empty list means the topic is well formed."""
     errors: list[str] = []
-
     if not isinstance(data, dict):
         return ["Topic must be a JSON object."]
 
     for field in REQUIRED_FIELDS:
         if field not in data:
             errors.append(f"Missing required field: {field}")
-
     if errors:
         return errors
 
@@ -70,11 +61,22 @@ def validate_topic(data: Any) -> list[str]:
                 continue
             if not isinstance(claim.get("text"), str) or not claim["text"].strip():
                 errors.append(f"{prefix}.text must be a non-empty string.")
-            sources = claim.get("sources")
-            if not isinstance(sources, list) or not sources:
-                errors.append(f"{prefix}.sources must contain at least one URL.")
-            elif any(not _is_http_url(source) for source in sources):
-                errors.append(f"{prefix}.sources may contain only valid HTTP or HTTPS URLs.")
+            evidence = claim.get("sources")
+            if not isinstance(evidence, list) or not evidence:
+                errors.append(f"{prefix}.sources must contain at least one evidence record.")
+                continue
+            for source_index, source in enumerate(evidence):
+                source_prefix = f"{prefix}.sources[{source_index}]"
+                if not isinstance(source, dict):
+                    errors.append(f"{source_prefix} must be an object.")
+                    continue
+                for field in ("publisher_id", "url", "title", "accessed_on", "evidence_summary"):
+                    if not isinstance(source.get(field), str) or not source[field].strip():
+                        errors.append(f"{source_prefix}.{field} must be a non-empty string.")
+                if not _is_http_url(source.get("url")):
+                    errors.append(f"{source_prefix}.url must be a valid HTTP or HTTPS URL.")
+                if not isinstance(source.get("supports_claim"), bool):
+                    errors.append(f"{source_prefix}.supports_claim must be true or false.")
 
     scenes = data["scenes"]
     if not isinstance(scenes, list) or not scenes:
@@ -88,15 +90,14 @@ def validate_topic(data: Any) -> list[str]:
             for field in ("narration_segment", "visual_description"):
                 if not isinstance(scene.get(field), str) or not scene[field].strip():
                     errors.append(f"{prefix}.{field} must be a non-empty string.")
-            visual_style = scene.get("visual_style")
-            if visual_style not in {"2d", "3d", "hybrid"}:
+            if scene.get("visual_style") not in {"2d", "3d", "hybrid"}:
                 errors.append(f"{prefix}.visual_style must be 2d, 3d or hybrid.")
 
     return errors
 
 
 def load_topic(path: str | Path) -> dict[str, Any]:
-    """Load JSON from disk and raise a useful error for malformed input."""
+    """Load JSON and raise a useful error for malformed input."""
     topic_path = Path(path)
     try:
         data = json.loads(topic_path.read_text(encoding="utf-8"))
