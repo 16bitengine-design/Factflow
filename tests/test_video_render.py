@@ -72,3 +72,16 @@ def test_sunlight_scene_renders_white_beam_and_all_spectrum_colours():
         assert pixels.count(colour) > 0
     # The incoming solar beam has a near-white core, distinct from the spectrum.
     assert any(r > 240 and g > 240 and b > 220 for r, g, b, _ in pixels)
+
+
+def test_scene_callout_text_is_fitted_inside_panel():
+    pytest.importorskip("PIL")
+    from PIL import Image, ImageDraw, ImageFont
+    from factflow.video_render import _fit_font
+
+    image = Image.new("RGB", (720, 1280))
+    draw = ImageDraw.Draw(image)
+    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 30)
+    headline = "SUNLIGHT ENTERS THE ATMOSPHERE"
+    fitted = _fit_font(draw, headline, font, 532)
+    assert draw.textbbox((0, 0), headline, font=fitted)[2] <= 532
