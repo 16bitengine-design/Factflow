@@ -48,6 +48,9 @@ jobs:
       - name: Discover candidate story leads
         run: factflow discover --limit 30 --output build/discovery-candidates.json
 
+      - name: Extract source-backed claim candidates
+        run: factflow research-candidates build/discovery-candidates.json --limit 10 --output build/research-candidates.json
+
       - name: Upload discovery and research reports
         uses: actions/upload-artifact@v4
         with:
