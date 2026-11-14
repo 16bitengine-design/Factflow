@@ -14,6 +14,7 @@ from factflow.research import build_research_report, load_source_registry
 from factflow.scholarly_discovery import discover_scholarly_metadata
 from factflow.scholarly_fulltext import retrieve_open_access_passages
 from factflow.topic import TopicValidationError, load_topic
+from factflow.video_render import render_sample_video
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -81,11 +82,31 @@ def build_parser() -> argparse.ArgumentParser:
     fulltext_parser.add_argument("--article-limit", type=int, default=20, help="Maximum OA articles to retrieve (1-50).")
     fulltext_parser.add_argument("--passages-per-article", type=int, default=40, help="Maximum passages per article (1-40).")
     fulltext_parser.add_argument("--output", default="build/scholarly-passages.json", help="JSON output path.")
+    render_parser = subparsers.add_parser(
+        "render-sample", help="Render a sourced sample short using free procedural graphics, TTS and FFmpeg."
+    )
+    render_parser.add_argument("spec_file", help="Sample video specification JSON.")
+    render_parser.add_argument("--output-dir", default="build/sample-video", help="Directory for MP4 and sidecar files.")
+
     return parser
 
 
 def main() -> int:
     args = build_parser().parse_args()
+
+    if args.command == "render-sample":
+        try:
+            result = render_sample_video(args.spec_file, args.output_dir)
+        except (OSError, json.JSONDecodeError, ValueError, RuntimeError) as exc:
+            print(f"SAMPLE RENDER ERROR: {exc}", file=sys.stderr)
+            return 1
+        print("SAMPLE VIDEO RENDERED AND QUALITY-CHECKED")
+        print(f"Video: {result['video']}")
+        print(f"Duration: {result['duration_seconds']} seconds")
+        print(f"Format: {result['width']}x{result['height']} at {result['fps']} fps")
+        print(f"File size: {result['size_bytes']} bytes")
+        print(f"Metadata: {result['metadata']}")
+        return 0
 
     if args.command == "evidence-compare":
         if not 1 <= args.passage_limit_per_claim <= 250:
