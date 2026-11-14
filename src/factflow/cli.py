@@ -8,6 +8,7 @@ from pathlib import Path
 
 from factflow.discovery import discover_candidates, load_feed_config
 from factflow.evidence_dossier import build_evidence_dossier
+from factflow.evidence_comparison import compare_evidence
 from factflow.fact_research import research_discovery_candidates
 from factflow.research import build_research_report, load_source_registry
 from factflow.scholarly_discovery import discover_scholarly_metadata
@@ -64,6 +65,15 @@ def build_parser() -> argparse.ArgumentParser:
     scholarly_parser.add_argument("--results-per-provider", type=int, default=5, help="Results per API and claim (1-10).")
     scholarly_parser.add_argument("--output", default="build/scholarly-leads.json", help="JSON output path.")
 
+    comparison_parser = subparsers.add_parser(
+        "evidence-compare", help="Compare collected passages with claim candidates and produce human-review signals."
+    )
+    comparison_parser.add_argument("research_report", help="Stage 4A research-candidates JSON file.")
+    comparison_parser.add_argument("--scholarly", default=None, help="Optional Stage 4B-3 scholarly-passages JSON file.")
+    comparison_parser.add_argument("--dossiers", default=None, help="Optional Stage 4B feed evidence-dossiers JSON file.")
+    comparison_parser.add_argument("--passage-limit-per-claim", type=int, default=100, help="Maximum passages compared per claim (1-250).")
+    comparison_parser.add_argument("--output", default="build/evidence-comparisons.json", help="JSON output path.")
+
     fulltext_parser = subparsers.add_parser(
         "scholarly-retrieve", help="Retrieve bounded full-text passages from explicitly open-access Europe PMC records."
     )
@@ -76,6 +86,28 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     args = build_parser().parse_args()
+
+    if args.command == "evidence-compare":
+        if not 1 <= args.passage_limit_per_claim <= 250:
+            print("EVIDENCE COMPARISON ERROR: passage limit must be between 1 and 250.", file=sys.stderr)
+            return 1
+        try:
+            research = json.loads(Path(args.research_report).read_text(encoding="utf-8"))
+            scholarly = json.loads(Path(args.scholarly).read_text(encoding="utf-8")) if args.scholarly else {}
+            dossiers = json.loads(Path(args.dossiers).read_text(encoding="utf-8")) if args.dossiers else {}
+            report = compare_evidence(
+                research, scholarly, dossiers,
+                passage_limit_per_claim=args.passage_limit_per_claim,
+            )
+        except (OSError, json.JSONDecodeError, ValueError) as exc:
+            print(f"EVIDENCE COMPARISON ERROR: {exc}", file=sys.stderr)
+            return 1
+        output_path = Path(args.output)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\\n", encoding="utf-8")
+        print(f"Compared passages for {report['candidate_count']} claim candidates; all signals remain unreviewed.")
+        print(f"Evidence comparison report: {output_path}")
+        return 0
 
     if args.command == "scholarly-retrieve":
         if not 1 <= args.article_limit <= 50 or not 1 <= args.passages_per_article <= 40:
