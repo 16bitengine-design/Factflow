@@ -13,7 +13,7 @@ authors = [{ name = "QuantaTale Contributors" }]
 dependencies = []
 
 [project.optional-dependencies]
-dev = ["pytest>=8.0,<9.0"]
+dev = ["pytest>=8.0,<9.0"]\nrender = ["Pillow>=10,<13"]
 
 [project.scripts]
 quantatale = "factflow.cli:main"
