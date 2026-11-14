@@ -2,19 +2,197 @@
   "registry_version": 1,
   "description": "Curated starting list of reputable publishers. Inclusion is a research aid, not an automatic endorsement of every page or claim.",
   "publishers": [
-    {"id": "NASA", "name": "National Aeronautics and Space Administration", "domains": ["nasa.gov"], "areas": ["space", "astronomy", "earth science", "physics", "technology"]},
-    {"id": "NOAA", "name": "National Oceanic and Atmospheric Administration", "domains": ["noaa.gov"], "areas": ["weather", "climate", "oceans", "atmosphere"]},
-    {"id": "USGS", "name": "United States Geological Survey", "domains": ["usgs.gov"], "areas": ["earth science", "geology", "natural hazards", "water"]},
-    {"id": "NIST", "name": "National Institute of Standards and Technology", "domains": ["nist.gov"], "areas": ["measurement", "physics", "technology", "engineering"]},
-    {"id": "WHO", "name": "World Health Organization", "domains": ["who.int"], "areas": ["health", "medicine", "public health"]},
-    {"id": "CDC", "name": "Centers for Disease Control and Prevention", "domains": ["cdc.gov"], "areas": ["health", "medicine", "public health"]},
-    {"id": "NIH", "name": "National Institutes of Health", "domains": ["nih.gov"], "areas": ["health", "medicine", "biology"]},
-    {"id": "NCBI", "name": "National Center for Biotechnology Information", "domains": ["nih.gov"], "areas": ["biology", "medicine", "genetics"]},
-    {"id": "BRITANNICA", "name": "Encyclopaedia Britannica", "domains": ["britannica.com"], "areas": ["history", "geography", "science", "general reference"]},
-    {"id": "LOC", "name": "Library of Congress", "domains": ["loc.gov"], "areas": ["history", "culture", "archives"]},
-    {"id": "UK_NATIONAL_ARCHIVES", "name": "The National Archives (United Kingdom)", "domains": ["nationalarchives.gov.uk"], "areas": ["history", "government", "archives"]},
-    {"id": "UNESCO", "name": "UNESCO", "domains": ["unesco.org"], "areas": ["education", "culture", "science", "heritage"]},
-    {"id": "WORLD_BANK", "name": "World Bank", "domains": ["worldbank.org"], "areas": ["economics", "development", "statistics"]},
-    {"id": "OUR_WORLD_IN_DATA", "name": "Our World in Data", "domains": ["ourworldindata.org"], "areas": ["statistics", "health", "economics", "environment", "history"]}
+    {
+      "id": "NASA",
+      "name": "National Aeronautics and Space Administration",
+      "domains": [
+        "nasa.gov"
+      ],
+      "areas": [
+        "space",
+        "astronomy",
+        "earth science",
+        "physics",
+        "technology"
+      ],
+      "independence_group": "NASA"
+    },
+    {
+      "id": "NOAA",
+      "name": "National Oceanic and Atmospheric Administration",
+      "domains": [
+        "noaa.gov",
+        "weather.gov"
+      ],
+      "areas": [
+        "weather",
+        "climate",
+        "oceans",
+        "atmosphere"
+      ],
+      "independence_group": "NOAA"
+    },
+    {
+      "id": "USGS",
+      "name": "United States Geological Survey",
+      "domains": [
+        "usgs.gov"
+      ],
+      "areas": [
+        "earth science",
+        "geology",
+        "natural hazards",
+        "water"
+      ],
+      "independence_group": "USGS"
+    },
+    {
+      "id": "NIST",
+      "name": "National Institute of Standards and Technology",
+      "domains": [
+        "nist.gov"
+      ],
+      "areas": [
+        "measurement",
+        "physics",
+        "technology",
+        "engineering"
+      ],
+      "independence_group": "NIST"
+    },
+    {
+      "id": "WHO",
+      "name": "World Health Organization",
+      "domains": [
+        "who.int"
+      ],
+      "areas": [
+        "health",
+        "medicine",
+        "public health"
+      ],
+      "independence_group": "WHO"
+    },
+    {
+      "id": "CDC",
+      "name": "Centers for Disease Control and Prevention",
+      "domains": [
+        "cdc.gov"
+      ],
+      "areas": [
+        "health",
+        "medicine",
+        "public health"
+      ],
+      "independence_group": "CDC"
+    },
+    {
+      "id": "NIH",
+      "name": "National Institutes of Health",
+      "domains": [
+        "nih.gov"
+      ],
+      "areas": [
+        "health",
+        "medicine",
+        "biology"
+      ],
+      "independence_group": "NIH"
+    },
+    {
+      "id": "NCBI",
+      "name": "National Center for Biotechnology Information",
+      "domains": [
+        "nih.gov"
+      ],
+      "areas": [
+        "biology",
+        "medicine",
+        "genetics"
+      ],
+      "independence_group": "NIH"
+    },
+    {
+      "id": "BRITANNICA",
+      "name": "Encyclopaedia Britannica",
+      "domains": [
+        "britannica.com"
+      ],
+      "areas": [
+        "history",
+        "geography",
+        "science",
+        "general reference"
+      ],
+      "independence_group": "BRITANNICA"
+    },
+    {
+      "id": "LOC",
+      "name": "Library of Congress",
+      "domains": [
+        "loc.gov"
+      ],
+      "areas": [
+        "history",
+        "culture",
+        "archives"
+      ],
+      "independence_group": "LOC"
+    },
+    {
+      "id": "UK_NATIONAL_ARCHIVES",
+      "name": "The National Archives (United Kingdom)",
+      "domains": [
+        "nationalarchives.gov.uk"
+      ],
+      "areas": [
+        "history",
+        "government",
+        "archives"
+      ],
+      "independence_group": "UK_NATIONAL_ARCHIVES"
+    },
+    {
+      "id": "UNESCO",
+      "name": "UNESCO",
+      "domains": [
+        "unesco.org"
+      ],
+      "areas": [
+        "education",
+        "culture",
+        "science",
+        "heritage"
+      ],
+      "independence_group": "UNESCO"
+    },
+    {
+      "id": "WORLD_BANK",
+      "name": "World Bank",
+      "domains": [
+        "worldbank.org"
+      ],
+      "areas": [
+        "economics",
+        "development",
+        "statistics"
+      ],
+      "independence_group": "WORLD_BANK"
+    },
+    {
+      "id": "OUR_WORLD_IN_DATA",
+      "name": "Our World in Data",
+      "domains": [
+        "ourworldindata.org"
+      ],
+      "areas": [
+        "statistics",
+        "health",
+        "economics",
+        "environment",
+        "history"
+      ],
+      "independence_group": "OUR_WORLD_IN_DATA"
+    }
   ]
 }
