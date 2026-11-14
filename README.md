@@ -218,7 +218,7 @@ The scholarly and dossier reports are optional inputs; without them, the command
 
 ## Sample video rendering
 
-QuantaTale includes an optional, cloud-runnable procedural short-video renderer. The first demonstration explains why the sky appears blue. It uses original Python/Pillow graphics, eSpeak NG narration, FFmpeg encoding and burned-in captions; it does not use stock footage, paid APIs or external generation services.
+QuantaTale includes an optional, cloud-runnable procedural short-video renderer. The first demonstration explains why the sky appears blue. It uses original Python/Pillow motion graphics, Kokoro-82M narration, FFmpeg encoding and burned-in captions; it does not use stock footage, paid APIs or external generation services. The animation is organized as three distinct explanatory shots, with moving light particles, animated scattering rays, expanding wavefronts and visibly changing scene emphasis. Kokoro runs on CPU-only GitHub-hosted runners; its open model files are cached between workflow runs when GitHub cache is available.
 
 The sample is a **9:16 vertical video at 720×1280 and 24 fps**. Its script references NASA Space Place and NOAA. The renderer also creates a WAV narration track, SRT captions, thumbnail and machine-readable metadata. Every sample is explicitly marked `sample_not_approved_for_publication`; the demo does not bypass the human editorial gate.
 
@@ -231,10 +231,10 @@ Open **Actions → Render QuantaTale sample video → Run workflow**. The workfl
 On a compatible Linux runner with the listed system tools installed:
 
 ```bash
-python -m pip install -e ".[render]"
+python -m pip install torch --index-url https://download.pytorch.org/whl/cpu\npython -m pip install -e ".[render,tts]"
 quantatale render-sample examples/videos/why-the-sky-is-blue.json --output-dir build/sample-video
 ```
 
-Rendering requires FFmpeg/ffprobe, eSpeak NG, DejaVu fonts and Pillow. These are free/open-source dependencies. The core research installation remains dependency-free; Pillow is an optional extra. GitHub-hosted runner time, CPU, artifact storage and retention remain subject to GitHub's current limits.
+Rendering requires FFmpeg/ffprobe, eSpeak NG for Kokoro phonemization, DejaVu fonts, Pillow, CPU PyTorch and Kokoro model weights. Kokoro's model and weights are open-weight and Apache-2.0 licensed. GitHub Actions cache availability is not guaranteed. The core research installation remains dependency-free; Pillow is an optional extra. GitHub-hosted runner time, CPU, artifact storage and retention remain subject to GitHub's current limits.
 
 The first renderer is a vertical proof of the production pipeline, not yet the complete hybrid 2D/3D animation system. Horizontal 16:9 rendering, richer scene planning, advanced motion design and audio mixing remain future upgrades.
