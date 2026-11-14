@@ -26,7 +26,7 @@ DEFAULT_TIMEOUT = 15
 DEFAULT_CANDIDATES_PER_SOURCE = 12
 _MIN_SENTENCE_LENGTH = 45
 _MAX_SENTENCE_LENGTH = 420
-_SENTENCE_SPLIT = re.compile(r"(?<=[.!?])\\s+(?=[A-Z0-9“\\"'])")
+_SENTENCE_SPLIT = re.compile(r"""(?<=[.!?])\s+(?=[A-Z0-9“"'])""")
 
 
 class _ArticleParser(HTMLParser):
@@ -166,7 +166,7 @@ def extract_claim_candidates(
             normalized = sentence.casefold()
             if not (_MIN_SENTENCE_LENGTH <= len(sentence) <= _MAX_SENTENCE_LENGTH):
                 continue
-            if normalized in seen or not re.search(r"\\b(is|are|was|were|has|have|can|may|causes?|increases?|decreases?|contains?|occurs?|means?|known as)\\b", normalized):
+            if normalized in seen or not re.search(r"\b(is|are|was|were|has|have|can|may|causes?|increases?|decreases?|contains?|occurs?|means?|known as)\b", normalized):
                 continue
             if normalized.startswith(("read more", "subscribe", "share this", "cookie")):
                 continue
@@ -271,10 +271,10 @@ def main() -> int:
             max_candidates_per_source=args.max_candidates_per_source,
         )
     except (OSError, json.JSONDecodeError, ValueError) as exc:
-        parser.exit(1, f"RESEARCH ERROR: {exc}\\n")
+        parser.exit(1, f"RESEARCH ERROR: {exc}\n")
     output = Path(args.output)
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\\n", encoding="utf-8")
+    output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"Extracted {report['claim_candidate_count']} unreviewed claim candidates from {report['source_count']} sources.")
     print(f"Research candidate report: {output}")
     return 0
