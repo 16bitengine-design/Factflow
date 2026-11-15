@@ -2,7 +2,7 @@
 
 **Purpose:** prepare a reserve of distinct, researched short-video topics for the two daily Africa/Kampala publishing slots.
 
-**Status:** all ten entries below are prepared candidates. None is editorially approved. The publishing scheduler must continue to ignore them until a human reviewer approves them.
+**Status:** all fourteen entries below were approved as a batch by the project owner on 2026-11-15 and are marked approved-ready. Source URLs and summaries remain research leads, not independent verification. The production research stage must retrieve and assess source passages, corroborate material claims and flag conflicts before publication.
 
 ## Review checklist
 
@@ -29,9 +29,8 @@ For each topic, open every listed source, verify the relevant passage and contex
 
 ## Approval policy
 
-- `editorial_approved: false` and `status: awaiting_editorial_review` are intentional for every candidate.
-- Automated discovery, source matching, text comparison and this review pack do not constitute human editorial approval.
-- Only after the reviewer approves the actual scripts and sources should the spec be updated and registered as `approved_ready`.
+- The project owner explicitly approved this batch; each specification records that decision.
+- Approval is not a claim that source passages have been independently checked. The production research stage must assess passages, corroborate claims and surface unsupported or conflicting evidence before publication.
 - The scheduler selects only explicitly approved, ready specs and will not reuse a topic on the same local calendar day.
 
 ## Reserve target
