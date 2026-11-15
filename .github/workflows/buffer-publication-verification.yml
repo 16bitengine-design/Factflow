@@ -12,6 +12,7 @@ on:
       - main
 permissions:
   contents: write
+  issues: write
 concurrency:
   group: quantatale-production-publishing
   cancel-in-progress: false
@@ -49,3 +50,47 @@ jobs:
           git add production/publishing-ledger.json
           git commit -m "Record Buffer publication verification"
           git push origin HEAD:main
+
+      - name: Alert on failed or overdue Buffer posts
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+          from factflow.buffer_verify import find_posts_needing_attention
+
+          ledger = json.loads(Path("production/publishing-ledger.json").read_text(encoding="utf-8"))
+          attention = find_posts_needing_attention(ledger)
+          grouped = {}
+          for item in attention:
+              grouped.setdefault(item["content_id"], []).append(item)
+          existing = subprocess.check_output([
+              "gh", "issue", "list", "--state", "open", "--json", "title", "--jq", ".[]._title"
+          ], text=True).splitlines()
+          for content_id, items in grouped.items():
+              title = f"QuantaTale Buffer publication needs attention: {content_id}"
+              details = "\\n".join(
+                  f"- {item['platform']} post {item['post_id']}: {item['buffer_status']}; "
+                  f"{item['reason']}; due {item['due_at'] or 'missing'}"
+                  for item in items
+              )
+              body = (
+                  f"Buffer has not confirmed a healthy final outcome for {content_id}.\n\n"
+                  f"{details}\n\n"
+                  "This alert does not assert publication or failure from elapsed time alone. "
+                  "Inspect the exact Buffer post and platform before taking corrective action. "
+                  "Do not blindly reschedule a post that may already exist."
+              )
+              if title not in existing:
+                  subprocess.run(["gh", "issue", "create", "--title", title, "--body", body], check=True)
+                  print(f"Created operational alert for {content_id}.")
+              else:
+                  print(f"An open operational alert already exists for {content_id}.")
+          if not grouped:
+              print("No failed or overdue unconfirmed Buffer posts.")
+          PY
