@@ -41,6 +41,26 @@ jobs:
         run: quantatale evidence-compare build/library-research-candidates.json --scholarly build/library-scholarly-passages.json --dossiers build/library-evidence-dossiers.json --passage-limit-per-claim 100 --output build/library-evidence-comparisons.json
       - name: Add discoveries to persistent library
         run: quantatale library-add-discovery build/library-discovery.json --library production/topic-library.json
+      - name: Report approved topic reserve health
+        run: |
+          quantatale library-status --minimum-ready 14 --library production/topic-library.json --output build/topic-library-status.json
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          report = json.loads(Path("build/topic-library-status.json").read_text(encoding="utf-8"))
+          summary = report["summary"]
+          message = (
+              f"**Approved-ready topics:** {report['approved_ready']} / "
+              f"{report['minimum_ready_target']} target\n\n"
+              f"**Unreviewed discovery leads:** {summary['unreviewed_leads']}\n\n"
+              "**Editorial gate:** discovery leads remain blocked until a human reviewer approves them."
+          )
+          with Path(os.environ["GITHUB_STEP_SUMMARY"]).open("a", encoding="utf-8") as handle:
+              handle.write(message + "\n")
+          if report["needs_replenishment"]:
+              print("::warning::Approved topic reserve is below target; review the candidate queue.")
+          PY
       - name: Persist new topic leads
         run: |
           if git diff --quiet -- production/topic-library.json; then
@@ -56,6 +76,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: quantatale-topic-library-${{ github.run_id }}
-          path: build/library-*.json
+          path: |
+            build/library-*.json
+            build/topic-library-status.json
           if-no-files-found: error
           retention-days: 14

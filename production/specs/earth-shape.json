@@ -1,0 +1,51 @@
+{
+  "title": "Earth Is Not a Perfect Sphere",
+  "category": "earth-science",
+  "voice": "af_heart",
+  "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "Earth Is Not a Perfect Sphere | QuantaTale",
+  "post_description": "Earth looks like a ball from space, but it is slightly squashed and uneven. Discover the science behind it. Sources: https://oceanservice.noaa.gov/facts/earth-round.html https://nweb.ngs.noaa.gov/research/geopotential-datums/geopotential-surface.shtml #Science #ScienceFacts #Education #QuantaTale",
+  "content_id_prefix": "qt-earth-shape",
+  "publish_timezone": "Africa/Kampala",
+  "editorial_approved": true,
+  "editorial_status": "approved_by_user_batch",
+  "editorial_review_required": false,
+  "narration": "Earth is not a perfect sphere. Its rotation makes the planet bulge around the equator, so the equatorial diameter is larger than the distance through the poles. Scientists describe a useful approximation as an oblate ellipsoid. But even that is not the whole story: mountains, ocean trenches and variations in gravity make Earth's real shape irregular. Geodesists measure these details to map positions and understand our changing planet.",
+  "sources": [
+    {
+      "publisher": "NOAA Ocean Service",
+      "title": "Is the Earth round?",
+      "url": "https://oceanservice.noaa.gov/facts/earth-round.html",
+      "supports": "NOAA describes Earth as an irregular ellipsoid with an equatorial bulge caused by rotation and additional topographic and gravity variations.",
+      "review_status": "source_lead_requires_human_passage_check"
+    },
+    {
+      "publisher": "NOAA National Geodetic Survey",
+      "title": "The Geopotential Surface",
+      "url": "https://nweb.ngs.noaa.gov/research/geopotential-datums/geopotential-surface.shtml",
+      "supports": "NOAA explains the reference ellipsoid and Earth's equatorial radius being larger than its polar radius.",
+      "review_status": "source_lead_requires_human_passage_check"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Opening hook",
+      "visual_description": "Earth appears as a perfect sphere, then subtly widens at the equator.",
+      "visual_style": "hybrid"
+    },
+    {
+      "narration_segment": "Core explanation",
+      "visual_description": "A rotating globe shows the equatorial bulge and polar flattening.",
+      "visual_style": "3d"
+    },
+    {
+      "narration_segment": "Memorable conclusion",
+      "visual_description": "A topographic and gravity-field surface reveals why the real Earth is irregular.",
+      "visual_style": "hybrid"
+    }
+  ],
+  "editorial_review_notes": "Approved by the project owner as a batch on 2026-11-15. Approval authorizes topic use; automated source summaries are not independent verification. Before publication, retrieve and assess source passages, corroborate material claims, and flag unsupported or conflicting details for human review.",
+  "visual_profile": "holographic_science_v1",
+  "editorial_approved_at": "2026-11-15T13:27:33.899Z",
+  "source_passage_verification_required_before_publication": true
+}

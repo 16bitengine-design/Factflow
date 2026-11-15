@@ -1,0 +1,51 @@
+{
+  "title": "What Actually Gets Hotter Than the Sun During Lightning?",
+  "category": "weather",
+  "voice": "af_heart",
+  "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "What Actually Gets Hotter Than the Sun During Lightning? | QuantaTale",
+  "post_description": "The famous lightning temperature fact needs one important correction. Discover the science behind it. Sources: https://www.weather.gov/safety/lightning-temperature https://www.noaa.gov/jetstream/lightning/sound-of-thunder #Science #ScienceFacts #Education #QuantaTale",
+  "content_id_prefix": "qt-lightning-air",
+  "publish_timezone": "Africa/Kampala",
+  "editorial_approved": true,
+  "editorial_status": "approved_by_user_batch",
+  "editorial_review_required": false,
+  "narration": "People say lightning is hotter than the Sun. More precisely, the air around a lightning channel can heat to roughly 54,000 degrees Fahrenheit in a fraction of a second. The lightning flash rapidly heats that air, making it expand explosively. That expansion creates a shock wave that we hear as thunder. So the extreme temperature refers to the heated air around the lightning channel—not a claim that the entire bolt is a hot solid object.",
+  "sources": [
+    {
+      "publisher": "National Weather Service",
+      "title": "How Hot Is Lightning?",
+      "url": "https://www.weather.gov/safety/lightning-temperature",
+      "supports": "The NWS explains that air is heated by electrical current through the channel and can reach about 50,000 degrees Fahrenheit.",
+      "review_status": "source_lead_requires_human_passage_check"
+    },
+    {
+      "publisher": "NOAA JetStream",
+      "title": "The Sound of Thunder",
+      "url": "https://www.noaa.gov/jetstream/lightning/sound-of-thunder",
+      "supports": "NOAA describes air around a lightning channel heating to about 54,000 degrees Fahrenheit and expanding to create the thunder shock wave.",
+      "review_status": "source_lead_requires_human_passage_check"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Opening hook",
+      "visual_description": "A lightning channel appears as a bright electrical path through a storm cloud.",
+      "visual_style": "hybrid"
+    },
+    {
+      "narration_segment": "Core explanation",
+      "visual_description": "A thermal halo around the channel rises to a labelled 54,000°F; label specifies surrounding air.",
+      "visual_style": "3d"
+    },
+    {
+      "narration_segment": "Memorable conclusion",
+      "visual_description": "Rapid air expansion generates a circular pressure wave, transitioning into a thunder waveform.",
+      "visual_style": "hybrid"
+    }
+  ],
+  "editorial_review_notes": "Approved by the project owner as a batch on 2026-11-15. Approval authorizes topic use; automated source summaries are not independent verification. Before publication, retrieve and assess source passages, corroborate material claims, and flag unsupported or conflicting details for human review.",
+  "visual_profile": "holographic_science_v1",
+  "editorial_approved_at": "2026-11-15T13:27:02.060Z",
+  "source_passage_verification_required_before_publication": true
+}

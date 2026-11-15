@@ -11,6 +11,160 @@
       "editorial_approved": true,
       "status": "approved_ready",
       "registered_at": "2026-11-15T00:00:00+00:00"
+    },
+    {
+      "spec_path": "production/specs/moon-phases.json",
+      "content_id_prefix": "qt-moon-phases",
+      "title": "The Moon's Phases Aren't Earth's Shadow | QuantaTale",
+      "publish_timezone": "Africa/Kampala",
+      "editorial_approved": true,
+      "status": "approved_ready",
+      "registered_at": "2026-11-15T13:21:14.396Z",
+      "editorial_approved_at": "2026-11-15T13:27:57.027Z",
+      "editorial_approval_basis": "explicit_project_owner_batch_approval"
+    },
+    {
+      "spec_path": "production/specs/ocean-blue.json",
+      "content_id_prefix": "qt-ocean-blue",
+      "title": "Why the Ocean Looks Blue | QuantaTale",
+      "publish_timezone": "Africa/Kampala",
+      "editorial_approved": true,
+      "status": "approved_ready",
+      "registered_at": "2026-11-15T13:21:14.404Z",
+      "editorial_approved_at": "2026-11-15T13:27:57.027Z",
+      "editorial_approval_basis": "explicit_project_owner_batch_approval"
+    },
+    {
+      "spec_path": "production/specs/venus-day.json",
+      "content_id_prefix": "qt-venus-day",
+      "title": "On Venus, a Rotation Takes Longer Than a Year | QuantaTale",
+      "publish_timezone": "Africa/Kampala",
+      "editorial_approved": true,
+      "status": "approved_ready",
+      "registered_at": "2026-11-15T13:21:14.404Z",
+      "editorial_approved_at": "2026-11-15T13:27:57.027Z",
+      "editorial_approval_basis": "explicit_project_owner_batch_approval"
+    },
+    {
+      "spec_path": "production/specs/lightning-hot-air.json",
+      "content_id_prefix": "qt-lightning-air",
+      "title": "What Actually Gets Hotter Than the Sun During Lightning? | QuantaTale",
+      "publish_timezone": "Africa/Kampala",
+      "editorial_approved": true,
+      "status": "approved_ready",
+      "registered_at": "2026-11-15T13:21:14.404Z",
+      "editorial_approved_at": "2026-11-15T13:27:57.027Z",
+      "editorial_approval_basis": "explicit_project_owner_batch_approval"
+    },
+    {
+      "spec_path": "production/specs/old-faithful.json",
+      "content_id_prefix": "qt-old-faithful",
+      "title": "Old Faithful Doesn't Erupt Like Clockwork | QuantaTale",
+      "publish_timezone": "Africa/Kampala",
+      "editorial_approved": true,
+      "status": "approved_ready",
+      "registered_at": "2026-11-15T13:21:14.404Z",
+      "editorial_approved_at": "2026-11-15T13:27:57.027Z",
+      "editorial_approval_basis": "explicit_project_owner_batch_approval"
+    },
+    {
+      "spec_path": "production/specs/clouds-form.json",
+      "content_id_prefix": "qt-clouds",
+      "title": "Clouds Need Tiny Particles to Form | QuantaTale",
+      "publish_timezone": "Africa/Kampala",
+      "editorial_approved": true,
+      "status": "approved_ready",
+      "registered_at": "2026-11-15T13:21:14.404Z",
+      "editorial_approved_at": "2026-11-15T13:27:57.027Z",
+      "editorial_approval_basis": "explicit_project_owner_batch_approval"
+    },
+    {
+      "spec_path": "production/specs/stars-twinkle.json",
+      "content_id_prefix": "qt-stars-twinkle",
+      "title": "Stars Don't Really Twinkle | QuantaTale",
+      "publish_timezone": "Africa/Kampala",
+      "editorial_approved": true,
+      "status": "approved_ready",
+      "registered_at": "2026-11-15T13:21:14.404Z",
+      "editorial_approved_at": "2026-11-15T13:27:57.027Z",
+      "editorial_approval_basis": "explicit_project_owner_batch_approval"
+    },
+    {
+      "spec_path": "production/specs/tectonic-plates.json",
+      "content_id_prefix": "qt-tectonic-plates",
+      "title": "Continents Move at Fingernail Speed | QuantaTale",
+      "publish_timezone": "Africa/Kampala",
+      "editorial_approved": true,
+      "status": "approved_ready",
+      "registered_at": "2026-11-15T13:21:14.404Z",
+      "editorial_approved_at": "2026-11-15T13:27:57.027Z",
+      "editorial_approval_basis": "explicit_project_owner_batch_approval"
+    },
+    {
+      "spec_path": "production/specs/aurora-lights.json",
+      "content_id_prefix": "qt-auroras",
+      "title": "What Makes the Northern and Southern Lights Glow? | QuantaTale",
+      "publish_timezone": "Africa/Kampala",
+      "editorial_approved": true,
+      "status": "approved_ready",
+      "registered_at": "2026-11-15T13:21:14.404Z",
+      "editorial_approved_at": "2026-11-15T13:27:57.027Z",
+      "editorial_approval_basis": "explicit_project_owner_batch_approval"
+    },
+    {
+      "spec_path": "production/specs/leaves-colour.json",
+      "content_id_prefix": "qt-leaf-colours",
+      "title": "Autumn Leaves Reveal Colours That Were Already There | QuantaTale",
+      "publish_timezone": "Africa/Kampala",
+      "editorial_approved": true,
+      "status": "approved_ready",
+      "registered_at": "2026-11-15T13:21:14.404Z",
+      "editorial_approved_at": "2026-11-15T13:27:57.027Z",
+      "editorial_approval_basis": "explicit_project_owner_batch_approval"
+    },
+    {
+      "spec_path": "production/specs/sound-space.json",
+      "content_id_prefix": "qt-sound-space",
+      "title": "Why Space Is Silent | QuantaTale",
+      "publish_timezone": "Africa/Kampala",
+      "editorial_approved": true,
+      "status": "approved_ready",
+      "registered_at": "2026-11-15T13:22:33.559Z",
+      "editorial_approved_at": "2026-11-15T13:27:57.027Z",
+      "editorial_approval_basis": "explicit_project_owner_batch_approval"
+    },
+    {
+      "spec_path": "production/specs/earth-shape.json",
+      "content_id_prefix": "qt-earth-shape",
+      "title": "Earth Is Not a Perfect Sphere | QuantaTale",
+      "publish_timezone": "Africa/Kampala",
+      "editorial_approved": true,
+      "status": "approved_ready",
+      "registered_at": "2026-11-15T13:22:33.559Z",
+      "editorial_approved_at": "2026-11-15T13:27:57.027Z",
+      "editorial_approval_basis": "explicit_project_owner_batch_approval"
+    },
+    {
+      "spec_path": "production/specs/mercury-day.json",
+      "content_id_prefix": "qt-mercury-day",
+      "title": "A Day on Mercury Lasts Two Mercury Years | QuantaTale",
+      "publish_timezone": "Africa/Kampala",
+      "editorial_approved": true,
+      "status": "approved_ready",
+      "registered_at": "2026-11-15T13:22:33.559Z",
+      "editorial_approved_at": "2026-11-15T13:27:57.027Z",
+      "editorial_approval_basis": "explicit_project_owner_batch_approval"
+    },
+    {
+      "spec_path": "production/specs/olympus-mons.json",
+      "content_id_prefix": "qt-olympus-mons",
+      "title": "Mars Has the Solar System's Largest Volcano | QuantaTale",
+      "publish_timezone": "Africa/Kampala",
+      "editorial_approved": true,
+      "status": "approved_ready",
+      "registered_at": "2026-11-15T13:22:33.559Z",
+      "editorial_approved_at": "2026-11-15T13:27:57.027Z",
+      "editorial_approval_basis": "explicit_project_owner_batch_approval"
     }
   ],
   "discovery_leads": []

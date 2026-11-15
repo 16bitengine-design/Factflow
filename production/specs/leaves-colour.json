@@ -1,0 +1,51 @@
+{
+  "title": "Autumn Leaves Reveal Colours That Were Already There",
+  "category": "nature",
+  "voice": "af_heart",
+  "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "Autumn Leaves Reveal Colours That Were Already There | QuantaTale",
+  "post_description": "Some autumn colours were hidden inside green leaves all along. Discover the science behind it. Sources: https://www.nesdis.noaa.gov/about/k-12-education/understanding-our-planet/why-do-leaves-change-color https://www.fs.usda.gov/nrs/pubs/jrnl/2009/nrs_2009_archetti_001.pdf #Science #ScienceFacts #Education #QuantaTale",
+  "content_id_prefix": "qt-leaf-colours",
+  "publish_timezone": "Africa/Kampala",
+  "editorial_approved": true,
+  "editorial_status": "approved_by_user_batch",
+  "editorial_review_required": false,
+  "narration": "A green leaf contains several pigments, not just green chlorophyll. During the growing season, chlorophyll is abundant and masks many yellow and orange pigments called carotenoids. As days shorten and trees prepare for winter, chlorophyll breaks down, allowing those colours to become visible. Red pigments called anthocyanins can also be produced in autumn. The exact display depends on the tree species and weather. The colour change is a seasonal process, not paint appearing on leaves.",
+  "sources": [
+    {
+      "publisher": "NOAA NESDIS",
+      "title": "Why Do Leaves Change Color?",
+      "url": "https://www.nesdis.noaa.gov/about/k-12-education/understanding-our-planet/why-do-leaves-change-color",
+      "supports": "NOAA explains shorter days, reduced chlorophyll production and the visibility of yellow, orange and red pigments.",
+      "review_status": "source_lead_requires_human_passage_check"
+    },
+    {
+      "publisher": "U.S. Forest Service research publication",
+      "title": "Unravelling the evolution of autumn colours",
+      "url": "https://www.fs.usda.gov/nrs/pubs/jrnl/2009/nrs_2009_archetti_001.pdf",
+      "supports": "The paper describes carotenoids becoming visible as chlorophyll breaks down and anthocyanins being produced in autumn.",
+      "review_status": "source_lead_requires_human_passage_check"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Opening hook",
+      "visual_description": "A green leaf cross-section displays chlorophyll alongside hidden yellow, orange and red pigments.",
+      "visual_style": "hybrid"
+    },
+    {
+      "narration_segment": "Core explanation",
+      "visual_description": "Shorter daylight triggers a seasonal transition as chlorophyll concentration falls.",
+      "visual_style": "3d"
+    },
+    {
+      "narration_segment": "Memorable conclusion",
+      "visual_description": "Yellow and orange carotenoids remain visible while red anthocyanin pigments appear in some leaves.",
+      "visual_style": "hybrid"
+    }
+  ],
+  "editorial_review_notes": "Approved by the project owner as a batch on 2026-11-15. Approval authorizes topic use; automated source summaries are not independent verification. Before publication, retrieve and assess source passages, corroborate material claims, and flag unsupported or conflicting details for human review.",
+  "visual_profile": "holographic_science_v1",
+  "editorial_approved_at": "2026-11-15T13:27:17.814Z",
+  "source_passage_verification_required_before_publication": true
+}

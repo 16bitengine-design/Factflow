@@ -1,0 +1,51 @@
+{
+  "title": "What Makes the Northern and Southern Lights Glow?",
+  "category": "space",
+  "voice": "af_heart",
+  "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "What Makes the Northern and Southern Lights Glow? | QuantaTale",
+  "post_description": "Those dancing sky colours begin with charged particles from space. Discover the science behind it. Sources: https://science.nasa.gov/sun/auroras/ https://www.swpc.noaa.gov/sites/default/files/images/u33/swx_poster_twosided.pdf #Science #ScienceFacts #Education #QuantaTale",
+  "content_id_prefix": "qt-auroras",
+  "publish_timezone": "Africa/Kampala",
+  "editorial_approved": true,
+  "editorial_status": "approved_by_user_batch",
+  "editorial_review_required": false,
+  "narration": "Auroras are not ordinary clouds or reflections. The Sun releases a stream of charged particles called the solar wind. Earth's magnetic field guides energy and particles toward regions around the poles. When energetic particles collide with atoms and molecules high in the atmosphere, those gases become excited and release light. Different atmospheric gases and altitudes contribute to different colours. The result is the glowing display known as the northern or southern lights.",
+  "sources": [
+    {
+      "publisher": "NASA Science",
+      "title": "Auroras",
+      "url": "https://science.nasa.gov/sun/auroras/",
+      "supports": "NASA explains the solar wind, Earth's magnetic field and particle collisions with atmospheric atoms and molecules that produce auroras.",
+      "review_status": "source_lead_requires_human_passage_check"
+    },
+    {
+      "publisher": "NOAA Space Weather Prediction Center",
+      "title": "Space Weather poster",
+      "url": "https://www.swpc.noaa.gov/sites/default/files/images/u33/swx_poster_twosided.pdf",
+      "supports": "NOAA describes electrons colliding with oxygen and nitrogen in the upper atmosphere, releasing light.",
+      "review_status": "source_lead_requires_human_passage_check"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Opening hook",
+      "visual_description": "The Sun emits a stream of charged particles toward Earth.",
+      "visual_style": "hybrid"
+    },
+    {
+      "narration_segment": "Core explanation",
+      "visual_description": "Earth's magnetic field lines guide energetic particles toward polar regions.",
+      "visual_style": "3d"
+    },
+    {
+      "narration_segment": "Memorable conclusion",
+      "visual_description": "Particles collide with atmospheric oxygen and nitrogen, producing glowing coloured curtains.",
+      "visual_style": "hybrid"
+    }
+  ],
+  "editorial_review_notes": "Approved by the project owner as a batch on 2026-11-15. Approval authorizes topic use; automated source summaries are not independent verification. Before publication, retrieve and assess source passages, corroborate material claims, and flag unsupported or conflicting details for human review.",
+  "visual_profile": "holographic_science_v1",
+  "editorial_approved_at": "2026-11-15T13:27:17.814Z",
+  "source_passage_verification_required_before_publication": true
+}

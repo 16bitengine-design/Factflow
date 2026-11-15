@@ -43,3 +43,13 @@ def test_invalid_library_schema_is_rejected(tmp_path):
     path.write_text(json.dumps({"schema_version": 9}), encoding="utf-8")
     with pytest.raises(ValueError, match="Unsupported"):
         load_library(path)
+
+
+def test_library_summary_reports_reserve_shortfall_without_approving_leads(tmp_path):
+    library = load_library(tmp_path / "library.json")
+    add_discovery_report(library, {"candidates": [
+        {"title": "Unreviewed story", "url": "https://example.org/story"}
+    ]})
+    summary = library_summary(library)
+    assert summary["approved_ready"] == 0
+    assert summary["unreviewed_leads"] == 1

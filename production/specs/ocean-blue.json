@@ -1,0 +1,51 @@
+{
+  "title": "Why the Ocean Looks Blue",
+  "category": "earth-science",
+  "voice": "af_heart",
+  "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "Why the Ocean Looks Blue | QuantaTale",
+  "post_description": "The ocean isn't simply reflecting the blue sky. Water itself changes the light. Discover the science behind it. Sources: https://oceanservice.noaa.gov/facts/oceanblue.html https://www.usgs.gov/water-science-school/science/water-color #Science #ScienceFacts #Education #QuantaTale",
+  "content_id_prefix": "qt-ocean-blue",
+  "publish_timezone": "Africa/Kampala",
+  "editorial_approved": true,
+  "editorial_status": "approved_by_user_batch",
+  "editorial_review_required": false,
+  "narration": "Why does a deep ocean often look blue? Water absorbs the red end of visible light more strongly, while more blue light remains available to reach our eyes. That is different from the process that makes the sky blue. And not every ocean is the same colour: sediments, tiny organisms and dissolved materials can shift the water toward green, brown or other shades. The colour is a clue to how light interacts with water.",
+  "sources": [
+    {
+      "publisher": "NOAA Ocean Service",
+      "title": "Why is the ocean blue?",
+      "url": "https://oceanservice.noaa.gov/facts/oceanblue.html",
+      "supports": "NOAA explains that water absorbs red wavelengths and that suspended sediments and particles can alter ocean colour.",
+      "review_status": "source_lead_requires_human_passage_check"
+    },
+    {
+      "publisher": "U.S. Geological Survey",
+      "title": "Water Color",
+      "url": "https://www.usgs.gov/water-science-school/science/water-color",
+      "supports": "USGS explains that water's blue appearance comes from absorption of red wavelengths, not the same scattering mechanism that makes the sky blue.",
+      "review_status": "source_lead_requires_human_passage_check"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Opening hook",
+      "visual_description": "A white beam enters a clear water column; red wavelengths fade with depth.",
+      "visual_style": "hybrid"
+    },
+    {
+      "narration_segment": "Core explanation",
+      "visual_description": "A split-screen contrasts atmospheric scattering with light absorption in water.",
+      "visual_style": "3d"
+    },
+    {
+      "narration_segment": "Memorable conclusion",
+      "visual_description": "Sediment and dissolved-material particles shift a water sample through different colours.",
+      "visual_style": "hybrid"
+    }
+  ],
+  "editorial_review_notes": "Approved by the project owner as a batch on 2026-11-15. Approval authorizes topic use; automated source summaries are not independent verification. Before publication, retrieve and assess source passages, corroborate material claims, and flag unsupported or conflicting details for human review.",
+  "visual_profile": "holographic_science_v1",
+  "editorial_approved_at": "2026-11-15T13:27:02.060Z",
+  "source_passage_verification_required_before_publication": true
+}

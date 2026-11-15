@@ -1,0 +1,51 @@
+{
+  "title": "The Moon's Phases Aren't Earth's Shadow",
+  "category": "space",
+  "voice": "af_heart",
+  "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "The Moon's Phases Aren't Earth's Shadow | QuantaTale",
+  "post_description": "The Moon changes shape every night—but Earth isn't casting that shadow. Discover the science behind it. Sources: https://science.nasa.gov/moon/top-moon-questions/ https://supernova.eso.org/exhibition/0206/?lang=en #Science #ScienceFacts #Education #QuantaTale",
+  "content_id_prefix": "qt-moon-phases",
+  "publish_timezone": "Africa/Kampala",
+  "editorial_approved": true,
+  "editorial_status": "approved_by_user_batch",
+  "editorial_review_required": false,
+  "narration": "The Moon does not make its own light. Sunlight illuminates half of it, all the time. As the Moon travels around Earth, our viewing angle changes, so we see different portions of that sunlit half. That is what creates the crescent, quarter and full Moon. Earth's shadow only falls on the Moon during a lunar eclipse. So the ordinary phases are a change in perspective, not Earth's shadow.",
+  "sources": [
+    {
+      "publisher": "NASA Science",
+      "title": "Top Moon Questions",
+      "url": "https://science.nasa.gov/moon/top-moon-questions/",
+      "supports": "NASA explains that phases arise from our changing view of the Moon's sunlit half; Earth's shadow affects the Moon during lunar eclipses.",
+      "review_status": "source_lead_requires_human_passage_check"
+    },
+    {
+      "publisher": "European Southern Observatory",
+      "title": "Why do we see different phases of the moon?",
+      "url": "https://supernova.eso.org/exhibition/0206/?lang=en",
+      "supports": "ESO explains that phases result from the changing visible portion of the Moon's illuminated surface.",
+      "review_status": "source_lead_requires_human_passage_check"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Opening hook",
+      "visual_description": "A Moon globe rotates while a fixed sunlight beam illuminates one hemisphere.",
+      "visual_style": "hybrid"
+    },
+    {
+      "narration_segment": "Core explanation",
+      "visual_description": "A camera viewpoint moves around Earth, revealing crescent, quarter and full phases.",
+      "visual_style": "3d"
+    },
+    {
+      "narration_segment": "Memorable conclusion",
+      "visual_description": "A lunar-eclipse shadow appears separately, labelled as the exception.",
+      "visual_style": "hybrid"
+    }
+  ],
+  "editorial_review_notes": "Approved by the project owner as a batch on 2026-11-15. Approval authorizes topic use; automated source summaries are not independent verification. Before publication, retrieve and assess source passages, corroborate material claims, and flag unsupported or conflicting details for human review.",
+  "visual_profile": "holographic_science_v1",
+  "editorial_approved_at": "2026-11-15T13:27:02.060Z",
+  "source_passage_verification_required_before_publication": true
+}
