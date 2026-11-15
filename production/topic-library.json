@@ -101,6 +101,42 @@
       "editorial_approved": false,
       "status": "awaiting_editorial_review",
       "registered_at": "2026-11-15T13:21:14.404Z"
+    },
+    {
+      "spec_path": "production/specs/sound-space.json",
+      "content_id_prefix": "qt-sound-space",
+      "title": "Why Space Is Silent | QuantaTale",
+      "publish_timezone": "Africa/Kampala",
+      "editorial_approved": false,
+      "status": "awaiting_editorial_review",
+      "registered_at": "2026-11-15T13:22:33.559Z"
+    },
+    {
+      "spec_path": "production/specs/earth-shape.json",
+      "content_id_prefix": "qt-earth-shape",
+      "title": "Earth Is Not a Perfect Sphere | QuantaTale",
+      "publish_timezone": "Africa/Kampala",
+      "editorial_approved": false,
+      "status": "awaiting_editorial_review",
+      "registered_at": "2026-11-15T13:22:33.559Z"
+    },
+    {
+      "spec_path": "production/specs/mercury-day.json",
+      "content_id_prefix": "qt-mercury-day",
+      "title": "A Day on Mercury Lasts Two Mercury Years | QuantaTale",
+      "publish_timezone": "Africa/Kampala",
+      "editorial_approved": false,
+      "status": "awaiting_editorial_review",
+      "registered_at": "2026-11-15T13:22:33.559Z"
+    },
+    {
+      "spec_path": "production/specs/olympus-mons.json",
+      "content_id_prefix": "qt-olympus-mons",
+      "title": "Mars Has the Solar System's Largest Volcano | QuantaTale",
+      "publish_timezone": "Africa/Kampala",
+      "editorial_approved": false,
+      "status": "awaiting_editorial_review",
+      "registered_at": "2026-11-15T13:22:33.559Z"
     }
   ],
   "discovery_leads": []
