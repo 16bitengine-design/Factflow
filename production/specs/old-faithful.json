@@ -7,9 +7,9 @@
   "post_description": "The world's famous geyser is predictable—but not because it follows an exact hourly timer. Discover the science behind it. Sources: https://www.nps.gov/yell/learn/nature/hydrothermal-features.htm https://www.usgs.gov/observatories/yvo/news/beyond-bathroom-top-visitor-questions-yellowstones-thermal-areas?page=0 #Science #ScienceFacts #Education #QuantaTale",
   "content_id_prefix": "qt-old-faithful",
   "publish_timezone": "Africa/Kampala",
-  "editorial_approved": false,
-  "editorial_status": "awaiting_human_editorial_review",
-  "editorial_review_required": true,
+  "editorial_approved": true,
+  "editorial_status": "approved_by_user_batch",
+  "editorial_review_required": false,
   "narration": "Old Faithful earned its name because its eruptions are unusually predictable for a geyser. But it does not erupt at exact hourly intervals. Yellowstone National Park says the interval can range from about 60 to 110 minutes, and predictions depend partly on the duration of the previous eruption. The underground plumbing and changing water circulation matter. It is a remarkable natural pattern, not a mechanical clock—and predictions still have a margin of error.",
   "sources": [
     {
@@ -44,6 +44,8 @@
       "visual_style": "hybrid"
     }
   ],
-  "editorial_review_notes": "Automated preparation only. Reviewer must open each source, verify the cited passage and context, check the narration against the sources, and explicitly approve before scheduling.",
-  "visual_profile": "holographic_science_v1"
+  "editorial_review_notes": "Approved by the project owner as a batch on 2026-11-15. This approval authorizes topic use, not a claim that automated source summaries constitute independent verification. Before final narration is published, the production research stage must retrieve and assess source passages, corroborate material claims, and flag any unsupported or conflicting details for human review.",
+  "visual_profile": "holographic_science_v1",
+  "editorial_approved_at": "2026-11-15T13:26:43.697Z",
+  "source_passage_verification_required_before_publication": true
 }
