@@ -53,3 +53,27 @@ def test_library_summary_reports_reserve_shortfall_without_approving_leads(tmp_p
     summary = library_summary(library)
     assert summary["approved_ready"] == 0
     assert summary["unreviewed_leads"] == 1
+
+
+
+def test_registration_preserves_source_evidence_blockers(tmp_path):
+    library = load_library(tmp_path / "library.json")
+    spec = {
+        "content_id_prefix": "moon",
+        "title": "Moon phases",
+        "editorial_approved": True,
+        "source_passage_verification_required_before_publication": True,
+        "sources": [{
+            "publisher": "NASA",
+            "url": "https://science.nasa.gov/moon/",
+            "review_status": "source_lead_requires_human_passage_check",
+        }],
+    }
+    register_production_spec(library, "moon.json", spec)
+    record = library["production_specs"][0]
+    assert record["source_passage_verification_required_before_publication"] is True
+    assert record["sources"][0]["review_status"] == "source_lead_requires_human_passage_check"
+    summary = library_summary(library)
+    assert summary["approved_ready"] == 1
+    assert summary["eligible_for_publishing"] == 0
+    assert summary["blocked_by_evidence"] == 1
