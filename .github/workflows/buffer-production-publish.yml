@@ -4,43 +4,15 @@ on:
   workflow_dispatch:
     inputs:
       content_spec:
-        description: Reviewed video specification to render
+        description: Select the reviewed video to publish
         required: true
         default: examples/videos/why-the-sky-is-blue-production.json
         type: choice
         options:
           - examples/videos/why-the-sky-is-blue-production.json
           - examples/videos/why-sunsets-red-production.json
-      title:
-        description: Public post title
-        required: true
-        default: Why Is the Sky Blue? | QuantaTale
-        type: string
-      description:
-        description: Public post caption, source links and hashtags
-        required: true
-        default: "Sunlight contains all visible colours, but Earth's atmosphere scatters shorter blue wavelengths more strongly. Discover Rayleigh scattering. Sources: NASA https://spaceplace.nasa.gov/blue-sky/en/ and NOAA https://www.nesdis.noaa.gov/about/k-12-education/atmosphere/why-the-sky-blue #Science #ScienceFacts #Education #QuantaTale"
-        type: string
-      content_id:
-        description: Unique ID for this video (never reuse it)
-        required: true
-        type: string
-      due_at:
-        description: Publish time in ISO-8601 with timezone, e.g. 2026-11-15T21:30:00+03:00
-        required: true
-        type: string
-      target:
-        description: Buffer destination
-        required: true
-        type: choice
-        options: [both, youtube, tiktok]
-      editorial_approved:
-        description: I reviewed and approve this exact video for public posting
-        required: true
-        type: boolean
-        default: false
-      confirm_publication:
-        description: I understand this schedules public posts, not drafts
+      approve_publication:
+        description: I reviewed this video and approve public scheduling to YouTube and TikTok
         required: true
         type: boolean
         default: false
@@ -54,15 +26,15 @@ concurrency:
 
 jobs:
   schedule-video:
-    name: Render, quality-check and schedule approved video
-    if: ${{ inputs.editorial_approved && inputs.confirm_publication }}
+    name: Render and schedule approved video
+    if: ${{ inputs.approve_publication }}
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
       - name: Reject workflow reruns to avoid duplicate posts
         if: ${{ github.run_attempt != 1 }}
         run: |
-          echo "::error::This production workflow cannot be rerun. Check Buffer and use a new content_id."
+          echo "::error::This production workflow cannot be rerun. Check Buffer before any new attempt."
           exit 1
       - name: Check out repository
         uses: actions/checkout@v4
@@ -88,7 +60,37 @@ jobs:
           python -m pip install "cloudinary>=1.44,<2"
       - name: Run complete automated test suite
         run: python -m pytest -v
-      - name: Render the selected video
+      - name: Load the saved production settings
+        env:
+          CONTENT_SPEC: ${{ inputs.content_spec }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from datetime import datetime, timedelta
+          from pathlib import Path
+          from zoneinfo import ZoneInfo
+
+          spec = json.loads(Path(os.environ["CONTENT_SPEC"]).read_text(encoding="utf-8"))
+          publish_time = spec["publish_time_local"]
+          timezone_name = spec["publish_timezone"]
+          prefix = spec["content_id_prefix"]
+          zone = ZoneInfo(timezone_name)
+          now = datetime.now(zone)
+          scheduled = datetime.combine(now.date(), datetime.strptime(publish_time, "%H:%M").time(), tzinfo=zone)
+          if scheduled <= now + timedelta(minutes=5):
+              scheduled += timedelta(days=1)
+          content_id = f"{prefix}-{scheduled:%Y%m%d}"
+          output = Path(os.environ["GITHUB_OUTPUT"])
+          with output.open("a", encoding="utf-8") as handle:
+              handle.write(f"title={spec['post_title']}\n")
+              handle.write(f"description={spec['post_description']}\n")
+              handle.write(f"content_id={content_id}\n")
+              handle.write(f"due_at={scheduled.isoformat(timespec='seconds')}\n")
+          print(f"Loaded: {spec['post_title']}")
+          print(f"Scheduled slot: {scheduled.isoformat(timespec='seconds')}")
+          print(f"Content ID: {content_id}")
+          PY
+      - name: Render selected production video
         env:
           CONTENT_SPEC: ${{ inputs.content_spec }}
         run: quantatale render-sample "$CONTENT_SPEC" --output-dir build/production-video
@@ -101,15 +103,14 @@ jobs:
           CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
           CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
           CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
-          TARGET: ${{ inputs.target }}
-          CONTENT_ID: ${{ inputs.content_id }}
-          DUE_AT: ${{ inputs.due_at }}
-          POST_TITLE: ${{ inputs.title }}
-          POST_DESCRIPTION: ${{ inputs.description }}
+          CONTENT_ID: ${{ steps.load_settings.outputs.content_id }}
+          DUE_AT: ${{ steps.load_settings.outputs.due_at }}
+          POST_TITLE: ${{ steps.load_settings.outputs.title }}
+          POST_DESCRIPTION: ${{ steps.load_settings.outputs.description }}
         run: |
           python -m factflow.buffer_schedule \
             --video build/production-video/quantatale-sample-vertical.mp4 \
-            --target "$TARGET" \
+            --target both \
             --content-id "$CONTENT_ID" \
             --due-at "$DUE_AT" \
             --title "$POST_TITLE" \
@@ -118,7 +119,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: quantatale-production-${{ inputs.content_id }}
+          name: quantatale-production-${{ github.run_id }}
           path: |
             build/production-video/quantatale-sample-vertical.mp4
             build/production-video/thumbnail.png
