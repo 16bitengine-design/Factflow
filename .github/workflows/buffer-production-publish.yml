@@ -1,0 +1,108 @@
+name: QuantaTale production video scheduling
+
+on:
+  workflow_dispatch:
+    inputs:
+      content_spec:
+        description: Reviewed video specification to render
+        required: true
+        default: examples/videos/why-the-sky-is-blue-production.json
+        type: string
+      content_id:
+        description: Unique ID for this video (never reuse it)
+        required: true
+        type: string
+      due_at:
+        description: Publish time in ISO-8601 with timezone, e.g. 2026-11-15T21:30:00+03:00
+        required: true
+        type: string
+      target:
+        description: Buffer destination
+        required: true
+        type: choice
+        options: [both, youtube, tiktok]
+      editorial_approved:
+        description: I reviewed and approve this exact video for public posting
+        required: true
+        type: boolean
+        default: false
+      confirm_publication:
+        description: I understand this schedules public posts, not drafts
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quantatale-production-publishing
+  cancel-in-progress: false
+
+jobs:
+  schedule-video:
+    name: Render, quality-check and schedule approved video
+    if: \${{ inputs.editorial_approved && inputs.confirm_publication }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Reject workflow reruns to avoid duplicate posts
+        if: \${{ github.run_attempt != 1 }}
+        run: |
+          echo "::error::This production workflow cannot be rerun. Check Buffer and use a new content_id."
+          exit 1
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install free rendering tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends ffmpeg espeak-ng fonts-dejavu-core
+      - name: Cache Kokoro model files
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface/hub
+          key: kokoro-82m-af-heart-v1
+      - name: Install QuantaTale and publishing dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -e ".[dev,render,tts]"
+          python -m pip install "cloudinary>=1.44,<2"
+      - name: Run complete automated test suite
+        run: python -m pytest -v
+      - name: Render the selected video
+        run: quantatale render-sample "\${{ inputs.content_spec }}" --output-dir build/production-video
+      - name: Schedule public video through Buffer
+        env:
+          BUFFER_API_KEY: \${{ secrets.BUFFER_API_KEY }}
+          BUFFER_YOUTUBE_CHANNEL_ID: \${{ secrets.BUFFER_YOUTUBE_CHANNEL_ID }}
+          BUFFER_TIKTOK_CHANNEL_ID: \${{ secrets.BUFFER_TIKTOK_CHANNEL_ID }}
+          BUFFER_YOUTUBE_CATEGORY_ID: \${{ vars.BUFFER_YOUTUBE_CATEGORY_ID }}
+          CLOUDINARY_CLOUD_NAME: \${{ secrets.CLOUDINARY_CLOUD_NAME }}
+          CLOUDINARY_API_KEY: \${{ secrets.CLOUDINARY_API_KEY }}
+          CLOUDINARY_API_SECRET: \${{ secrets.CLOUDINARY_API_SECRET }}
+        run: |
+          python -m factflow.buffer_schedule \
+            --video build/production-video/quantatale-sample-vertical.mp4 \
+            --target "\${{ inputs.target }}" \
+            --content-id "\${{ inputs.content_id }}" \
+            --due-at "\${{ inputs.due_at }}" \
+            --title "Why Is the Sky Blue? | QuantaTale" \
+            --description "Sunlight contains all visible colours, but Earth's atmosphere scatters shorter blue wavelengths more strongly. Discover the science of Rayleigh scattering. Sources: NASA Space Place https://spaceplace.nasa.gov/blue-sky/en/ and NOAA https://www.nesdis.noaa.gov/about/k-12-education/atmosphere/why-the-sky-blue #Science #ScienceFacts #Education #QuantaTale"
+      - name: Upload production review evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quantatale-production-\${{ inputs.content_id }}
+          path: |
+            build/production-video/quantatale-sample-vertical.mp4
+            build/production-video/thumbnail.png
+            build/production-video/captions.srt
+            build/production-video/sample-metadata.json
+          if-no-files-found: warn
+          retention-days: 7
