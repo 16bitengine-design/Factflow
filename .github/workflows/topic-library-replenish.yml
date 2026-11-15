@@ -51,8 +51,9 @@ jobs:
           report = json.loads(Path("build/topic-library-status.json").read_text(encoding="utf-8"))
           summary = report["summary"]
           message = (
-              f"**Approved-ready topics:** {report['approved_ready']} / "
+              f"**Eligible for publishing:** {report['eligible_for_publishing']} / "
               f"{report['minimum_ready_target']} target\n\n"
+              f"**Editorially approved but evidence-blocked:** {report['blocked_by_evidence']}\n\n"
               f"**Unreviewed discovery leads:** {summary['unreviewed_leads']}\n\n"
               "**Editorial gate:** discovery leads remain blocked until a human reviewer approves them."
           )
