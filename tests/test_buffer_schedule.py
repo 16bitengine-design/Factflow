@@ -68,8 +68,10 @@ def test_run_publish_requires_all_secrets_before_upload(monkeypatch, tmp_path):
     assert uploaded == []
 
 def test_content_id_is_validated_before_upload(monkeypatch, tmp_path):
+    video = tmp_path / "video.mp4"
+    video.write_bytes(b"fake")
     monkeypatch.setattr(buffer_schedule, "upload_video_to_cloudinary", lambda *a: pytest.fail("must not upload"))
     with pytest.raises(ValueError, match="content_id"):
         buffer_schedule.run_scheduled_publish(
-            video_path=str(tmp_path / "video.mp4"), target="youtube", content_id="../unsafe",
+            video_path=str(video), target="youtube", content_id="../unsafe",
             due_at="2026-11-16T15:00:00+03:00", title="Title", description="Caption")
