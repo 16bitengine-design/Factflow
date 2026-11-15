@@ -7,7 +7,9 @@ on:
         description: Reviewed video specification to render
         required: true
         default: examples/videos/why-the-sky-is-blue-production.json
-        type: string
+        type: choice
+        options:
+          - examples/videos/why-the-sky-is-blue-production.json
       content_id:
         description: Unique ID for this video (never reuse it)
         required: true
