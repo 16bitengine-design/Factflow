@@ -3,7 +3,7 @@ on:
   schedule:
     # Retry safely during each pre-publication window. The selector and ledger
     # make repeated invocations idempotent for each local publishing slot.
-    - cron: "35,40,45,50 8,14 * * *"
+    - cron: "30,35,40,45,50,55 8,14 * * *"
   workflow_dispatch:
 permissions:
   contents: write
