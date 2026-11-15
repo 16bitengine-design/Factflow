@@ -7,9 +7,9 @@
   "post_description": "A star can look like it's blinking, even when its light is steady. Discover the science behind it. Sources: https://science.nasa.gov/image-article/apod-2000-july-25-why-stars-twinkle/ https://starchild.gsfc.nasa.gov/docs/StarChild/questions/question26.html #Science #ScienceFacts #Education #QuantaTale",
   "content_id_prefix": "qt-stars-twinkle",
   "publish_timezone": "Africa/Kampala",
-  "editorial_approved": false,
-  "editorial_status": "awaiting_human_editorial_review",
-  "editorial_review_required": true,
+  "editorial_approved": true,
+  "editorial_status": "approved_by_user_batch",
+  "editorial_review_required": false,
   "narration": "Most stars shine with light that is effectively steady to our eyes. The twinkling happens on the way to us. Starlight passes through Earth's turbulent atmosphere, where moving pockets of air bend the light by slightly different amounts. Because stars are so distant, they appear as tiny points, making those changes noticeable as flickering. From above most of Earth's atmosphere, stars do not twinkle in the same way. The atmosphere is doing the visual trick.",
   "sources": [
     {
@@ -44,6 +44,8 @@
       "visual_style": "hybrid"
     }
   ],
-  "editorial_review_notes": "Automated preparation only. Reviewer must open each source, verify the cited passage and context, check the narration against the sources, and explicitly approve before scheduling.",
-  "visual_profile": "holographic_science_v1"
+  "editorial_review_notes": "Approved by the project owner as a batch on 2026-11-15. Approval authorizes topic use; automated source summaries are not independent verification. Before publication, retrieve and assess source passages, corroborate material claims, and flag unsupported or conflicting details for human review.",
+  "visual_profile": "holographic_science_v1",
+  "editorial_approved_at": "2026-11-15T13:27:17.814Z",
+  "source_passage_verification_required_before_publication": true
 }
