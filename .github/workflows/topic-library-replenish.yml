@@ -1,7 +1,8 @@
 name: QuantaTale topic library replenishment
 on:
   schedule:
-    - cron: "0 2 */3 * *"
+    - # Refresh the researched candidate bank daily, before the first publishing slot.
+    - cron: "0 1 * * *"
   workflow_dispatch:
 permissions:
   contents: write
