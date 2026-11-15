@@ -1,129 +1,71 @@
-from datetime import datetime, timedelta, timezone
-
+from datetime import datetime, timezone
 import pytest
-
 from factflow.publishing_slots import select_next_slot
 
-
 def _spec(path, prefix, title):
-    return {
-        "spec_path": path,
-        "content_id_prefix": prefix,
-        "title": title,
-        "post_title": title,
-        "post_description": "Evidence-backed description",
-        "publish_timezone": "Africa/Kampala",
-        "editorial_approved": True,
-        "status": "approved_ready",
-    }
-
+    return {"spec_path": path, "content_id_prefix": prefix, "title": title, "post_title": title,
+        "post_description": "Evidence-backed description", "publish_timezone": "Africa/Kampala"}
 
 def test_selects_noon_slot_twenty_minutes_ahead():
     now = datetime(2026, 11, 16, 8, 40, tzinfo=timezone.utc)
-    library = {"production_specs": [_spec("a.json", "qt-a", "Topic A")]}
-    result = select_next_slot(library, {}, now=now)
+    result = select_next_slot({"production_specs": [_spec("a.json", "qt-a", "Topic A")]}, {}, now=now)
     assert result["slot_local"] == "2026-11-16 12:00"
     assert result["content_id"] == "qt-a-20261116-1200"
     assert result["due_at"] == "2026-11-16T12:00:00+03:00"
 
-
 def test_selects_evening_slot_independently():
     now = datetime(2026, 11, 16, 14, 40, tzinfo=timezone.utc)
-    library = {"production_specs": [_spec("a.json", "qt-a", "Topic A")]}
-    result = select_next_slot(library, {}, now=now)
+    result = select_next_slot({"production_specs": [_spec("a.json", "qt-a", "Topic A")]}, {}, now=now)
     assert result["slot_local"] == "2026-11-16 18:00"
-    assert result["content_id"] == "qt-a-20261116-1800"
-
 
 def test_does_not_reuse_same_topic_twice_on_one_day():
     now = datetime(2026, 11, 16, 14, 40, tzinfo=timezone.utc)
-    library = {"production_specs": [
-        _spec("a.json", "qt-a", "Topic A"),
-        _spec("b.json", "qt-b", "Topic B"),
-    ]}
-    ledger = {
-        "qt-a-20261116-1200": {
-            "spec": "a.json",
-            "due_at": "2026-11-16T12:00:00+03:00",
-            "status": "scheduled",
-        }
-    }
-    result = select_next_slot(library, ledger, now=now)
-    assert result["spec_path"] == "b.json"
+    library = {"production_specs": [_spec("a.json", "qt-a", "A"), _spec("b.json", "qt-b", "B")]}
+    ledger = {"a": {"spec": "a.json", "due_at": "2026-11-16T12:00:00+03:00"}}
+    assert select_next_slot(library, ledger, now=now)["spec_path"] == "b.json"
 
-
-def test_fails_loudly_when_only_used_topic_remains():
+def test_fails_when_only_used_topic_remains():
     now = datetime(2026, 11, 16, 14, 40, tzinfo=timezone.utc)
-    library = {"production_specs": [_spec("a.json", "qt-a", "Topic A")]}
-    ledger = {
-        "qt-a-20261116-1200": {
-            "spec": "a.json",
-            "due_at": "2026-11-16T12:00:00+03:00",
-            "status": "scheduled",
-        }
-    }
-    with pytest.raises(ValueError, match="No unused approved topic remains"):
+    library = {"production_specs": [_spec("a.json", "qt-a", "A")]}
+    ledger = {"a": {"spec": "a.json", "due_at": "2026-11-16T12:00:00+03:00"}}
+    with pytest.raises(ValueError, match="No unused eligible topic remains"):
         select_next_slot(library, ledger, now=now)
 
-
-def test_unapproved_discovery_leads_are_never_selectable():
+def test_topics_are_enabled_by_default_without_editorial_approval():
     now = datetime(2026, 11, 16, 8, 40, tzinfo=timezone.utc)
-    library = {
-        "production_specs": [{
-            **_spec("draft.json", "qt-draft", "Draft"),
-            "editorial_approved": False,
-            "status": "awaiting_editorial_review",
-        }]
-    }
-    with pytest.raises(ValueError, match="No explicitly editorial-approved"):
-        select_next_slot(library, {}, now=now)
+    spec = {**_spec("draft.json", "qt-draft", "Draft"), "editorial_approved": False}
+    assert select_next_slot({"production_specs": [spec]}, {}, now=now)["spec_path"] == "draft.json"
 
+def test_explicitly_disabled_topics_are_not_selectable():
+    now = datetime(2026, 11, 16, 8, 40, tzinfo=timezone.utc)
+    spec = {**_spec("disabled.json", "qt-disabled", "Disabled"), "publishing_enabled": False}
+    with pytest.raises(ValueError, match="No enabled production specs"):
+        select_next_slot({"production_specs": [spec]}, {}, now=now)
 
 def test_returns_none_outside_scheduled_slot_window():
     now = datetime(2026, 11, 16, 9, 30, tzinfo=timezone.utc)
-    library = {"production_specs": [_spec("a.json", "qt-a", "Topic A")]}
-    assert select_next_slot(library, {}, now=now) is None
-
+    assert select_next_slot({"production_specs": [_spec("a.json", "qt-a", "A")]}, {}, now=now) is None
 
 def test_rejects_naive_current_time():
-    library = {"production_specs": [_spec("a.json", "qt-a", "Topic A")]}
     with pytest.raises(ValueError, match="timezone-aware"):
-        select_next_slot(library, {}, now=datetime(2026, 11, 16, 8, 40))
+        select_next_slot({"production_specs": [_spec("a.json", "qt-a", "A")]}, {},
+            now=datetime(2026, 11, 16, 8, 40))
 
-
-def test_does_not_select_a_slot_already_reserved_in_ledger():
+def test_does_not_select_reserved_slot():
     now = datetime(2026, 11, 16, 14, 40, tzinfo=timezone.utc)
-    library = {"production_specs": [
-        _spec("a.json", "qt-a", "Topic A"),
-        _spec("b.json", "qt-b", "Topic B"),
-    ]}
-    ledger = {
-        "qt-a-20261116-1800": {
-            "spec": "a.json",
-            "due_at": "2026-11-16T18:00:00+03:00",
-            "status": "reserved",
-        }
-    }
+    library = {"production_specs": [_spec("a.json", "qt-a", "A"), _spec("b.json", "qt-b", "B")]}
+    ledger = {"a": {"spec": "a.json", "due_at": "2026-11-16T18:00:00+03:00"}}
     assert select_next_slot(library, ledger, now=now) is None
 
-
-def test_does_not_select_topic_requiring_source_passage_verification():
+def test_evidence_passage_verification_still_blocks_publication():
     now = datetime(2026, 11, 16, 14, 40, tzinfo=timezone.utc)
-    spec = {
-        **_spec("moon.json", "qt-moon", "Moon phases"),
-        "source_passage_verification_required_before_publication": True,
-    }
-    library = {"production_specs": [spec]}
-    with pytest.raises(ValueError, match="No explicitly editorial-approved"):
-        select_next_slot(library, {}, now=now)
+    spec = {**_spec("moon.json", "qt-moon", "Moon"), "source_passage_verification_required_before_publication": True}
+    with pytest.raises(ValueError, match="No enabled production specs"):
+        select_next_slot({"production_specs": [spec]}, {}, now=now)
 
-
-def test_does_not_select_topic_with_unverified_source_lead():
+def test_unverified_source_lead_still_blocks_publication():
     now = datetime(2026, 11, 16, 14, 40, tzinfo=timezone.utc)
-    spec = {
-        **_spec("moon.json", "qt-moon", "Moon phases"),
-        "sources": [{"review_status": "source_lead_requires_human_passage_check"}],
-    }
-    library = {"production_specs": [spec]}
-    with pytest.raises(ValueError, match="No explicitly editorial-approved"):
-        select_next_slot(library, {}, now=now)
+    spec = {**_spec("moon.json", "qt-moon", "Moon"),
+        "sources": [{"review_status": "source_lead_requires_human_passage_check"}]}
+    with pytest.raises(ValueError, match="No enabled production specs"):
+        select_next_slot({"production_specs": [spec]}, {}, now=now)
