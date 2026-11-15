@@ -1,0 +1,49 @@
+{
+  "title": "Continents Move at Fingernail Speed",
+  "category": "earth-science",
+  "voice": "af_heart",
+  "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "Continents Move at Fingernail Speed | QuantaTale",
+  "post_description": "The ground beneath continents is moving—and often at about the speed your fingernails grow. Discover the science behind it. Sources: https://www.usgs.gov/faqs/how-fast-do-tectonic-plates-move https://pubs.usgs.gov/gip/dynamic/understanding.html #Science #ScienceFacts #Education #QuantaTale",
+  "content_id_prefix": "qt-tectonic-plates",
+  "publish_timezone": "Africa/Kampala",
+  "editorial_approved": false,
+  "editorial_status": "awaiting_human_editorial_review",
+  "editorial_review_required": true,
+  "narration": "Earth's outer shell is divided into enormous tectonic plates. They move relative to one another, but usually not at a speed you can feel. The US Geological Survey compares typical plate motion to the rate fingernails grow: a few centimetres per year, with different plates moving at different speeds and directions. Scientists measure this motion with satellite-based GPS. Over millions of years, that slow movement reshapes oceans, builds mountains and helps explain where earthquakes occur.",
+  "sources": [
+    {
+      "publisher": "U.S. Geological Survey",
+      "title": "How fast do tectonic plates move?",
+      "url": "https://www.usgs.gov/faqs/how-fast-do-tectonic-plates-move",
+      "supports": "USGS compares plate movement to fingernail growth and describes GPS measurement of crustal motion.",
+      "review_status": "source_lead_requires_human_passage_check"
+    },
+    {
+      "publisher": "U.S. Geological Survey",
+      "title": "Understanding plate motions",
+      "url": "https://pubs.usgs.gov/gip/dynamic/understanding.html",
+      "supports": "USGS explains plate-boundary movement and gives measured examples of plate motion rates.",
+      "review_status": "source_lead_requires_human_passage_check"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Opening hook",
+      "visual_description": "Earth's crust appears as interlocking tectonic plates on a globe.",
+      "visual_style": "hybrid"
+    },
+    {
+      "narration_segment": "Core explanation",
+      "visual_description": "A plate boundary moves a few centimetres along a ruler beside a growing fingernail.",
+      "visual_style": "3d"
+    },
+    {
+      "narration_segment": "Memorable conclusion",
+      "visual_description": "A time-lapse compresses millions of years of plate movement into mountain building and ocean-floor spreading.",
+      "visual_style": "hybrid"
+    }
+  ],
+  "editorial_review_notes": "Automated preparation only. Reviewer must open each source, verify the cited passage and context, check the narration against the sources, and explicitly approve before scheduling.",
+  "visual_profile": "holographic_science_v1"
+}
