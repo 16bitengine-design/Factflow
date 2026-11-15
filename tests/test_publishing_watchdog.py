@@ -55,3 +55,8 @@ def test_slot_is_healthy_only_with_both_buffer_post_ids():
 ])
 def test_incomplete_slot_is_blocked_from_automatic_redispatch(entry):
     assert slot_entry_state(entry) == "blocked"
+
+
+def test_ignores_exact_five_minute_boundary_used_by_selector():
+    now = datetime(2026, 11, 16, 8, 55, tzinfo=timezone.utc)
+    assert upcoming_slot(now) is None
