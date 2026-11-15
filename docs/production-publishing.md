@@ -5,7 +5,7 @@ The production workflow is separate from the Buffer integration-test workflow. T
 ## Manual release procedure
 
 1. Open Actions → QuantaTale production video scheduling → Run workflow.
-2. Enter a unique content_id for the video. Never reuse an ID.
+2. Choose the reviewed video, enter its matching title and caption, then enter a unique content_id. Never reuse an ID.
 3. Enter due_at as an ISO-8601 timestamp with an explicit timezone offset. Uganda example: 2026-11-15T21:30:00+03:00.
 4. Select YouTube, TikTok or both.
 5. Check both approval boxes only after reviewing the exact video and caption.
@@ -15,7 +15,7 @@ The workflow runs pytest, renders with Kokoro, and uploads the MP4 to Cloudinary
 
 ## Safety
 
-- The workflow is manual; there is no unattended cron schedule.
+- The workflow is manual; there is no unattended cron schedule. It currently offers the blue-sky and red-sunset explainers.
 - Both editorial approval and public-scheduling confirmation are required.
 - A workflow rerun is rejected to reduce accidental duplicate scheduling.
 - Use a new unique content ID for each new video. Cloudinary's non-overwriting upload also rejects reuse of an existing production asset ID.
