@@ -16,5 +16,6 @@
       "supports": "Shorter blue wavelengths are scattered by atmospheric gas molecules, making the sky appear blue."
     }
   ],
-  "editorial_status": "Demonstration script prepared against the listed sources; requires human editorial approval before publication."
+  "editorial_status": "Demonstration script prepared against the listed sources; requires human editorial approval before publication.",
+  "visual_profile": "sky_blue_v1"
 }

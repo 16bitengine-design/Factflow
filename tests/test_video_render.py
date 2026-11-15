@@ -102,3 +102,31 @@ def test_sunlight_spectrum_uses_a_legend_not_a_prism_fan():
     for colour in SPECTRUM:
         assert any(image.getpixel((x, y)) == colour
                    for x in range(150, 600) for y in range(785, 805))
+
+
+def test_project_wide_voice_policy_requires_kokoro_and_defaults_to_af_heart():
+    from factflow.production_standards import validate_production_voice
+    assert validate_production_voice({}) == "af_heart"
+    assert validate_production_voice({"voice": "af_heart"}) == "af_heart"
+    with pytest.raises(ValueError, match="Kokoro"):
+        validate_production_voice({"voice": "espeak"})
+
+
+def test_project_wide_visual_standards_cover_holographic_motion_and_storytelling():
+    from factflow.production_standards import PRODUCTION_STANDARDS
+    required = set(PRODUCTION_STANDARDS["required_visual_properties"])
+    assert {
+        "holographic_subjects_and_environments",
+        "continuous_subject_or_camera_motion",
+        "transparent_layered_depth",
+        "volumetric_light_and_glow",
+    } <= required
+    storytelling = set(PRODUCTION_STANDARDS["storytelling_requirements"])
+    assert "every_important_narrated_concept_has_a_visual" in storytelling
+    assert "muted_playback_remains_understandable" in storytelling
+
+
+def test_renderer_refuses_to_reuse_sky_storyboard_for_another_topic():
+    spec = {**valid_spec(), "visual_profile": "sunset_red_v1"}
+    with pytest.raises(ValueError, match="unrelated storyboard"):
+        validate_sample_spec(spec)

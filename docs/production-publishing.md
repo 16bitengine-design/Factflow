@@ -1,30 +1,46 @@
-# QuantaTale production publishing
+# QuantaTale hands-off production publishing
 
-Production metadata is stored with each video specification. The workflow reads the saved title, caption, hashtags, unique content-ID prefix, local publishing time and timezone automatically.
+QuantaTale selects, renders and schedules approved videos automatically. No daily video selection or manual entry of titles, descriptions, hashtags, content IDs, target channels or timestamps is required.
 
-## Release procedure
+## Automatic schedule
 
-1. Open Actions → QuantaTale production video scheduling → Run workflow.
-2. Select the video.
-3. Review the selected video preview before release.
-4. Check the single approval box and run the workflow.
+The GitHub Actions workflow runs daily at:
+- 12:00 Africa/Kampala: selects the approved video scheduled for 15:00.
+- 18:00 Africa/Kampala: selects the approved video scheduled for 21:00.
 
-No title, description, content ID, target channel or timestamp needs to be typed into GitHub Actions. The workflow publishes to both configured Buffer channels.
+GitHub cron uses UTC; these are 09:00 and 15:00 UTC respectively. The workflow can also be started manually; it still selects the next due approved item automatically.
 
-## Built-in schedule
+## Production specifications
 
-- Why Is the Sky Blue?: 15:00 Africa/Kampala.
-- Why Are Sunsets Red?: 21:00 Africa/Kampala.
+Each video JSON stores:
+- Narration and voice.
+- Post title, description and hashtags.
+- Research source URLs.
+- Content ID prefix and sequence suffix.
+- Local publishing time and timezone.
+- Editorial approval state.
 
-If today's slot has already passed (or is less than five minutes away), the workflow automatically selects the next day's slot. Content IDs are generated from the configured prefix and scheduled local date.
+Only entries with `editorial_approved: true` are eligible. Approval is a one-time editorial decision made before a video enters the automatic publishing queue. Unapproved entries are skipped.
 
-## Safety and verification
+## Automatic processing
 
-- The workflow is manual and requires explicit editorial approval.
-- It runs the full test suite and renders the selected production specification before upload.
-- A workflow rerun is rejected to reduce accidental duplicates. If a run partially succeeds, inspect Buffer before taking any retry action.
-- YouTube privacy is set to public. Buffer schedules both YouTube and TikTok posts.
-- The separate Buffer integration-test workflow remains draft-only.
-- Verify the returned Buffer post IDs and due times after each run.
+For each run, QuantaTale:
+1. Finds the next approved video whose publishing slot is within four hours.
+2. Generates the unique content ID from the configured prefix, local date and suffix.
+3. Reserves the content ID in `production/publishing-ledger.json` and commits that reservation before contacting external services.
+4. Runs the full test suite, renders the selected specification, uploads the video to Cloudinary and schedules both configured Buffer channels.
+5. Marks the ledger entry scheduled after Buffer confirms both posts.
 
-Buffer scheduling uses customScheduled, schedulingType automatic and dueAt: https://developers.buffer.com/examples/create-scheduled-post.html
+The ledger prevents repeat scheduling. If a run fails after reservation—including a partial Buffer success—the entry remains reserved and is not retried automatically. Inspect Buffer and reconcile the ledger before any retry. This deliberately prefers preventing duplicate public posts over silently retrying an uncertain external operation.
+
+## Current queue approvals
+
+- Why Is the Sky Blue?: approved; 15:00 Africa/Kampala.
+- Why Are Sunsets Red?: not yet approved; 21:00 Africa/Kampala. It is skipped until its final video has been reviewed and its approval flag is explicitly enabled.
+
+## Publication and safety
+
+- Posts are scheduled publicly to YouTube and TikTok through Buffer.
+- Required GitHub repository secrets: `BUFFER_API_KEY`, `BUFFER_YOUTUBE_CHANNEL_ID`, `BUFFER_TIKTOK_CHANNEL_ID`, `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET`.
+- YouTube category defaults to Education (27), unless `BUFFER_YOUTUBE_CATEGORY_ID` is configured.
+- GitHub Actions runtime, storage and artifact limits still apply. Kokoro model caching reduces repeated downloads but does not remove runner time limits.

@@ -17,6 +17,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from .production_standards import PRODUCTION_STANDARDS, validate_production_voice
+
 WIDTH, HEIGHT, FPS = 720, 1280, 24
 NAVY = (4, 10, 28)
 CYAN = (73, 226, 255)
@@ -27,6 +29,9 @@ MUTED = (143, 174, 201)
 
 
 def validate_sample_spec(spec: dict[str, Any]) -> None:
+    visual_profile = spec.get("visual_profile", "sky_blue_v1")
+    if visual_profile != "sky_blue_v1":
+        raise ValueError(f"No renderer exists for visual profile {visual_profile!r}; refusing to reuse an unrelated storyboard.")
     if not isinstance(spec, dict):
         raise ValueError("Sample specification must be a JSON object.")
     for field in ("title", "narration", "sources"):
@@ -222,7 +227,7 @@ def render_sample_video(spec_path: str | Path, output_dir: str | Path) -> dict[s
     srt_path = output_dir / "captions.srt"
     metadata_path = output_dir / "sample-metadata.json"
 
-    voice = str(spec.get("voice", "af_heart"))
+    voice = validate_production_voice(spec)
     _generate_kokoro_audio(spec["narration"], audio_path, voice=voice)
     import soundfile as sf
     duration = float(sf.info(str(audio_path)).duration)
@@ -295,7 +300,8 @@ def render_sample_video(spec_path: str | Path, output_dir: str | Path) -> dict[s
         "duration_seconds": round(encoded_duration, 3),
         "video_codec": video_stream.get("codec_name"),
         "audio_codec": audio_stream.get("codec_name"),
-        "narration_engine": "Kokoro-82M",
+        "narration_engine": PRODUCTION_STANDARDS["narration_engine"],
+        "production_standards": PRODUCTION_STANDARDS,
         "narration_voice": voice,
         "animation": "four-scene procedural holographic Python/Pillow storyboard",
         "visual_scenes": ["sunlight_visible_spectrum", "atmospheric_molecular_scattering", "holographic_human_eye", "holographic_earth_and_blue_sky"],

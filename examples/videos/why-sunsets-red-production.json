@@ -4,7 +4,7 @@
   "production_label": "QUANTATALE ORIGINAL",
   "post_title": "Why Are Sunsets Red? | QuantaTale",
   "post_description": "Why do sunsets glow red, orange and pink? Discover how sunlight travels through more atmosphere and how scattering changes the colours we see. Sources: NASA https://spaceplace.nasa.gov/blue-sky/en/ and National Weather Service https://www.weather.gov/fgz/SkyBlue #Science #Nature #ScienceFacts #QuantaTale",
-  "content_id_prefix": "qt-sunset-red-02",
+  "content_id_prefix": "qt-sunset-red",
   "publish_time_local": "21:00",
   "publish_timezone": "Africa/Kampala",
   "narration": "At midday, sunlight travels through a shorter path in Earth's atmosphere. But at sunset, the Sun is low, so its light travels through much more air before reaching you. Air molecules scatter the shorter blue and violet wavelengths out of the direct path. More of the longer red and orange wavelengths continue toward your eyes. Dust and other tiny particles can change the colours even further. That's why sunsets can glow red, orange, and pink.",
@@ -22,5 +22,8 @@
       "supports": "At sunrise and sunset sunlight passes through more atmosphere; blue and violet light are scattered away from the line of sight while pink, orange and red light continues toward the observer."
     }
   ],
-  "editorial_status": "Requires explicit human approval in the production workflow before public scheduling."
+  "editorial_status": "Requires explicit human approval in the production workflow before public scheduling.",
+  "content_id_suffix": "02",
+  "editorial_approved": false,
+  "visual_profile": "sunset_red_v1"
 }

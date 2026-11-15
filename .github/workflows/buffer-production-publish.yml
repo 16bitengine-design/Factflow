@@ -1,43 +1,23 @@
-name: QuantaTale production video scheduling
-
+name: QuantaTale hands-off video publishing
 on:
+  schedule:
+    - cron: "0 9,15 * * *"
   workflow_dispatch:
-    inputs:
-      content_spec:
-        description: Select the reviewed video to publish
-        required: true
-        default: examples/videos/why-the-sky-is-blue-production.json
-        type: choice
-        options:
-          - examples/videos/why-the-sky-is-blue-production.json
-          - examples/videos/why-sunsets-red-production.json
-      approve_publication:
-        description: I reviewed this video and approve public scheduling to YouTube and TikTok
-        required: true
-        type: boolean
-        default: false
-
 permissions:
-  contents: read
-
+  contents: write
 concurrency:
   group: quantatale-production-publishing
   cancel-in-progress: false
-
 jobs:
-  schedule-video:
-    name: Render and schedule approved video
-    if: ${{ inputs.approve_publication }}
+  publish-next-video:
+    name: Select, render and schedule the next approved video
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
-      - name: Reject workflow reruns to avoid duplicate posts
-        if: ${{ github.run_attempt != 1 }}
-        run: |
-          echo "::error::This production workflow cannot be rerun. Check Buffer before any new attempt."
-          exit 1
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          ref: main
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -60,42 +40,79 @@ jobs:
           python -m pip install "cloudinary>=1.44,<2"
       - name: Run complete automated test suite
         run: python -m pytest -v
-      - name: Load the saved production settings
-        id: load_settings
-        env:
-          CONTENT_SPEC: ${{ inputs.content_spec }}
+      - name: Automatically select the next approved publishing slot
+        id: select
         run: |
           python - <<'PY'
           import json, os
-          from datetime import datetime, timedelta
+          from datetime import datetime, timedelta, timezone
           from pathlib import Path
           from zoneinfo import ZoneInfo
 
-          spec = json.loads(Path(os.environ["CONTENT_SPEC"]).read_text(encoding="utf-8"))
-          publish_time = spec["publish_time_local"]
-          timezone_name = spec["publish_timezone"]
-          prefix = spec["content_id_prefix"]
-          zone = ZoneInfo(timezone_name)
-          now = datetime.now(zone)
-          scheduled = datetime.combine(now.date(), datetime.strptime(publish_time, "%H:%M").time(), tzinfo=zone)
-          if scheduled <= now + timedelta(minutes=5):
-              scheduled += timedelta(days=1)
-          content_id = f"{prefix}-{scheduled:%Y%m%d}"
+          specs = [
+              Path("examples/videos/why-the-sky-is-blue-production.json"),
+              Path("examples/videos/why-sunsets-red-production.json"),
+          ]
+          ledger_path = Path("production/publishing-ledger.json")
+          ledger_path.parent.mkdir(parents=True, exist_ok=True)
+          ledger = json.loads(ledger_path.read_text() if ledger_path.exists() else "{}")
+          now_utc = datetime.now(timezone.utc)
+          candidates = []
+          for path in specs:
+              spec = json.loads(path.read_text(encoding="utf-8"))
+              if not spec.get("editorial_approved", False):
+                  print(f"Skipping {path}: awaiting one-time editorial approval.")
+                  continue
+              zone = ZoneInfo(spec["publish_timezone"])
+              local_now = now_utc.astimezone(zone)
+              slot = datetime.combine(local_now.date(), datetime.strptime(spec["publish_time_local"], "%H:%M").time(), tzinfo=zone)
+              if slot <= local_now + timedelta(minutes=5) or slot > local_now + timedelta(hours=4):
+                  continue
+              content_id = f'{spec["content_id_prefix"]}-{slot:%Y%m%d}-{spec["content_id_suffix"]}'
+              if content_id in ledger:
+                  print(f"Skipping {content_id}: already reserved or scheduled.")
+                  continue
+              candidates.append((slot, path, spec, content_id))
           output = Path(os.environ["GITHUB_OUTPUT"])
+          if not candidates:
+              output.write_text("selected=false\n", encoding="utf-8")
+              print("No approved video is due in the next four hours. Nothing to publish.")
+              raise SystemExit(0)
+          slot, path, spec, content_id = sorted(candidates, key=lambda item: item[0])[0]
+          ledger[content_id] = {
+              "status": "reserved",
+              "spec": str(path),
+              "due_at": slot.isoformat(timespec="seconds"),
+              "reserved_at": now_utc.isoformat(timespec="seconds"),
+              "workflow_run_id": os.environ["GITHUB_RUN_ID"],
+          }
+          ledger_path.write_text(json.dumps(ledger, indent=2) + "\n", encoding="utf-8")
           with output.open("a", encoding="utf-8") as handle:
+              handle.write("selected=true\n")
+              handle.write(f"spec={path}\n")
+              handle.write(f"content_id={content_id}\n")
+              handle.write(f"due_at={slot.isoformat(timespec='seconds')}\n")
               handle.write(f"title={spec['post_title']}\n")
               handle.write(f"description={spec['post_description']}\n")
-              handle.write(f"content_id={content_id}\n")
-              handle.write(f"due_at={scheduled.isoformat(timespec='seconds')}\n")
-          print(f"Loaded: {spec['post_title']}")
-          print(f"Scheduled slot: {scheduled.isoformat(timespec='seconds')}")
+          print(f"Automatically selected: {spec['post_title']}")
           print(f"Content ID: {content_id}")
+          print(f"Scheduled time: {slot.isoformat(timespec='seconds')}")
           PY
-      - name: Render selected production video
+      - name: Persist duplicate-prevention reservation
+        if: steps.select.outputs.selected == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add production/publishing-ledger.json
+          git commit -m "Reserve production publishing slot"
+          git push origin HEAD:main
+      - name: Render automatically selected video
+        if: steps.select.outputs.selected == 'true'
         env:
-          CONTENT_SPEC: ${{ inputs.content_spec }}
+          CONTENT_SPEC: ${{ steps.select.outputs.spec }}
         run: quantatale render-sample "$CONTENT_SPEC" --output-dir build/production-video
       - name: Schedule public video through Buffer
+        if: steps.select.outputs.selected == 'true'
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
           BUFFER_YOUTUBE_CHANNEL_ID: ${{ secrets.BUFFER_YOUTUBE_CHANNEL_ID }}
@@ -104,10 +121,10 @@ jobs:
           CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
           CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
           CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
-          CONTENT_ID: ${{ steps.load_settings.outputs.content_id }}
-          DUE_AT: ${{ steps.load_settings.outputs.due_at }}
-          POST_TITLE: ${{ steps.load_settings.outputs.title }}
-          POST_DESCRIPTION: ${{ steps.load_settings.outputs.description }}
+          CONTENT_ID: ${{ steps.select.outputs.content_id }}
+          DUE_AT: ${{ steps.select.outputs.due_at }}
+          POST_TITLE: ${{ steps.select.outputs.title }}
+          POST_DESCRIPTION: ${{ steps.select.outputs.description }}
         run: |
           python -m factflow.buffer_schedule \
             --video build/production-video/quantatale-sample-vertical.mp4 \
@@ -116,8 +133,28 @@ jobs:
             --due-at "$DUE_AT" \
             --title "$POST_TITLE" \
             --description "$POST_DESCRIPTION"
-      - name: Upload production review evidence
-        if: always()
+      - name: Mark publishing slot as scheduled
+        if: success() && steps.select.outputs.selected == 'true'
+        env:
+          CONTENT_ID: ${{ steps.select.outputs.content_id }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          from pathlib import Path
+          path = Path("production/publishing-ledger.json")
+          ledger = json.loads(path.read_text(encoding="utf-8"))
+          ledger[os.environ["CONTENT_ID"]]["status"] = "scheduled"
+          ledger[os.environ["CONTENT_ID"]]["scheduled_at"] = datetime.now(timezone.utc).isoformat()
+          path.write_text(json.dumps(ledger, indent=2) + "\n", encoding="utf-8")
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add production/publishing-ledger.json
+          git commit -m "Mark production publishing slot scheduled"
+          git push origin HEAD:main
+      - name: Upload production evidence
+        if: always() && steps.select.outputs.selected == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: quantatale-production-${{ github.run_id }}
