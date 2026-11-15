@@ -7,9 +7,9 @@
   "post_description": "Earth looks like a ball from space, but it is slightly squashed and uneven. Discover the science behind it. Sources: https://oceanservice.noaa.gov/facts/earth-round.html https://nweb.ngs.noaa.gov/research/geopotential-datums/geopotential-surface.shtml #Science #ScienceFacts #Education #QuantaTale",
   "content_id_prefix": "qt-earth-shape",
   "publish_timezone": "Africa/Kampala",
-  "editorial_approved": false,
-  "editorial_status": "awaiting_human_editorial_review",
-  "editorial_review_required": true,
+  "editorial_approved": true,
+  "editorial_status": "approved_by_user_batch",
+  "editorial_review_required": false,
   "narration": "Earth is not a perfect sphere. Its rotation makes the planet bulge around the equator, so the equatorial diameter is larger than the distance through the poles. Scientists describe a useful approximation as an oblate ellipsoid. But even that is not the whole story: mountains, ocean trenches and variations in gravity make Earth's real shape irregular. Geodesists measure these details to map positions and understand our changing planet.",
   "sources": [
     {
@@ -44,6 +44,8 @@
       "visual_style": "hybrid"
     }
   ],
-  "editorial_review_notes": "Automated preparation only. Reviewer must open each source, verify the cited passage and context, check the narration against the sources, and explicitly approve before scheduling.",
-  "visual_profile": "holographic_science_v1"
+  "editorial_review_notes": "Approved by the project owner as a batch on 2026-11-15. Approval authorizes topic use; automated source summaries are not independent verification. Before publication, retrieve and assess source passages, corroborate material claims, and flag unsupported or conflicting details for human review.",
+  "visual_profile": "holographic_science_v1",
+  "editorial_approved_at": "2026-11-15T13:27:33.899Z",
+  "source_passage_verification_required_before_publication": true
 }
