@@ -22,6 +22,10 @@ For each topic, open every listed source, verify the relevant passage and contex
 | 8 | Continents move at fingernail speed | Tectonic plates move centimetres per year; GPS measures crustal motion | USGS | [tectonic-plates.json](specs/tectonic-plates.json) |
 | 9 | What makes auroras glow | Energetic particles interact with oxygen and nitrogen in the upper atmosphere | NASA; NOAA | [aurora-lights.json](specs/aurora-lights.json) |
 | 10 | Autumn leaves reveal hidden colours | Chlorophyll breaks down; carotenoids become visible and anthocyanins can form | NOAA; US Forest Service | [leaves-colour.json](specs/leaves-colour.json) |
+| 11 | Why space is silent | Sound needs a material medium; electromagnetic light does not | NASA; Smithsonian | [sound-space.json](specs/sound-space.json) |
+| 12 | Earth is not a perfect sphere | Rotation creates an equatorial bulge; topography and gravity make the real shape irregular | NOAA | [earth-shape.json](specs/earth-shape.json) |
+| 13 | A day on Mercury lasts two Mercury years | Solar day is about 176 Earth days; Mercury's year is about 88 | NASA | [mercury-day.json](specs/mercury-day.json) |
+| 14 | Mars has the solar system's largest volcano | Olympus Mons is over 25 miles tall and has a vast shield-volcano footprint | NASA; NASA JPL | [olympus-mons.json](specs/olympus-mons.json) |
 
 ## Approval policy
 
