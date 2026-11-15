@@ -11,6 +11,7 @@ def upcoming_slot(
     *,
     timezone_name: str = "Africa/Kampala",
     slot_hours: tuple[int, ...] = (12,  18),
+    min_lead: timedelta = timedelta(minutes=5),
     window: timedelta = timedelta(minutes=30),
 ) -> datetime | None:
     """Return the next local publishing slot inside the recovery window."""
@@ -20,7 +21,7 @@ def upcoming_slot(
     for hour in slot_hours:
         due = local_now.replace(hour=hour, minute=0, second=0, microsecond=0)
         lead = due - local_now
-        if timedelta(0) < lead <= window:
+        if min_lead < lead <= window:
             return due
     return None
 
