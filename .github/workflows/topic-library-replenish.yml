@@ -6,7 +6,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: quantatale-topic-library
+  group: quantatale-production-publishing
   cancel-in-progress: false
 jobs:
   replenish:
