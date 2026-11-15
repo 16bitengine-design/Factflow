@@ -10,6 +10,22 @@ from zoneinfo import ZoneInfo
 DEFAULT_PUBLISH_SLOTS = ("12:00", "18:00")
 
 
+def is_publishable_spec(item: dict[str, Any]) -> bool:
+    """Return whether a spec clears the explicit approval and evidence gates."""
+    if item.get("editorial_approved") is not True or item.get("status") != "approved_ready":
+        return False
+    if item.get("source_passage_verification_required_before_publication") is True:
+        return False
+    sources = item.get("sources", [])
+    if not isinstance(sources, list):
+        return False
+    return not any(
+        isinstance(source, dict)
+        and str(source.get("review_status", "")).startswith("source_lead_requires_human")
+        for source in sources
+    )
+
+
 def _parse_datetime(value: str) -> datetime:
     parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
     if parsed.tzinfo is None or parsed.utcoffset() is None:
@@ -36,21 +52,10 @@ def select_next_slot(
         raise ValueError("now must be timezone-aware")
     current_utc = current.astimezone(timezone.utc)
 
-    approved: list[dict[str, Any]] = []
-    for item in library.get("production_specs", []):
-        if item.get("editorial_approved") is not True or item.get("status") != "approved_ready":
-            continue
-        # Editorial topic approval does not waive source-passage verification.
-        if item.get("source_passage_verification_required_before_publication") is True:
-            continue
-        sources = item.get("sources", [])
-        if any(
-            str(source.get("review_status", "")).startswith("source_lead_requires_human")
-            for source in sources
-            if isinstance(source, dict)
-        ):
-            continue
-        approved.append(item)
+    approved = [
+        item for item in library.get("production_specs", [])
+        if isinstance(item, dict) and is_publishable_spec(item)
+    ]
     if not approved:
         raise ValueError("No explicitly editorial-approved production specs are available.")
 
