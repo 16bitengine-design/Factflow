@@ -89,3 +89,41 @@ def test_rejects_naive_current_time():
     library = {"production_specs": [_spec("a.json", "qt-a", "Topic A")]}
     with pytest.raises(ValueError, match="timezone-aware"):
         select_next_slot(library, {}, now=datetime(2026, 11, 16, 8, 40))
+
+
+def test_does_not_select_a_slot_already_reserved_in_ledger():
+    now = datetime(2026, 11, 16, 14, 40, tzinfo=timezone.utc)
+    library = {"production_specs": [
+        _spec("a.json", "qt-a", "Topic A"),
+        _spec("b.json", "qt-b", "Topic B"),
+    ]}
+    ledger = {
+        "qt-a-20261116-1800": {
+            "spec": "a.json",
+            "due_at": "2026-11-16T18:00:00+03:00",
+            "status": "reserved",
+        }
+    }
+    assert select_next_slot(library, ledger, now=now) is None
+
+
+def test_does_not_select_topic_requiring_source_passage_verification():
+    now = datetime(2026, 11, 16, 14, 40, tzinfo=timezone.utc)
+    spec = {
+        **_spec("moon.json", "qt-moon", "Moon phases"),
+        "source_passage_verification_required_before_publication": True,
+    }
+    library = {"production_specs": [spec]}
+    with pytest.raises(ValueError, match="No explicitly editorial-approved"):
+        select_next_slot(library, {}, now=now)
+
+
+def test_does_not_select_topic_with_unverified_source_lead():
+    now = datetime(2026, 11, 16, 14, 40, tzinfo=timezone.utc)
+    spec = {
+        **_spec("moon.json", "qt-moon", "Moon phases"),
+        "sources": [{"review_status": "source_lead_requires_human_passage_check"}],
+    }
+    library = {"production_specs": [spec]}
+    with pytest.raises(ValueError, match="No explicitly editorial-approved"):
+        select_next_slot(library, {}, now=now)

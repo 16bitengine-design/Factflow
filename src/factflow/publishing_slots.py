@@ -38,10 +38,32 @@ def select_next_slot(
 
     approved: list[dict[str, Any]] = []
     for item in library.get("production_specs", []):
-        if item.get("editorial_approved") is True and item.get("status") == "approved_ready":
-            approved.append(item)
+        if item.get("editorial_approved") is not True or item.get("status") != "approved_ready":
+            continue
+        # Editorial topic approval does not waive source-passage verification.
+        if item.get("source_passage_verification_required_before_publication") is True:
+            continue
+        sources = item.get("sources", [])
+        if any(
+            str(source.get("review_status", "")).startswith("source_lead_requires_human")
+            for source in sources
+            if isinstance(source, dict)
+        ):
+            continue
+        approved.append(item)
     if not approved:
         raise ValueError("No explicitly editorial-approved production specs are available.")
+
+    # A slot already present in the ledger is occupied, even if its run failed
+    # after reserving it. Fail closed rather than risk scheduling duplicate posts.
+    occupied_slots: set[datetime] = set()
+    for entry in ledger.values():
+        if not isinstance(entry, dict) or not entry.get("due_at"):
+            continue
+        try:
+            occupied_slots.add(_parse_datetime(entry["due_at"]).astimezone(timezone.utc))
+        except (TypeError, ValueError):
+            continue
 
     # Evaluate candidate slots in each spec's configured local timezone.
     candidates: list[tuple[datetime, dict[str, Any], str]] = []
@@ -58,7 +80,7 @@ def select_next_slot(
                 slot_local = datetime.combine(slot_date, slot_clock, tzinfo=zone)
                 slot_utc = slot_local.astimezone(timezone.utc)
                 lead = slot_utc - current_utc
-                if min_lead < lead <= max_lead:
+                if min_lead < lead <= max_lead and slot_utc not in occupied_slots:
                     candidates.append((slot_utc, spec, slot_local.isoformat(timespec="seconds")))
 
     if not candidates:

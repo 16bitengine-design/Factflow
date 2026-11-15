@@ -21,7 +21,8 @@
       "status": "approved_ready",
       "registered_at": "2026-11-15T13:21:14.396Z",
       "editorial_approved_at": "2026-11-15T13:27:57.027Z",
-      "editorial_approval_basis": "explicit_project_owner_batch_approval"
+      "editorial_approval_basis": "explicit_project_owner_batch_approval",
+      "source_passage_verification_required_before_publication": true
     },
     {
       "spec_path": "production/specs/ocean-blue.json",
@@ -32,7 +33,8 @@
       "status": "approved_ready",
       "registered_at": "2026-11-15T13:21:14.404Z",
       "editorial_approved_at": "2026-11-15T13:27:57.027Z",
-      "editorial_approval_basis": "explicit_project_owner_batch_approval"
+      "editorial_approval_basis": "explicit_project_owner_batch_approval",
+      "source_passage_verification_required_before_publication": true
     },
     {
       "spec_path": "production/specs/venus-day.json",
@@ -43,7 +45,8 @@
       "status": "approved_ready",
       "registered_at": "2026-11-15T13:21:14.404Z",
       "editorial_approved_at": "2026-11-15T13:27:57.027Z",
-      "editorial_approval_basis": "explicit_project_owner_batch_approval"
+      "editorial_approval_basis": "explicit_project_owner_batch_approval",
+      "source_passage_verification_required_before_publication": true
     },
     {
       "spec_path": "production/specs/lightning-hot-air.json",
@@ -54,7 +57,8 @@
       "status": "approved_ready",
       "registered_at": "2026-11-15T13:21:14.404Z",
       "editorial_approved_at": "2026-11-15T13:27:57.027Z",
-      "editorial_approval_basis": "explicit_project_owner_batch_approval"
+      "editorial_approval_basis": "explicit_project_owner_batch_approval",
+      "source_passage_verification_required_before_publication": true
     },
     {
       "spec_path": "production/specs/old-faithful.json",
@@ -65,7 +69,8 @@
       "status": "approved_ready",
       "registered_at": "2026-11-15T13:21:14.404Z",
       "editorial_approved_at": "2026-11-15T13:27:57.027Z",
-      "editorial_approval_basis": "explicit_project_owner_batch_approval"
+      "editorial_approval_basis": "explicit_project_owner_batch_approval",
+      "source_passage_verification_required_before_publication": true
     },
     {
       "spec_path": "production/specs/clouds-form.json",
@@ -76,7 +81,8 @@
       "status": "approved_ready",
       "registered_at": "2026-11-15T13:21:14.404Z",
       "editorial_approved_at": "2026-11-15T13:27:57.027Z",
-      "editorial_approval_basis": "explicit_project_owner_batch_approval"
+      "editorial_approval_basis": "explicit_project_owner_batch_approval",
+      "source_passage_verification_required_before_publication": true
     },
     {
       "spec_path": "production/specs/stars-twinkle.json",
@@ -87,7 +93,8 @@
       "status": "approved_ready",
       "registered_at": "2026-11-15T13:21:14.404Z",
       "editorial_approved_at": "2026-11-15T13:27:57.027Z",
-      "editorial_approval_basis": "explicit_project_owner_batch_approval"
+      "editorial_approval_basis": "explicit_project_owner_batch_approval",
+      "source_passage_verification_required_before_publication": true
     },
     {
       "spec_path": "production/specs/tectonic-plates.json",
@@ -98,7 +105,8 @@
       "status": "approved_ready",
       "registered_at": "2026-11-15T13:21:14.404Z",
       "editorial_approved_at": "2026-11-15T13:27:57.027Z",
-      "editorial_approval_basis": "explicit_project_owner_batch_approval"
+      "editorial_approval_basis": "explicit_project_owner_batch_approval",
+      "source_passage_verification_required_before_publication": true
     },
     {
       "spec_path": "production/specs/aurora-lights.json",
@@ -109,7 +117,8 @@
       "status": "approved_ready",
       "registered_at": "2026-11-15T13:21:14.404Z",
       "editorial_approved_at": "2026-11-15T13:27:57.027Z",
-      "editorial_approval_basis": "explicit_project_owner_batch_approval"
+      "editorial_approval_basis": "explicit_project_owner_batch_approval",
+      "source_passage_verification_required_before_publication": true
     },
     {
       "spec_path": "production/specs/leaves-colour.json",
@@ -120,7 +129,8 @@
       "status": "approved_ready",
       "registered_at": "2026-11-15T13:21:14.404Z",
       "editorial_approved_at": "2026-11-15T13:27:57.027Z",
-      "editorial_approval_basis": "explicit_project_owner_batch_approval"
+      "editorial_approval_basis": "explicit_project_owner_batch_approval",
+      "source_passage_verification_required_before_publication": true
     },
     {
       "spec_path": "production/specs/sound-space.json",
@@ -131,7 +141,8 @@
       "status": "approved_ready",
       "registered_at": "2026-11-15T13:22:33.559Z",
       "editorial_approved_at": "2026-11-15T13:27:57.027Z",
-      "editorial_approval_basis": "explicit_project_owner_batch_approval"
+      "editorial_approval_basis": "explicit_project_owner_batch_approval",
+      "source_passage_verification_required_before_publication": true
     },
     {
       "spec_path": "production/specs/earth-shape.json",
@@ -142,7 +153,8 @@
       "status": "approved_ready",
       "registered_at": "2026-11-15T13:22:33.559Z",
       "editorial_approved_at": "2026-11-15T13:27:57.027Z",
-      "editorial_approval_basis": "explicit_project_owner_batch_approval"
+      "editorial_approval_basis": "explicit_project_owner_batch_approval",
+      "source_passage_verification_required_before_publication": true
     },
     {
       "spec_path": "production/specs/mercury-day.json",
@@ -153,7 +165,8 @@
       "status": "approved_ready",
       "registered_at": "2026-11-15T13:22:33.559Z",
       "editorial_approved_at": "2026-11-15T13:27:57.027Z",
-      "editorial_approval_basis": "explicit_project_owner_batch_approval"
+      "editorial_approval_basis": "explicit_project_owner_batch_approval",
+      "source_passage_verification_required_before_publication": true
     },
     {
       "spec_path": "production/specs/olympus-mons.json",
@@ -164,7 +177,8 @@
       "status": "approved_ready",
       "registered_at": "2026-11-15T13:22:33.559Z",
       "editorial_approved_at": "2026-11-15T13:27:57.027Z",
-      "editorial_approval_basis": "explicit_project_owner_batch_approval"
+      "editorial_approval_basis": "explicit_project_owner_batch_approval",
+      "source_passage_verification_required_before_publication": true
     }
   ],
   "discovery_leads": []
