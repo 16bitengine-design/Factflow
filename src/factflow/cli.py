@@ -14,7 +14,7 @@ from factflow.research import build_research_report, load_source_registry
 from factflow.scholarly_discovery import discover_scholarly_metadata
 from factflow.scholarly_fulltext import retrieve_open_access_passages
 from factflow.topic import TopicValidationError, load_topic
-from factflow.topic_library import add_discovery_report, load_library, save_library, library_summary
+from factflow.topic_library import add_discovery_report, load_library, save_library, library_summary, register_production_spec
 from factflow.video_render import render_sample_video
 
 
@@ -89,6 +89,12 @@ def build_parser() -> argparse.ArgumentParser:
     library_parser.add_argument("discovery_report", help="Discovery-candidates JSON report.")
     library_parser.add_argument("--library", default="production/topic-library.json", help="Persistent topic library JSON.")
 
+    register_parser = subparsers.add_parser(
+        "library-register-spec", help="Register a production spec; only explicitly approved specs become selectable."
+    )
+    register_parser.add_argument("spec_file", help="Reviewed production specification JSON.")
+    register_parser.add_argument("--library", default="production/topic-library.json", help="Persistent topic library JSON.")
+
     render_parser = subparsers.add_parser(
         "render-sample", help="Render a sourced sample short using free procedural graphics, TTS and FFmpeg."
     )
@@ -100,6 +106,19 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     args = build_parser().parse_args()
+
+    if args.command == "library-register-spec":
+        try:
+            spec = json.loads(Path(args.spec_file).read_text(encoding="utf-8"))
+            library = load_library(args.library)
+            added = register_production_spec(library, args.spec_file, spec)
+            save_library(library, args.library)
+        except (OSError, json.JSONDecodeError, ValueError) as exc:
+            print(f"TOPIC LIBRARY ERROR: {exc}", file=sys.stderr)
+            return 1
+        print(("Registered" if added else "Updated") + f" production spec: {args.spec_file}")
+        print("Selection status: " + ("approved_ready" if spec.get("editorial_approved") is True else "awaiting_editorial_review"))
+        return 0
 
     if args.command == "library-add-discovery":
         try:
