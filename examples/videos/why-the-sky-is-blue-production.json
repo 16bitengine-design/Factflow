@@ -2,20 +2,15 @@
   "title": "Why Is the Sky Blue?",
   "voice": "af_heart",
   "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "Why Is the Sky Blue? | QuantaTale",
+  "post_description": "Sunlight contains every visible colour, but Earth's atmosphere scatters shorter blue wavelengths more strongly. Discover Rayleigh scattering! Sources: NASA https://spaceplace.nasa.gov/blue-sky/en/ and NOAA https://www.nesdis.noaa.gov/about/k-12-education/atmosphere/why-the-sky-blue #Science #ScienceFacts #Education #QuantaTale",
+  "content_id_prefix": "qt-sky-blue",
+  "publish_time_local": "15:00",
+  "publish_timezone": "Africa/Kampala",
   "narration": "Sunlight looks white, but it carries every colour of the visible spectrum. So why does the sky look blue? As sunlight enters Earth's atmosphere, tiny gas molecules scatter shorter blue wavelengths more strongly than longer red wavelengths. The blue light spreads in every direction, and some of it reaches your eyes from across the sky. Scientists call this Rayleigh scattering. It is why a clear daytime sky usually appears blue, while the colours near sunset can look very different.",
   "sources": [
-    {
-      "publisher": "NASA Space Place",
-      "title": "Why Is the Sky Blue?",
-      "url": "https://spaceplace.nasa.gov/blue-sky/en/",
-      "supports": "Sunlight is scattered by gases and particles in the atmosphere; blue light is scattered more than other colours because it has shorter wavelengths."
-    },
-    {
-      "publisher": "NOAA NESDIS",
-      "title": "Why Is the Sky Blue?",
-      "url": "https://www.nesdis.noaa.gov/about/k-12-education/atmosphere/why-the-sky-blue",
-      "supports": "Shorter blue wavelengths are scattered by atmospheric gas molecules, making the sky appear blue."
-    }
+    {"publisher": "NASA Space Place", "title": "Why Is the Sky Blue?", "url": "https://spaceplace.nasa.gov/blue-sky/en/", "supports": "Sunlight is scattered by gases and particles in the atmosphere; blue light is scattered more than other colours because it has shorter wavelengths."},
+    {"publisher": "NOAA NESDIS", "title": "Why Is the Sky Blue?", "url": "https://www.nesdis.noaa.gov/about/k-12-education/atmosphere/why-the-sky-blue", "supports": "Shorter blue wavelengths are scattered by atmospheric gas molecules, making the sky appear blue."}
   ],
   "editorial_status": "Requires explicit human approval in the production workflow before public scheduling."
 }
