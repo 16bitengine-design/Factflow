@@ -181,6 +181,17 @@ def run_integration(
     if any(item not in {"youtube", "tiktok"} for item in targets):
         raise ValueError("target must be youtube, tiktok or both")
 
+    # Validate all credentials before uploading media or creating any draft.
+    _required_env("BUFFER_API_KEY")
+    _required_env("CLOUDINARY_CLOUD_NAME")
+    _required_env("CLOUDINARY_API_KEY")
+    _required_env("CLOUDINARY_API_SECRET")
+    for platform in targets:
+        _required_env(
+            "BUFFER_YOUTUBE_CHANNEL_ID" if platform == "youtube"
+            else "BUFFER_TIKTOK_CHANNEL_ID"
+        )
+
     public_id = f"quantatale/draft-tests/{run_id}"
     video_url = upload_video_to_cloudinary(video_path, public_id)
     verify_public_video_url(video_url)
@@ -199,7 +210,7 @@ def run_integration(
                 video_url=video_url,
                 title=title,
                 description=description,
-                category_id=os.environ.get("BUFFER_YOUTUBE_CATEGORY_ID", "27"),
+                category_id=os.environ.get("BUFFER_YOUTUBE_CATEGORY_ID") or "27",
             )
         )
     return results
