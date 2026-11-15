@@ -146,7 +146,7 @@ jobs:
                   "due_at": item["due_at"],
                   "verification": {"status": "awaiting_confirmation"}
               }
-          ledger_path.write_text(json.dumps(ledger, indent=2) + "\\n", encoding="utf-8")
+          ledger_path.write_text(json.dumps(ledger, indent=2) + "\n", encoding="utf-8")
           PY
           if git diff --quiet -- production/publishing-ledger.json; then
             echo "No partial Buffer IDs to persist."
