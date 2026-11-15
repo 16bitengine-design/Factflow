@@ -29,6 +29,9 @@ MUTED = (143, 174, 201)
 
 
 def validate_sample_spec(spec: dict[str, Any]) -> None:
+    visual_profile = spec.get("visual_profile", "sky_blue_v1")
+    if visual_profile != "sky_blue_v1":
+        raise ValueError(f"No renderer exists for visual profile {visual_profile!r}; refusing to reuse an unrelated storyboard.")
     if not isinstance(spec, dict):
         raise ValueError("Sample specification must be a JSON object.")
     for field in ("title", "narration", "sources"):
