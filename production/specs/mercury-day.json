@@ -7,9 +7,9 @@
   "post_description": "On Mercury, one sunrise-to-sunrise day lasts longer than two trips around the Sun. Discover the science behind it. Sources: https://science.nasa.gov/mercury/facts/ https://spaceplace.nasa.gov/years-on-other-planets/en/ #Science #ScienceFacts #Education #QuantaTale",
   "content_id_prefix": "qt-mercury-day",
   "publish_timezone": "Africa/Kampala",
-  "editorial_approved": false,
-  "editorial_status": "awaiting_human_editorial_review",
-  "editorial_review_required": true,
+  "editorial_approved": true,
+  "editorial_status": "approved_by_user_batch",
+  "editorial_review_required": false,
   "narration": "Mercury races around the Sun, completing a year in about 88 Earth days. But its slow spin and orbital motion combine to make one sunrise-to-sunrise solar day last about 176 Earth days. That means a single Mercury day-night cycle lasts roughly twice as long as a Mercury year. The distinction matters: one rotation relative to the stars takes about 59 Earth days, while the solar day is much longer.",
   "sources": [
     {
@@ -44,6 +44,8 @@
       "visual_style": "hybrid"
     }
   ],
-  "editorial_review_notes": "Automated preparation only. Reviewer must open each source, verify the cited passage and context, check the narration against the sources, and explicitly approve before scheduling.",
-  "visual_profile": "holographic_science_v1"
+  "editorial_review_notes": "Approved by the project owner as a batch on 2026-11-15. Approval authorizes topic use; automated source summaries are not independent verification. Before publication, retrieve and assess source passages, corroborate material claims, and flag unsupported or conflicting details for human review.",
+  "visual_profile": "holographic_science_v1",
+  "editorial_approved_at": "2026-11-15T13:27:33.899Z",
+  "source_passage_verification_required_before_publication": true
 }
