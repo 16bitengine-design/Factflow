@@ -10,6 +10,17 @@ on:
         type: choice
         options:
           - examples/videos/why-the-sky-is-blue-production.json
+          - examples/videos/why-sunsets-red-production.json
+      title:
+        description: Public post title
+        required: true
+        default: Why Is the Sky Blue? | QuantaTale
+        type: string
+      description:
+        description: Public post caption, source links and hashtags
+        required: true
+        default: "Sunlight contains all visible colours, but Earth's atmosphere scatters shorter blue wavelengths more strongly. Discover Rayleigh scattering. Sources: NASA https://spaceplace.nasa.gov/blue-sky/en/ and NOAA https://www.nesdis.noaa.gov/about/k-12-education/atmosphere/why-the-sky-blue #Science #ScienceFacts #Education #QuantaTale"
+        type: string
       content_id:
         description: Unique ID for this video (never reuse it)
         required: true
@@ -78,7 +89,9 @@ jobs:
       - name: Run complete automated test suite
         run: python -m pytest -v
       - name: Render the selected video
-        run: quantatale render-sample "${{ inputs.content_spec }}" --output-dir build/production-video
+        env:
+          CONTENT_SPEC: ${{ inputs.content_spec }}
+        run: quantatale render-sample "$CONTENT_SPEC" --output-dir build/production-video
       - name: Schedule public video through Buffer
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
@@ -88,14 +101,19 @@ jobs:
           CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
           CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
           CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+          TARGET: ${{ inputs.target }}
+          CONTENT_ID: ${{ inputs.content_id }}
+          DUE_AT: ${{ inputs.due_at }}
+          POST_TITLE: ${{ inputs.title }}
+          POST_DESCRIPTION: ${{ inputs.description }}
         run: |
           python -m factflow.buffer_schedule \
             --video build/production-video/quantatale-sample-vertical.mp4 \
-            --target "${{ inputs.target }}" \
-            --content-id "${{ inputs.content_id }}" \
-            --due-at "${{ inputs.due_at }}" \
-            --title "Why Is the Sky Blue? | QuantaTale" \
-            --description "Sunlight contains all visible colours, but Earth's atmosphere scatters shorter blue wavelengths more strongly. Discover the science of Rayleigh scattering. Sources: NASA Space Place https://spaceplace.nasa.gov/blue-sky/en/ and NOAA https://www.nesdis.noaa.gov/about/k-12-education/atmosphere/why-the-sky-blue #Science #ScienceFacts #Education #QuantaTale"
+            --target "$TARGET" \
+            --content-id "$CONTENT_ID" \
+            --due-at "$DUE_AT" \
+            --title "$POST_TITLE" \
+            --description "$POST_DESCRIPTION"
       - name: Upload production review evidence
         if: always()
         uses: actions/upload-artifact@v4
