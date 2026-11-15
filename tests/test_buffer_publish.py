@@ -107,10 +107,10 @@ def test_missing_channel_secret_fails_closed(tmp_path):
         "CLOUDINARY_API_KEY": "test-cloudinary-key",
         "CLOUDINARY_API_SECRET": "test-cloudinary-secret",
     }
-    with patch.dict(os.environ, env, clear=False), \\
+    with patch.dict(os.environ, env, clear=False), \
          patch("factflow.buffer_publish.upload_video_to_cloudinary",
-               return_value="https://res.cloudinary.com/demo/video/upload/sample.mp4") as upload, \\
-         patch("factflow.buffer_publish.verify_public_video_url"), \\
+               return_value="https://res.cloudinary.com/demo/video/upload/sample.mp4") as upload, \
+         patch("factflow.buffer_publish.verify_public_video_url"), \
          patch("factflow.buffer_publish.create_buffer_video_draft") as create:
         with pytest.raises(PublishingIntegrationError, match="BUFFER_YOUTUBE_CHANNEL_ID"):
             run_integration(
