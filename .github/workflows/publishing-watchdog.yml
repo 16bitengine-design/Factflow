@@ -30,35 +30,20 @@ jobs:
           import json
           import os
           import subprocess
-          from datetime import datetime, timedelta
+          from datetime import datetime, timezone
           from pathlib import Path
-          from zoneinfo import ZoneInfo
+          from factflow.publishing_watchdog import find_slot_entry, slot_entry_state, upcoming_slot
 
           repo = os.environ['GH_REPO']
-          zone = ZoneInfo('Africa/Kampala')
-          now = datetime.now(zone)
-          due = None
-          for hour in (12, 18):
-              candidate = now.replace(hour=hour, minute=0, second=0, microsecond=0)
-              lead = candidate - now
-              if timedelta(0) < lead <= timedelta(minutes=30):
-                  due = candidate
-                  break
+          now = datetime.now(timezone.utc)
+          due = upcoming_slot(now)
           if due is None:
               print(f'No publishing slot is inside its recovery window at {now.isoformat()}.')
               raise SystemExit(0)
 
           ledger_path = Path('production/publishing-ledger.json')
           ledger = json.loads(ledger_path.read_text(encoding='utf-8')) if ledger_path.exists() else {}
-          slot_entry = None
-          for content_id, entry in ledger.items():
-              try:
-                  recorded = datetime.fromisoformat(str(entry.get('due_at', '')).replace('Z', '+00:00'))
-                  if recorded.astimezone(zone) == due:
-                      slot_entry = (content_id, entry)
-                      break
-              except (TypeError, ValueError):
-                  continue
+          slot_entry = find_slot_entry(ledger, due)
 
           runs_raw = subprocess.check_output([
               'gh', 'api', f'repos/{repo}/actions/workflows/buffer-production-publish.yml/runs?per_page=30'
@@ -73,12 +58,7 @@ jobs:
 
           if slot_entry:
               content_id, entry = slot_entry
-              posts = entry.get('buffer_posts') if isinstance(entry.get('buffer_posts'), dict) else {}
-              has_both = all(
-                  isinstance(posts.get(platform), dict) and posts[platform].get('post_id')
-                  for platform in ('youtube', 'tiktok')
-              )
-              if entry.get('status') == 'scheduled' and has_both:
+              if slot_entry_state(entry) == 'scheduled':
                   print(f'{content_id} already has Buffer post IDs for both platforms; no recovery needed.')
                   raise SystemExit(0)
               title = f"QuantaTale publishing slot blocked: {due.strftime('%Y-%m-%d %H:%M')} Africa/Kampala"
