@@ -73,6 +73,9 @@ def test_run_integration_uploads_once_and_creates_both_drafts(tmp_path):
         "BUFFER_YOUTUBE_CHANNEL_ID": "youtube-id",
         "BUFFER_TIKTOK_CHANNEL_ID": "tiktok-id",
         "BUFFER_API_KEY": "test-api-key",
+        "CLOUDINARY_CLOUD_NAME": "demo",
+        "CLOUDINARY_API_KEY": "test-cloudinary-key",
+        "CLOUDINARY_API_SECRET": "test-cloudinary-secret",
     }
     with patch.dict(os.environ, env, clear=False), \
          patch("factflow.buffer_publish.upload_video_to_cloudinary",
@@ -108,3 +111,4 @@ def test_missing_channel_secret_fails_closed(tmp_path):
                 title="Title", description="Description",
             )
         create.assert_not_called()
+        upload.assert_not_called()
