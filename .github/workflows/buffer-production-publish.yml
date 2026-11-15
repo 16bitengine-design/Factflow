@@ -122,6 +122,41 @@ jobs:
             --title "$POST_TITLE" \
             --description "$POST_DESCRIPTION" \
             --results-file build/buffer-schedule-results.json
+      - name: Persist any Buffer post IDs, including partial success
+        if: always() && steps.select.outputs.selected == 'true'
+        env:
+          CONTENT_ID: ${{ steps.select.outputs.content_id }}
+        run: |
+          if [ ! -s build/buffer-schedule-results.json ]; then
+            echo "No Buffer post IDs were returned; reservation remains fail-closed."
+            exit 0
+          fi
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          ledger_path = Path("production/publishing-ledger.json")
+          ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
+          results = json.loads(Path("build/buffer-schedule-results.json").read_text(encoding="utf-8"))
+          entry = ledger[os.environ["CONTENT_ID"]]
+          posts = entry.setdefault("buffer_posts", {})
+          for item in results:
+              posts[item["target"]] = {
+                  "post_id": item["post_id"],
+                  "buffer_status": item["status"],
+                  "due_at": item["due_at"],
+                  "verification": {"status": "awaiting_confirmation"}
+              }
+          ledger_path.write_text(json.dumps(ledger, indent=2) + "\n", encoding="utf-8")
+          PY
+          if git diff --quiet -- production/publishing-ledger.json; then
+            echo "No partial Buffer IDs to persist."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add production/publishing-ledger.json
+          git commit -m "Persist Buffer post identifiers for daily slot"
+          git push origin HEAD:main
       - name: Mark publishing slot as scheduled
         if: success() && steps.select.outputs.selected == 'true'
         env:
@@ -139,15 +174,16 @@ jobs:
           entry = ledger[os.environ["CONTENT_ID"]]
           entry["status"] = "scheduled"
           entry["scheduled_at"] = datetime.now(timezone.utc).isoformat()
-          entry["buffer_posts"] = {
-              item["target"]: {
+          posts = entry.setdefault("buffer_posts", {})
+          for item in results:
+              posts[item["target"]] = {
                   "post_id": item["post_id"],
                   "buffer_status": item["status"],
                   "due_at": item["due_at"],
                   "verification": {"status": "awaiting_confirmation"}
               }
-              for item in results
-          }
+          if not all(posts.get(platform, {}).get("post_id") for platform in ("youtube", "tiktok")):
+              raise SystemExit("Both YouTube and TikTok post IDs are required before marking scheduled.")
           ledger[os.environ["CONTENT_ID"]] = entry
           path.write_text(json.dumps(ledger, indent=2) + "\n", encoding="utf-8")
           PY

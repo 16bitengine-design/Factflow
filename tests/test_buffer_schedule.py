@@ -89,3 +89,44 @@ def test_create_post_rejects_buffer_returning_a_different_time(monkeypatch):
             video_url="https://example.com/video.mp4", title="Title",
             description="Caption", due_at="2026-11-15T12:30:00Z",
         )
+
+
+
+def test_partial_platform_success_is_persisted_before_next_platform_fails(monkeypatch, tmp_path):
+    import json
+    from factflow.buffer_publish import PublishingIntegrationError
+
+    video = tmp_path / "video.mp4"
+    video.write_bytes(b"fake")
+    results_path = tmp_path / "buffer-results.json"
+    monkeypatch.setenv("BUFFER_API_KEY", "test-key")
+    monkeypatch.setenv("BUFFER_YOUTUBE_CHANNEL_ID", "youtube-id")
+    monkeypatch.setenv("BUFFER_TIKTOK_CHANNEL_ID", "tiktok-id")
+    monkeypatch.setenv("CLOUDINARY_CLOUD_NAME", "demo")
+    monkeypatch.setenv("CLOUDINARY_API_KEY", "cloud-key")
+    monkeypatch.setenv("CLOUDINARY_API_SECRET", "cloud-secret")
+    monkeypatch.setattr(buffer_schedule, "upload_video_to_cloudinary", lambda *a: "https://example.com/video.mp4")
+    monkeypatch.setattr(buffer_schedule, "verify_public_video_url", lambda *a: None)
+    outcomes = iter([
+        {"target": "youtube", "post_id": "yt-1", "status": "buffer", "due_at": "2026-11-16T09:00:00Z"},
+        PublishingIntegrationError("TikTok API unavailable"),
+    ])
+    def schedule_next(*args, **kwargs):
+        outcome = next(outcomes)
+        if isinstance(outcome, Exception):
+            raise outcome
+        return outcome
+    monkeypatch.setattr(buffer_schedule, "create_buffer_scheduled_video", schedule_next)
+
+    with pytest.raises(PublishingIntegrationError, match="TikTok API unavailable"):
+        buffer_schedule.run_scheduled_publish(
+            video_path=str(video), target="both", content_id="qt-test-20261116-1200",
+            due_at="2026-11-16T12:00:00+03:00", title="Title", description="Caption",
+            results_file=results_path,
+        )
+
+    saved = json.loads(results_path.read_text(encoding="utf-8"))
+    assert saved == [{
+        "target": "youtube", "post_id": "yt-1", "status": "buffer",
+        "due_at": "2026-11-16T09:00:00Z",
+    }]

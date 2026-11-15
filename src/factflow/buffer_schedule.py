@@ -68,7 +68,8 @@ def create_buffer_scheduled_video(*, target: str, channel_id: str, video_url: st
     return {"target": target, "post_id": str(post["id"]), "status": status, "due_at": str(returned_due_at)}
 
 def run_scheduled_publish(*, video_path: str, target: str, content_id: str, due_at: str,
-                          title: str, description: str) -> list[dict[str, str]]:
+                          title: str, description: str,
+                          results_file: str | Path | None = None) -> list[dict[str, str]]:
     """Upload one video and schedule it on the selected Buffer channels."""
     if not os.path.isfile(video_path):
         raise PublishingIntegrationError(f"Rendered video does not exist: {video_path}")
@@ -88,13 +89,21 @@ def run_scheduled_publish(*, video_path: str, target: str, content_id: str, due_
         channel_ids[platform] = _required_env(secret)
     video_url = upload_video_to_cloudinary(video_path, f"quantatale/production/{content_id}")
     verify_public_video_url(video_url)
-    results = []
+    results: list[dict[str, str]] = []
+    results_path = Path(results_file) if results_file else None
     for platform in targets:
-        results.append(create_buffer_scheduled_video(
+        result = create_buffer_scheduled_video(
             target=platform, channel_id=channel_ids[platform], video_url=video_url,
             title=title, description=description, due_at=scheduled_at,
             category_id=os.environ.get("BUFFER_YOUTUBE_CATEGORY_ID") or "27",
-        ))
+        )
+        results.append(result)
+        # Persist each platform immediately so partial success is recoverable.
+        if results_path:
+            results_path.parent.mkdir(parents=True, exist_ok=True)
+            temporary = results_path.with_suffix(results_path.suffix + ".tmp")
+            temporary.write_text(json.dumps(results, indent=2) + "\n", encoding="utf-8")
+            temporary.replace(results_path)
     return results
 
 def main() -> int:
@@ -109,14 +118,15 @@ def main() -> int:
     args = parser.parse_args()
     try:
         results = run_scheduled_publish(video_path=args.video, target=args.target, content_id=args.content_id,
-                                        due_at=args.due_at, title=args.title, description=args.description)
+                                        due_at=args.due_at, title=args.title, description=args.description,
+                                        results_file=args.results_file)
     except (OSError, ValueError, PublishingIntegrationError) as exc:
         print(f"BUFFER SCHEDULING FAILED: {exc}", file=sys.stderr)
         return 1
     if args.results_file:
         results_path = Path(args.results_file)
         results_path.parent.mkdir(parents=True, exist_ok=True)
-        results_path.write_text(json.dumps(results, indent=2) + "\\n", encoding="utf-8")
+        results_path.write_text(json.dumps(results, indent=2) + "\n", encoding="utf-8")
     print("BUFFER SCHEDULING SUCCEEDED")
     for result in results:
         print(f"{result['target']}: post_id={result['post_id']} status={result['status']} due_at={result['due_at']}")

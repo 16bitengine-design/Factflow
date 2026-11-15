@@ -12,6 +12,8 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit, urlunsplit
 
+from factflow.publishing_slots import is_publishable_spec
+
 DEFAULT_LIBRARY = Path("production/topic-library.json")
 
 
@@ -70,6 +72,17 @@ def register_production_spec(
         "editorial_approved": spec.get("editorial_approved") is True,
         "status": "approved_ready" if spec.get("editorial_approved") is True else "awaiting_editorial_review",
         "registered_at": existing.get("registered_at", _now()) if existing else _now(),
+        "source_passage_verification_required_before_publication": (
+            spec.get("source_passage_verification_required_before_publication") is True
+        ),
+        "sources": [
+            {
+                "publisher": source.get("publisher"),
+                "url": source.get("url"),
+                "review_status": source.get("review_status"),
+            }
+            for source in spec.get("sources", []) if isinstance(source, dict)
+        ],
     }
     if existing:
         existing.update(record)
@@ -117,9 +130,13 @@ def add_discovery_report(library: dict[str, Any], report: dict[str, Any]) -> dic
 
 def library_summary(library: dict[str, Any]) -> dict[str, int]:
     specs = library["production_specs"]
+    approved = [item for item in specs if item.get("editorial_approved") is True]
+    eligible = [item for item in specs if is_publishable_spec(item)]
     return {
         "production_specs": len(specs),
-        "approved_ready": sum(item.get("editorial_approved") is True for item in specs),
+        "approved_ready": len(approved),
+        "eligible_for_publishing": len(eligible),
+        "blocked_by_evidence": len(approved) - len(eligible),
         "awaiting_editorial_review": sum(item.get("editorial_approved") is not True for item in specs),
         "discovery_leads": len(library["discovery_leads"]),
         "unreviewed_leads": sum(item.get("status") == "candidate_unreviewed" for item in library["discovery_leads"]),

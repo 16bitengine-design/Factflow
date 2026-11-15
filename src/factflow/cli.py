@@ -153,7 +153,9 @@ def main() -> int:
                 "schema_version": 1,
                 "minimum_ready_target": args.minimum_ready,
                 "approved_ready": summary["approved_ready"],
-                "needs_replenishment": summary["approved_ready"] < args.minimum_ready,
+                "eligible_for_publishing": summary["eligible_for_publishing"],
+                "blocked_by_evidence": summary["blocked_by_evidence"],
+                "needs_replenishment": summary["eligible_for_publishing"] < args.minimum_ready,
                 "summary": summary,
                 "publication_gate": "only_explicitly_human_approved_specs_are_selectable",
             }
@@ -163,7 +165,9 @@ def main() -> int:
         except (OSError, json.JSONDecodeError, ValueError) as exc:
             print(f"TOPIC LIBRARY STATUS ERROR: {exc}", file=sys.stderr)
             return 1
-        print(f"Approved-ready topics: {summary['approved_ready']} / target {args.minimum_ready}")
+        print(f"Editorially approved topics: {summary['approved_ready']}")
+        print(f"Eligible for publishing: {summary['eligible_for_publishing']} / target {args.minimum_ready}")
+        print(f"Blocked by evidence checks: {summary['blocked_by_evidence']}")
         print(f"Unreviewed candidates: {summary['unreviewed_leads']}")
         print(f"Status report: {output_path}")
         if report["needs_replenishment"]:
