@@ -7,9 +7,9 @@
   "post_description": "The biggest volcano we know in the solar system is on Mars—and it dwarfs Everest. Discover the science behind it. Sources: https://science.nasa.gov/mars/facts/ https://www.jpl.nasa.gov/news/press_kits/insight/landing/facts/mars-at-a-glance/ #Science #ScienceFacts #Education #QuantaTale",
   "content_id_prefix": "qt-olympus-mons",
   "publish_timezone": "Africa/Kampala",
-  "editorial_approved": false,
-  "editorial_status": "awaiting_human_editorial_review",
-  "editorial_review_required": true,
+  "editorial_approved": true,
+  "editorial_status": "approved_by_user_batch",
+  "editorial_review_required": false,
   "narration": "Mars is home to Olympus Mons, the largest volcano in the solar system. NASA describes it as more than 25 miles, or about 40 kilometres, from base to summit. Its base covers an area comparable to the state of Arizona. It is a giant shield volcano built by repeated flows of lava over immense periods of time. Mars has no active plate tectonic system like Earth's, which helps explain how such enormous volcanic structures could grow in one region.",
   "sources": [
     {
@@ -44,6 +44,8 @@
       "visual_style": "hybrid"
     }
   ],
-  "editorial_review_notes": "Automated preparation only. Reviewer must open each source, verify the cited passage and context, check the narration against the sources, and explicitly approve before scheduling.",
-  "visual_profile": "holographic_science_v1"
+  "editorial_review_notes": "Approved by the project owner as a batch on 2026-11-15. Approval authorizes topic use; automated source summaries are not independent verification. Before publication, retrieve and assess source passages, corroborate material claims, and flag unsupported or conflicting details for human review.",
+  "visual_profile": "holographic_science_v1",
+  "editorial_approved_at": "2026-11-15T13:27:33.899Z",
+  "source_passage_verification_required_before_publication": true
 }
