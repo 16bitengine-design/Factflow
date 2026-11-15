@@ -1,0 +1,49 @@
+{
+  "title": "On Venus, a Rotation Takes Longer Than a Year",
+  "category": "space",
+  "voice": "af_heart",
+  "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "On Venus, a Rotation Takes Longer Than a Year | QuantaTale",
+  "post_description": "Imagine a planet where one rotation takes longer than its trip around the Sun. Discover the science behind it. Sources: https://science.nasa.gov/venus/venus-facts/ https://www.esa.int/Science_Exploration/Space_Science/Venus_Express/Venus_compared_to_Earth #Science #ScienceFacts #Education #QuantaTale",
+  "content_id_prefix": "qt-venus-day",
+  "publish_timezone": "Africa/Kampala",
+  "editorial_approved": false,
+  "editorial_status": "awaiting_human_editorial_review",
+  "editorial_review_required": true,
+  "narration": "Venus has a calendar that sounds impossible. One rotation of Venus relative to the distant stars takes about 243 Earth days. But one orbit around the Sun takes only about 225 Earth days. So its sidereal day is longer than its year. Venus also rotates in the opposite direction to most planets, meaning the Sun would rise in the west. Be careful with the word day: a Venus solar day, from one noon to the next, is about 117 Earth days.",
+  "sources": [
+    {
+      "publisher": "NASA Science",
+      "title": "Venus: Facts",
+      "url": "https://science.nasa.gov/venus/venus-facts/",
+      "supports": "NASA lists Venus's 243-Earth-day rotation period, 225-Earth-day orbital period and approximately 117-Earth-day solar day.",
+      "review_status": "source_lead_requires_human_passage_check"
+    },
+    {
+      "publisher": "European Space Agency",
+      "title": "Venus compared to Earth",
+      "url": "https://www.esa.int/Science_Exploration/Space_Science/Venus_Express/Venus_compared_to_Earth",
+      "supports": "ESA provides the same rotation and orbital periods and describes Venus's retrograde rotation.",
+      "review_status": "source_lead_requires_human_passage_check"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Opening hook",
+      "visual_description": "A holographic Venus rotates slowly beside a faster orbit timer.",
+      "visual_style": "hybrid"
+    },
+    {
+      "narration_segment": "Core explanation",
+      "visual_description": "Two counters compare 243 Earth days of rotation with 225 Earth days per orbit.",
+      "visual_style": "3d"
+    },
+    {
+      "narration_segment": "Memorable conclusion",
+      "visual_description": "A sunrise arrow moves from west to east across a Venus horizon.",
+      "visual_style": "hybrid"
+    }
+  ],
+  "editorial_review_notes": "Automated preparation only. Reviewer must open each source, verify the cited passage and context, check the narration against the sources, and explicitly approve before scheduling.",
+  "visual_profile": "holographic_science_v1"
+}
