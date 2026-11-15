@@ -7,9 +7,9 @@
   "post_description": "The ocean isn't simply reflecting the blue sky. Water itself changes the light. Discover the science behind it. Sources: https://oceanservice.noaa.gov/facts/oceanblue.html https://www.usgs.gov/water-science-school/science/water-color #Science #ScienceFacts #Education #QuantaTale",
   "content_id_prefix": "qt-ocean-blue",
   "publish_timezone": "Africa/Kampala",
-  "editorial_approved": false,
-  "editorial_status": "awaiting_human_editorial_review",
-  "editorial_review_required": true,
+  "editorial_approved": true,
+  "editorial_status": "approved_by_user_batch",
+  "editorial_review_required": false,
   "narration": "Why does a deep ocean often look blue? Water absorbs the red end of visible light more strongly, while more blue light remains available to reach our eyes. That is different from the process that makes the sky blue. And not every ocean is the same colour: sediments, tiny organisms and dissolved materials can shift the water toward green, brown or other shades. The colour is a clue to how light interacts with water.",
   "sources": [
     {
@@ -44,6 +44,8 @@
       "visual_style": "hybrid"
     }
   ],
-  "editorial_review_notes": "Automated preparation only. Reviewer must open each source, verify the cited passage and context, check the narration against the sources, and explicitly approve before scheduling.",
-  "visual_profile": "holographic_science_v1"
+  "editorial_review_notes": "Approved by the project owner as a batch on 2026-11-15. This approval authorizes topic use, not a claim that automated source summaries constitute independent verification. Before final narration is published, the production research stage must retrieve and assess source passages, corroborate material claims, and flag any unsupported or conflicting details for human review.",
+  "visual_profile": "holographic_science_v1",
+  "editorial_approved_at": "2026-11-15T13:26:43.697Z",
+  "source_passage_verification_required_before_publication": true
 }
