@@ -24,5 +24,6 @@
   ],
   "editorial_status": "Requires explicit human approval in the production workflow before public scheduling.",
   "content_id_suffix": "02",
-  "editorial_approved": false
+  "editorial_approved": false,
+  "visual_profile": "sunset_red_v1"
 }
