@@ -75,3 +75,17 @@ def test_content_id_is_validated_before_upload(monkeypatch, tmp_path):
         buffer_schedule.run_scheduled_publish(
             video_path=str(video), target="youtube", content_id="../unsafe",
             due_at="2026-11-16T15:00:00+03:00", title="Title", description="Caption")
+
+def test_create_post_rejects_buffer_returning_a_different_time(monkeypatch):
+    monkeypatch.setattr(
+        buffer_schedule, "_buffer_graphql",
+        lambda query, variables: {"data": {"createPost": {"post": {
+            "id": "post-456", "status": "buffer", "dueAt": "2026-11-15T13:00:00Z"
+        }}}},
+    )
+    with pytest.raises(buffer_schedule.PublishingIntegrationError, match="not the requested time"):
+        buffer_schedule.create_buffer_scheduled_video(
+            target="tiktok", channel_id="tt-channel",
+            video_url="https://example.com/video.mp4", title="Title",
+            description="Caption", due_at="2026-11-15T12:30:00Z",
+        )
