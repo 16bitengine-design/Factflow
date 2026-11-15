@@ -1,9 +1,10 @@
 {
   "qt-sky-blue-20261115-01": {
-    "status": "reserved",
+    "status": "scheduled",
     "spec": "examples/videos/why-the-sky-is-blue-production.json",
     "due_at": "2026-11-15T15:00:00+03:00",
     "reserved_at": "2026-11-15T08:41:35+00:00",
-    "workflow_run_id": "43695563896"
+    "workflow_run_id": "43695563896",
+    "scheduled_at": "2026-11-15T08:42:15.355004+00:00"
   }
 }
