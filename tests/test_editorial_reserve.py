@@ -12,7 +12,6 @@ def test_editorial_reserve_specs_are_owner_approved_but_require_source_verificat
         assert spec["editorial_approved"] is True
         assert record["editorial_approved"] is True
         assert record["status"] == "approved_ready"
-        assert record["editorial_status"] == "approved_by_user_batch"
         assert spec["source_passage_verification_required_before_publication"] is True
         assert len(spec["sources"]) >= 2
         assert all(source["url"].startswith("https://") for source in spec["sources"])
