@@ -7,9 +7,9 @@
   "post_description": "The famous lightning temperature fact needs one important correction. Discover the science behind it. Sources: https://www.weather.gov/safety/lightning-temperature https://www.noaa.gov/jetstream/lightning/sound-of-thunder #Science #ScienceFacts #Education #QuantaTale",
   "content_id_prefix": "qt-lightning-air",
   "publish_timezone": "Africa/Kampala",
-  "editorial_approved": false,
-  "editorial_status": "awaiting_human_editorial_review",
-  "editorial_review_required": true,
+  "editorial_approved": true,
+  "editorial_status": "approved_by_user_batch",
+  "editorial_review_required": false,
   "narration": "People say lightning is hotter than the Sun. More precisely, the air around a lightning channel can heat to roughly 54,000 degrees Fahrenheit in a fraction of a second. The lightning flash rapidly heats that air, making it expand explosively. That expansion creates a shock wave that we hear as thunder. So the extreme temperature refers to the heated air around the lightning channel—not a claim that the entire bolt is a hot solid object.",
   "sources": [
     {
@@ -44,6 +44,8 @@
       "visual_style": "hybrid"
     }
   ],
-  "editorial_review_notes": "Automated preparation only. Reviewer must open each source, verify the cited passage and context, check the narration against the sources, and explicitly approve before scheduling.",
-  "visual_profile": "holographic_science_v1"
+  "editorial_review_notes": "Approved by the project owner as a batch on 2026-11-15. This approval authorizes topic use, not a claim that automated source summaries constitute independent verification. Before final narration is published, the production research stage must retrieve and assess source passages, corroborate material claims, and flag any unsupported or conflicting details for human review.",
+  "visual_profile": "holographic_science_v1",
+  "editorial_approved_at": "2026-11-15T13:26:43.697Z",
+  "source_passage_verification_required_before_publication": true
 }
