@@ -2,6 +2,10 @@
 
 The production workflow is separate from the Buffer integration-test workflow. The integration-test workflow always creates drafts. The production workflow creates publicly scheduled posts and must only be used after reviewing the exact video.
 
+## Preview before release
+
+The sample-render workflow now renders both production explainers and uploads a GitHub Actions artifact named quantatale-production-video-previews. Open the successful Render QuantaTale sample video run, download that artifact, and inspect both MP4s, captions and metadata before checking the production workflow's editorial approval box.
+
 ## Manual release procedure
 
 1. Open Actions → QuantaTale production video scheduling → Run workflow.
