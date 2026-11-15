@@ -70,11 +70,11 @@ jobs:
           for item in attention:
               grouped.setdefault(item["content_id"], []).append(item)
           existing = subprocess.check_output([
-              "gh", "issue", "list", "--state", "open", "--json", "title", "--jq", ".[]._title"
+              "gh", "issue", "list", "--state", "open", "--json", "title", "--jq", ".[].title"
           ], text=True).splitlines()
           for content_id, items in grouped.items():
               title = f"QuantaTale Buffer publication needs attention: {content_id}"
-              details = "\\n".join(
+          details = "\n".join(
                   f"- {item['platform']} post {item['post_id']}: {item['buffer_status']}; "
                   f"{item['reason']}; due {item['due_at'] or 'missing'}"
                   for item in items
