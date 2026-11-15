@@ -49,9 +49,12 @@ jobs:
           from pathlib import Path
           from zoneinfo import ZoneInfo
 
+          library_path = Path("production/topic-library.json")
+          library = json.loads(library_path.read_text(encoding="utf-8")) if library_path.exists() else {}
           specs = [
-              Path("examples/videos/why-the-sky-is-blue-production.json"),
-              Path("examples/videos/why-sunsets-red-production.json"),
+              Path(item["spec_path"])
+              for item in library.get("production_specs", [])
+              if item.get("editorial_approved") is True and item.get("status") == "approved_ready"
           ]
           ledger_path = Path("production/publishing-ledger.json")
           ledger_path.parent.mkdir(parents=True, exist_ok=True)
