@@ -1,0 +1,60 @@
+name: QuantaTale topic library replenishment
+on:
+  schedule:
+    - cron: "0 2 */3 * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: quantatale-production-publishing
+  cancel-in-progress: false
+jobs:
+  replenish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install QuantaTale
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+      - name: Discover fresh story leads
+        run: quantatale discover --limit 100 --output build/library-discovery.json
+      - name: Research discovered sources
+        run: quantatale research-candidates build/library-discovery.json --limit 30 --output build/library-research-candidates.json
+      - name: Discover independent scholarly metadata
+        run: quantatale scholarly-discover build/library-research-candidates.json --claim-limit 30 --results-per-provider 5 --output build/library-scholarly-leads.json
+      - name: Retrieve open-access scholarly passages
+        run: quantatale scholarly-retrieve build/library-scholarly-leads.json --article-limit 20 --passages-per-article 20 --output build/library-scholarly-passages.json
+      - name: Build evidence dossiers
+        run: quantatale evidence-dossier build/library-research-candidates.json --feed-limit 100 --article-limit 20 --output build/library-evidence-dossiers.json
+      - name: Compare evidence signals
+        run: quantatale evidence-compare build/library-research-candidates.json --scholarly build/library-scholarly-passages.json --dossiers build/library-evidence-dossiers.json --passage-limit-per-claim 100 --output build/library-evidence-comparisons.json
+      - name: Add discoveries to persistent library
+        run: quantatale library-add-discovery build/library-discovery.json --library production/topic-library.json
+      - name: Persist new topic leads
+        run: |
+          if git diff --quiet -- production/topic-library.json; then
+            echo "No new topic leads to save."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add production/topic-library.json
+          git commit -m "Replenish researched topic library"
+          git push origin HEAD:main
+      - name: Upload discovery and evidence dossier
+        uses: actions/upload-artifact@v4
+        with:
+          name: quantatale-topic-library-${{ github.run_id }}
+          path: build/library-*.json
+          if-no-files-found: error
+          retention-days: 14

@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-11-15T00:00:00+00:00",
+  "production_specs": [
+    {
+      "spec_path": "examples/videos/why-the-sky-is-blue-production.json",
+      "content_id_prefix": "qt-sky-blue",
+      "title": "Why Is the Sky Blue? | QuantaTale",
+      "publish_time_local": "15:00",
+      "publish_timezone": "Africa/Kampala",
+      "editorial_approved": true,
+      "status": "approved_ready",
+      "registered_at": "2026-11-15T00:00:00+00:00"
+    }
+  ],
+  "discovery_leads": []
+}
