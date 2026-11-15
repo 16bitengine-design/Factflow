@@ -1,7 +1,8 @@
 """Schedule an approved QuantaTale video through Buffer."""
 from __future__ import annotations
-import argparse, os, re, sys
+import argparse, json, os, re, sys
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 from typing import Any
 from .buffer_publish import PublishingIntegrationError, _buffer_graphql, _required_env, upload_video_to_cloudinary, verify_public_video_url
 
@@ -104,6 +105,7 @@ def main() -> int:
     parser.add_argument("--due-at", required=True, help="ISO-8601 datetime including timezone offset.")
     parser.add_argument("--title", required=True)
     parser.add_argument("--description", required=True)
+    parser.add_argument("--results-file", help="Write structured Buffer post IDs and scheduling results to this JSON file.")
     args = parser.parse_args()
     try:
         results = run_scheduled_publish(video_path=args.video, target=args.target, content_id=args.content_id,
@@ -111,6 +113,10 @@ def main() -> int:
     except (OSError, ValueError, PublishingIntegrationError) as exc:
         print(f"BUFFER SCHEDULING FAILED: {exc}", file=sys.stderr)
         return 1
+    if args.results_file:
+        results_path = Path(args.results_file)
+        results_path.parent.mkdir(parents=True, exist_ok=True)
+        results_path.write_text(json.dumps(results, indent=2) + "\\n", encoding="utf-8")
     print("BUFFER SCHEDULING SUCCEEDED")
     for result in results:
         print(f"{result['target']}: post_id={result['post_id']} status={result['status']} due_at={result['due_at']}")
