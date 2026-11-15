@@ -45,11 +45,11 @@ jobs:
           path: ~/.cache/huggingface/hub
           key: kokoro-82m-af-heart-v1
 
-      - name: Install QuantaTale renderer and publishing SDK
+      - name: Install QuantaTale renderer, test and publishing dependencies
         run: |
           python -m pip install --upgrade pip
           python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
-          python -m pip install -e ".[render,tts]"
+          python -m pip install -e ".[dev,render,tts]"
           python -m pip install "cloudinary>=1.44,<2"
 
       - name: Run renderer and integration unit tests
