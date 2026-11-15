@@ -58,10 +58,26 @@ jobs:
       - name: Render narrated sample short
         run: quantatale render-sample examples/videos/why-the-sky-is-blue.json --output-dir build/sample-video
 
+      - name: Render production blue-sky explainer preview
+        run: quantatale render-sample examples/videos/why-the-sky-is-blue-production.json --output-dir build/production-sky-blue
+
+      - name: Render production red-sunset explainer preview
+        run: quantatale render-sample examples/videos/why-sunsets-red-production.json --output-dir build/production-red-sunset
+
       - name: Upload sample video and production assets
         uses: actions/upload-artifact@v4
         with:
           name: quantatale-sample-video
           path: build/sample-video/*
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload production video previews for editorial review
+        uses: actions/upload-artifact@v4
+        with:
+          name: quantatale-production-video-previews
+          path: |
+            build/production-sky-blue/*
+            build/production-red-sunset/*
           if-no-files-found: error
           retention-days: 14
