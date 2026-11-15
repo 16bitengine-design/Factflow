@@ -100,10 +100,17 @@ def test_run_integration_uploads_once_and_creates_both_drafts(tmp_path):
 def test_missing_channel_secret_fails_closed(tmp_path):
     video = tmp_path / "sample.mp4"
     video.write_bytes(b"fake video")
-    with patch.dict(os.environ, {"BUFFER_TIKTOK_CHANNEL_ID": ""}, clear=False), \
+    env = {
+        "BUFFER_API_KEY": "test-api-key",
+        "BUFFER_TIKTOK_CHANNEL_ID": "",
+        "CLOUDINARY_CLOUD_NAME": "demo",
+        "CLOUDINARY_API_KEY": "test-cloudinary-key",
+        "CLOUDINARY_API_SECRET": "test-cloudinary-secret",
+    }
+    with patch.dict(os.environ, env, clear=False), \\
          patch("factflow.buffer_publish.upload_video_to_cloudinary",
-               return_value="https://res.cloudinary.com/demo/video/upload/sample.mp4"), \
-         patch("factflow.buffer_publish.verify_public_video_url"), \
+               return_value="https://res.cloudinary.com/demo/video/upload/sample.mp4") as upload, \\
+         patch("factflow.buffer_publish.verify_public_video_url"), \\
          patch("factflow.buffer_publish.create_buffer_video_draft") as create:
         with pytest.raises(PublishingIntegrationError, match="BUFFER_YOUTUBE_CHANNEL_ID"):
             run_integration(
