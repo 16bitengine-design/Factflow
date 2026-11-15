@@ -55,6 +55,15 @@ def create_buffer_scheduled_video(*, target: str, channel_id: str, video_url: st
     returned_due_at = post.get("dueAt")
     if not returned_due_at:
         raise PublishingIntegrationError(f"Buffer did not return a scheduled time for the {target} post.")
+    try:
+        expected_time = datetime.fromisoformat(due_at.replace("Z", "+00:00")).astimezone(timezone.utc)
+        actual_time = datetime.fromisoformat(str(returned_due_at).replace("Z", "+00:00")).astimezone(timezone.utc)
+    except (TypeError, ValueError) as exc:
+        raise PublishingIntegrationError(f"Buffer returned an invalid scheduled time for {target}.") from exc
+    if actual_time != expected_time:
+        raise PublishingIntegrationError(
+            f"Buffer returned {returned_due_at} for {target}, not the requested time {due_at}."
+        )
     return {"target": target, "post_id": str(post["id"]), "status": status, "due_at": str(returned_due_at)}
 
 def run_scheduled_publish(*, video_path: str, target: str, content_id: str, due_at: str,
