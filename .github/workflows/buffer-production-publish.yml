@@ -132,7 +132,8 @@ jobs:
             --content-id "$CONTENT_ID" \
             --due-at "$DUE_AT" \
             --title "$POST_TITLE" \
-            --description "$POST_DESCRIPTION"
+            --description "$POST_DESCRIPTION" \\
+            --results-file build/buffer-schedule-results.json
       - name: Mark publishing slot as scheduled
         if: success() && steps.select.outputs.selected == 'true'
         env:
@@ -144,8 +145,22 @@ jobs:
           from pathlib import Path
           path = Path("production/publishing-ledger.json")
           ledger = json.loads(path.read_text(encoding="utf-8"))
-          ledger[os.environ["CONTENT_ID"]]["status"] = "scheduled"
-          ledger[os.environ["CONTENT_ID"]]["scheduled_at"] = datetime.now(timezone.utc).isoformat()
+          results = json.loads(Path("build/buffer-schedule-results.json").read_text(encoding="utf-8"))
+          if not results or any(not item.get("post_id") for item in results):
+              raise SystemExit("Buffer returned incomplete post identifiers; refusing to mark scheduled.")
+          entry = ledger[os.environ["CONTENT_ID"]]
+          entry["status"] = "scheduled"
+          entry["scheduled_at"] = datetime.now(timezone.utc).isoformat()
+          entry["buffer_posts"] = {
+              item["target"]: {
+                  "post_id": item["post_id"],
+                  "buffer_status": item["status"],
+                  "due_at": item["due_at"],
+                  "verification": {"status": "awaiting_confirmation"}
+              }
+              for item in results
+          }
+          ledger[os.environ["CONTENT_ID"]] = entry
           path.write_text(json.dumps(ledger, indent=2) + "\n", encoding="utf-8")
           PY
           git config user.name "github-actions[bot]"
