@@ -95,6 +95,13 @@ def build_parser() -> argparse.ArgumentParser:
     register_parser.add_argument("spec_file", help="Reviewed production specification JSON.")
     register_parser.add_argument("--library", default="production/topic-library.json", help="Persistent topic library JSON.")
 
+    status_parser = subparsers.add_parser(
+        "library-status", help="Report approved topic reserve health without approving candidates."
+    )
+    status_parser.add_argument("--library", default="production/topic-library.json", help="Persistent topic library JSON.")
+    status_parser.add_argument("--minimum-ready", type=int, default=14, help="Target approved-ready topic reserve.")
+    status_parser.add_argument("--output", default="build/topic-library-status.json", help="JSON status report path.")
+
     render_parser = subparsers.add_parser(
         "render-sample", help="Render a sourced sample short using free procedural graphics, TTS and FFmpeg."
     )
@@ -133,6 +140,34 @@ def main() -> int:
         print(f"Added {result['added']} leads; skipped {result['duplicates']} duplicates.")
         print(f"Library totals: {summary}")
         print("All discovered leads remain unreviewed and blocked from production.")
+        return 0
+
+    if args.command == "library-status":
+        if args.minimum_ready < 1:
+            print("TOPIC LIBRARY STATUS ERROR: minimum-ready must be at least 1.", file=sys.stderr)
+            return 1
+        try:
+            library = load_library(args.library)
+            summary = library_summary(library)
+            report = {
+                "schema_version": 1,
+                "minimum_ready_target": args.minimum_ready,
+                "approved_ready": summary["approved_ready"],
+                "needs_replenishment": summary["approved_ready"] < args.minimum_ready,
+                "summary": summary,
+                "publication_gate": "only_explicitly_human_approved_specs_are_selectable",
+            }
+            output_path = Path(args.output)
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            output_path.write_text(json.dumps(report, indent=2) + "\\n", encoding="utf-8")
+        except (OSError, json.JSONDecodeError, ValueError) as exc:
+            print(f"TOPIC LIBRARY STATUS ERROR: {exc}", file=sys.stderr)
+            return 1
+        print(f"Approved-ready topics: {summary['approved_ready']} / target {args.minimum_ready}")
+        print(f"Unreviewed candidates: {summary['unreviewed_leads']}")
+        print(f"Status report: {output_path}")
+        if report["needs_replenishment"]:
+            print("WARNING: approved topic reserve is below target; editorial review and approval are required.")
         return 0
 
     if args.command == "render-sample":
