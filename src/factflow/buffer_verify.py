@@ -4,7 +4,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
@@ -52,6 +52,57 @@ def classify_post(post: dict[str, Any]) -> dict[str, Any]:
         result["error"] = str(error["message"])
     return result
 
+
+def find_posts_needing_attention(
+    ledger: dict[str, Any],
+    *,
+    now: datetime | None = None,
+    grace: timedelta = timedelta(minutes=15),
+) -> list[dict[str, str]]:
+    """Find failed/unknown posts and posts still unsent beyond a grace period.
+
+    Elapsed time never changes a post to published or failed; overdue entries
+    remain unconfirmed and are surfaced for operational investigation.
+    """
+    current = now or datetime.now(timezone.utc)
+    if current.tzinfo is None or current.utcoffset() is None:
+        raise ValueError("now must be timezone-aware")
+    if grace < timedelta(0):
+        raise ValueError("grace must not be negative")
+    attention: list[dict[str, str]] = []
+    for content_id, entry in ledger.items():
+        platforms = entry.get("buffer_posts", {}) if isinstance(entry, dict) else {}
+        if not isinstance(platforms, dict):
+            continue
+        for platform, record in platforms.items():
+            if not isinstance(record, dict) or not record.get("post_id"):
+                continue
+            verification = record.get("verification", {})
+            verification = verification if isinstance(verification, dict) else {}
+            status = str(verification.get("status", "awaiting_confirmation"))
+            reason = ""
+            due_text = str(record.get("due_at") or entry.get("due_at") or "")
+            if status in {"failed", "unknown"}:
+                reason = f"Buffer verification status is {status}"
+            elif status == "awaiting_confirmation":
+                try:
+                    due = datetime.fromisoformat(due_text.replace("Z", "+00:00"))
+                    if due.tzinfo is None or due.utcoffset() is None:
+                        raise ValueError("due_at has no timezone")
+                    if due.astimezone(timezone.utc) <= current.astimezone(timezone.utc) - grace:
+                        reason = f"still unconfirmed more than {int(grace.total_seconds() // 60)} minutes after due_at"
+                except ValueError:
+                    reason = "missing or invalid timezone-aware due_at for an unconfirmed post"
+            if reason:
+                attention.append({
+                    "content_id": str(content_id),
+                    "platform": str(platform),
+                    "post_id": str(record["post_id"]),
+                    "due_at": due_text,
+                    "buffer_status": str(verification.get("buffer_status", record.get("buffer_status", "unknown"))),
+                    "reason": reason,
+                })
+    return attention
 
 def verify_ledger(ledger_path: Path) -> dict[str, int]:
     """Refresh each non-final platform outcome in the publishing ledger."""
