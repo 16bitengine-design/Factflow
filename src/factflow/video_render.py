@@ -181,7 +181,10 @@ def _draw_frame(spec: dict[str, Any], seconds: float, duration: float, caption: 
                   font=fonts["caption"], fill=WHITE)
 
     draw.text((48, 1230), "KNOW MORE. SEE DIFFERENTLY.", font=fonts["tiny"], fill=MUTED)
-    draw.text((WIDTH-235, 1230), "HOLOGRAPHIC DEMO", font=fonts["tiny"], fill=VIOLET)
+    footer_label = str(spec.get("production_label", "HOLOGRAPHIC DEMO"))
+    footer_font = _fit_font(draw, footer_label, fonts["tiny"], 205, min_size=12)
+    draw.text((WIDTH-48-draw.textbbox((0, 0), footer_label, font=footer_font)[2], 1230),
+              footer_label, font=footer_font, fill=VIOLET)
     return image
 
 
