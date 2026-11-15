@@ -11,7 +11,7 @@ def test_editorial_reserve_specs_are_complete_and_blocked_pending_review():
         item for item in library["production_specs"]
         if item["spec_path"].startswith("production/specs/")
     ]
-    assert len(reserve) == 10
+    assert len(reserve) == 14
 
     for record in reserve:
         path = ROOT / record["spec_path"]
