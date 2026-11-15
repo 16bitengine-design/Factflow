@@ -7,9 +7,9 @@
   "post_description": "The ground beneath continents is moving—and often at about the speed your fingernails grow. Discover the science behind it. Sources: https://www.usgs.gov/faqs/how-fast-do-tectonic-plates-move https://pubs.usgs.gov/gip/dynamic/understanding.html #Science #ScienceFacts #Education #QuantaTale",
   "content_id_prefix": "qt-tectonic-plates",
   "publish_timezone": "Africa/Kampala",
-  "editorial_approved": false,
-  "editorial_status": "awaiting_human_editorial_review",
-  "editorial_review_required": true,
+  "editorial_approved": true,
+  "editorial_status": "approved_by_user_batch",
+  "editorial_review_required": false,
   "narration": "Earth's outer shell is divided into enormous tectonic plates. They move relative to one another, but usually not at a speed you can feel. The US Geological Survey compares typical plate motion to the rate fingernails grow: a few centimetres per year, with different plates moving at different speeds and directions. Scientists measure this motion with satellite-based GPS. Over millions of years, that slow movement reshapes oceans, builds mountains and helps explain where earthquakes occur.",
   "sources": [
     {
@@ -44,6 +44,8 @@
       "visual_style": "hybrid"
     }
   ],
-  "editorial_review_notes": "Automated preparation only. Reviewer must open each source, verify the cited passage and context, check the narration against the sources, and explicitly approve before scheduling.",
-  "visual_profile": "holographic_science_v1"
+  "editorial_review_notes": "Approved by the project owner as a batch on 2026-11-15. Approval authorizes topic use; automated source summaries are not independent verification. Before publication, retrieve and assess source passages, corroborate material claims, and flag unsupported or conflicting details for human review.",
+  "visual_profile": "holographic_science_v1",
+  "editorial_approved_at": "2026-11-15T13:27:17.814Z",
+  "source_passage_verification_required_before_publication": true
 }
