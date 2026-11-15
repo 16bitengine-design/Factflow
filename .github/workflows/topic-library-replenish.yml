@@ -52,12 +52,12 @@ jobs:
           summary = report["summary"]
           message = (
               f"**Approved-ready topics:** {report['approved_ready']} / "
-              f"{report['minimum_ready_target']} target\\n\\n"
-              f"**Unreviewed discovery leads:** {summary['unreviewed_leads']}\\n\\n"
+              f"{report['minimum_ready_target']} target\n\n"
+              f"**Unreviewed discovery leads:** {summary['unreviewed_leads']}\n\n"
               "**Editorial gate:** discovery leads remain blocked until a human reviewer approves them."
           )
           with Path(os.environ["GITHUB_STEP_SUMMARY"]).open("a", encoding="utf-8") as handle:
-              handle.write(message + "\\n")
+              handle.write(message + "\n")
           if report["needs_replenishment"]:
               print("::warning::Approved topic reserve is below target; review the candidate queue.")
           PY
