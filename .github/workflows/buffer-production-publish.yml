@@ -61,6 +61,7 @@ jobs:
       - name: Run complete automated test suite
         run: python -m pytest -v
       - name: Load the saved production settings
+        id: load_settings
         env:
           CONTENT_SPEC: ${{ inputs.content_spec }}
         run: |
