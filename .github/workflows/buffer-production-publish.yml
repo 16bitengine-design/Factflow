@@ -1,8 +1,9 @@
 name: QuantaTale hands-off video publishing
 on:
   schedule:
-    # Run 20 minutes before the two daily Uganda publishing slots.
-    - cron: "40 8,14 * * *"
+    # Retry safely during each pre-publication window. The selector and ledger
+    # make repeated invocations idempotent for each local publishing slot.
+    - cron: "35,40,45,50 8,14 * * *"
   workflow_dispatch:
 permissions:
   contents: write
