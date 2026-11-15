@@ -1,0 +1,111 @@
+name: QuantaTale publishing watchdog
+on:
+  schedule:
+    # Independent watchdog checks throughout each 30-minute pre-publication window.
+    - cron: "30,35,40,45,50,55 8,14 * * *"
+  workflow_dispatch:
+permissions:
+  actions: write
+  contents: read
+  issues: write
+concurrency:
+  group: quantatale-publishing-watchdog
+  cancel-in-progress: false
+jobs:
+  detect-and-recover:
+    name: Detect missing slot runs and recover safely
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out the current publishing ledger
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Inspect slot and recover only when no attempt exists
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import subprocess
+          from datetime import datetime, timedelta
+          from pathlib import Path
+          from zoneinfo import ZoneInfo
+
+          repo = os.environ['GH_REPO']
+          zone = ZoneInfo('Africa/Kampala')
+          now = datetime.now(zone)
+          due = None
+          for hour in (12, 18):
+              candidate = now.replace(hour=hour, minute=0, second=0, microsecond=0)
+              lead = candidate - now
+              if timedelta(0) < lead <= timedelta(minutes=30):
+                  due = candidate
+                  break
+          if due is None:
+              print(f'No publishing slot is inside its recovery window at {now.isoformat()}.')
+              raise SystemExit(0)
+
+          ledger_path = Path('production/publishing-ledger.json')
+          ledger = json.loads(ledger_path.read_text(encoding='utf-8')) if ledger_path.exists() else {}
+          slot_entry = None
+          for content_id, entry in ledger.items():
+              try:
+                  recorded = datetime.fromisoformat(str(entry.get('due_at', '')).replace('Z', '+00:00'))
+                  if recorded.astimezone(zone) == due:
+                      slot_entry = (content_id, entry)
+                      break
+              except (TypeError, ValueError):
+                  continue
+
+          runs_raw = subprocess.check_output([
+              'gh', 'api', f'repos/{repo}/actions/workflows/buffer-production-publish.yml/runs?per_page=30'
+          ], text=True)
+          runs = json.loads(runs_raw).get('workflow_runs', [])
+          active = [run for run in runs if run.get('status') in {'queued', 'in_progress'}]
+          if active:
+              print('A production workflow is already active; waiting rather than dispatching a duplicate.')
+              for run in active[:5]:
+                  print(f"Active run {run.get('id')}: {run.get('status')} ({run.get('html_url')})")
+              raise SystemExit(0)
+
+          if slot_entry:
+              content_id, entry = slot_entry
+              posts = entry.get('buffer_posts') if isinstance(entry.get('buffer_posts'), dict) else {}
+              has_both = all(
+                  isinstance(posts.get(platform), dict) and posts[platform].get('post_id')
+                  for platform in ('youtube', 'tiktok')
+              )
+              if entry.get('status') == 'scheduled' and has_both:
+                  print(f'{content_id} already has Buffer post IDs for both platforms; no recovery needed.')
+                  raise SystemExit(0)
+              title = f"QuantaTale publishing slot blocked: {due.strftime('%Y-%m-%d %H:%M')} Africa/Kampala"
+              body = (
+                  f"The watchdog found a ledger reservation for `{content_id}` at `{due.isoformat()}`, "
+                  f"but no active production run and no complete pair of Buffer post IDs.\n\n"
+                  f"Current ledger status: `{entry.get('status', 'unknown')}`.\n\n"
+                  "Automatic redispatch was deliberately withheld because a partial Buffer operation may already "
+                  "have created a public post. Inspect the production run and Buffer before clearing or retrying "
+                  "this reservation; this fail-closed behavior prevents duplicate publication.\n\n"
+                  "This issue is an operational alert, not proof that either platform published."
+              )
+              existing = subprocess.check_output([
+                  'gh', 'issue', 'list', '--state', 'open', '--json', 'title', '--jq', '.[].title'
+              ], text=True).splitlines()
+              if title not in existing:
+                  subprocess.run(['gh', 'issue', 'create', '--title', title, '--body', body], check=True)
+                  print('Created an operational alert because the reservation is unsafe to retry.')
+              else:
+                  print('The operational alert for this blocked slot is already open.')
+              raise SystemExit(0)
+
+          print(f'No ledger reservation exists for {due.isoformat()} and no production run is active.')
+          subprocess.run([
+              'gh', 'api', '-X', 'POST',
+              f'repos/{repo}/actions/workflows/buffer-production-publish.yml/dispatches',
+              '-f', 'ref=main'
+          ], check=True)
+          print('Dispatched the production workflow for automatic recovery.')
+          PY
