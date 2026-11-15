@@ -27,8 +27,8 @@ def test_discovery_leads_are_persisted_and_deduplicated(tmp_path):
     assert restored["discovery_leads"][0]["editorial_review_required"] is True
 
 
-def test_spec_requires_explicit_editorial_approval():
-    library = load_library()
+def test_spec_requires_explicit_editorial_approval(tmp_path):
+    library = load_library(tmp_path / "library.json")
     assert register_production_spec(library, "draft.json", {"content_id_prefix": "draft", "title": "Draft"}) is True
     assert library["production_specs"][0]["status"] == "awaiting_editorial_review"
     assert library["production_specs"][0]["editorial_approved"] is False
