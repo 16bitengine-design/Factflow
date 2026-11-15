@@ -1,7 +1,8 @@
 name: QuantaTale hands-off video publishing
 on:
   schedule:
-    - cron: "0 9,15 * * *"
+    # Run 20 minutes before the two daily Uganda publishing slots.
+    - cron: "40 8,14 * * *"
   workflow_dispatch:
 permissions:
   contents: write
@@ -40,66 +41,49 @@ jobs:
           python -m pip install "cloudinary>=1.44,<2"
       - name: Run complete automated test suite
         run: python -m pytest -v
-      - name: Automatically select the next approved publishing slot
+      - name: Automatically select the next distinct approved daily slot
         id: select
         run: |
           python - <<'PY'
           import json, os
-          from datetime import datetime, timedelta, timezone
+          from datetime import datetime, timezone
           from pathlib import Path
-          from zoneinfo import ZoneInfo
+          from factflow.publishing_slots import select_next_slot
 
           library_path = Path("production/topic-library.json")
           library = json.loads(library_path.read_text(encoding="utf-8")) if library_path.exists() else {}
-          specs = [
-              Path(item["spec_path"])
-              for item in library.get("production_specs", [])
-              if item.get("editorial_approved") is True and item.get("status") == "approved_ready"
-          ]
           ledger_path = Path("production/publishing-ledger.json")
           ledger_path.parent.mkdir(parents=True, exist_ok=True)
-          ledger = json.loads(ledger_path.read_text() if ledger_path.exists() else "{}")
-          now_utc = datetime.now(timezone.utc)
-          candidates = []
-          for path in specs:
-              spec = json.loads(path.read_text(encoding="utf-8"))
-              if not spec.get("editorial_approved", False):
-                  print(f"Skipping {path}: awaiting one-time editorial approval.")
-                  continue
-              zone = ZoneInfo(spec["publish_timezone"])
-              local_now = now_utc.astimezone(zone)
-              slot = datetime.combine(local_now.date(), datetime.strptime(spec["publish_time_local"], "%H:%M").time(), tzinfo=zone)
-              if slot <= local_now + timedelta(minutes=5) or slot > local_now + timedelta(hours=4):
-                  continue
-              content_id = f'{spec["content_id_prefix"]}-{slot:%Y%m%d}-{spec["content_id_suffix"]}'
-              if content_id in ledger:
-                  print(f"Skipping {content_id}: already reserved or scheduled.")
-                  continue
-              candidates.append((slot, path, spec, content_id))
+          ledger = json.loads(ledger_path.read_text(encoding="utf-8")) if ledger_path.exists() else {}
+          selection = select_next_slot(library, ledger, now=datetime.now(timezone.utc))
           output = Path(os.environ["GITHUB_OUTPUT"])
-          if not candidates:
+          if selection is None:
               output.write_text("selected=false\n", encoding="utf-8")
-              print("No approved video is due in the next four hours. Nothing to publish.")
+              print("This run is outside the 30-minute window for a configured publishing slot.")
               raise SystemExit(0)
-          slot, path, spec, content_id = sorted(candidates, key=lambda item: item[0])[0]
+
+          spec_path = Path(selection["spec_path"])
+          spec = json.loads(spec_path.read_text(encoding="utf-8"))
+          content_id = selection["content_id"]
           ledger[content_id] = {
               "status": "reserved",
-              "spec": str(path),
-              "due_at": slot.isoformat(timespec="seconds"),
-              "reserved_at": now_utc.isoformat(timespec="seconds"),
+              "spec": str(spec_path),
+              "due_at": selection["due_at"],
+              "reserved_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
               "workflow_run_id": os.environ["GITHUB_RUN_ID"],
+              "slot_local": selection["slot_local"],
           }
           ledger_path.write_text(json.dumps(ledger, indent=2) + "\n", encoding="utf-8")
           with output.open("a", encoding="utf-8") as handle:
               handle.write("selected=true\n")
-              handle.write(f"spec={path}\n")
+              handle.write(f"spec={spec_path}\n")
               handle.write(f"content_id={content_id}\n")
-              handle.write(f"due_at={slot.isoformat(timespec='seconds')}\n")
-              handle.write(f"title={spec['post_title']}\n")
-              handle.write(f"description={spec['post_description']}\n")
-          print(f"Automatically selected: {spec['post_title']}")
+              handle.write(f"due_at={selection['due_at']}\n")
+              handle.write(f"title={selection['post_title']}\n")
+              handle.write(f"description={selection['post_description']}\n")
+          print(f"Selected distinct topic: {selection['post_title']}")
           print(f"Content ID: {content_id}")
-          print(f"Scheduled time: {slot.isoformat(timespec='seconds')}")
+          print(f"Uganda publishing slot: {selection['slot_local']}")
           PY
       - name: Persist duplicate-prevention reservation
         if: steps.select.outputs.selected == 'true'
@@ -107,7 +91,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add production/publishing-ledger.json
-          git commit -m "Reserve production publishing slot"
+          git commit -m "Reserve daily QuantaTale publishing slot"
           git push origin HEAD:main
       - name: Render automatically selected video
         if: steps.select.outputs.selected == 'true'
@@ -135,7 +119,7 @@ jobs:
             --content-id "$CONTENT_ID" \
             --due-at "$DUE_AT" \
             --title "$POST_TITLE" \
-            --description "$POST_DESCRIPTION" \\
+            --description "$POST_DESCRIPTION" \
             --results-file build/buffer-schedule-results.json
       - name: Mark publishing slot as scheduled
         if: success() && steps.select.outputs.selected == 'true'
@@ -169,7 +153,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add production/publishing-ledger.json
-          git commit -m "Mark production publishing slot scheduled"
+          git commit -m "Record scheduled QuantaTale daily slot"
           git push origin HEAD:main
       - name: Upload production evidence
         if: always() && steps.select.outputs.selected == 'true'
