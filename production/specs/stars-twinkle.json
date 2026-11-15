@@ -1,0 +1,49 @@
+{
+  "title": "Stars Don't Really Twinkle",
+  "category": "space",
+  "voice": "af_heart",
+  "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "Stars Don't Really Twinkle | QuantaTale",
+  "post_description": "A star can look like it's blinking, even when its light is steady. Discover the science behind it. Sources: https://science.nasa.gov/image-article/apod-2000-july-25-why-stars-twinkle/ https://starchild.gsfc.nasa.gov/docs/StarChild/questions/question26.html #Science #ScienceFacts #Education #QuantaTale",
+  "content_id_prefix": "qt-stars-twinkle",
+  "publish_timezone": "Africa/Kampala",
+  "editorial_approved": false,
+  "editorial_status": "awaiting_human_editorial_review",
+  "editorial_review_required": true,
+  "narration": "Most stars shine with light that is effectively steady to our eyes. The twinkling happens on the way to us. Starlight passes through Earth's turbulent atmosphere, where moving pockets of air bend the light by slightly different amounts. Because stars are so distant, they appear as tiny points, making those changes noticeable as flickering. From above most of Earth's atmosphere, stars do not twinkle in the same way. The atmosphere is doing the visual trick.",
+  "sources": [
+    {
+      "publisher": "NASA Astronomy Picture of the Day",
+      "title": "Why Stars Twinkle",
+      "url": "https://science.nasa.gov/image-article/apod-2000-july-25-why-stars-twinkle/",
+      "supports": "NASA explains that changing atmospheric air pockets distort point-like starlight and create the apparent twinkle.",
+      "review_status": "source_lead_requires_human_passage_check"
+    },
+    {
+      "publisher": "NASA Goddard StarChild",
+      "title": "Why do stars twinkle?",
+      "url": "https://starchild.gsfc.nasa.gov/docs/StarChild/questions/question26.html",
+      "supports": "NASA describes atmospheric turbulence bending starlight and causing apparent changes in brightness.",
+      "review_status": "source_lead_requires_human_passage_check"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Opening hook",
+      "visual_description": "A distant star emits a steady beam across space toward Earth.",
+      "visual_style": "hybrid"
+    },
+    {
+      "narration_segment": "Core explanation",
+      "visual_description": "The beam bends through moving atmospheric layers and its apparent position flickers.",
+      "visual_style": "3d"
+    },
+    {
+      "narration_segment": "Memorable conclusion",
+      "visual_description": "A side-by-side view compares the twinkling ground view with a steady space-based view.",
+      "visual_style": "hybrid"
+    }
+  ],
+  "editorial_review_notes": "Automated preparation only. Reviewer must open each source, verify the cited passage and context, check the narration against the sources, and explicitly approve before scheduling.",
+  "visual_profile": "holographic_science_v1"
+}
