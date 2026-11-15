@@ -239,3 +239,25 @@ quantatale render-sample examples/videos/why-the-sky-is-blue.json --output-dir b
 Rendering requires FFmpeg/ffprobe, eSpeak NG for Kokoro phonemization, DejaVu fonts, Pillow, CPU PyTorch and Kokoro model weights. Kokoro's model and weights are open-weight and Apache-2.0 licensed. GitHub Actions cache availability is not guaranteed. The core research installation remains dependency-free; Pillow is an optional extra. GitHub-hosted runner time, CPU, artifact storage and retention remain subject to GitHub's current limits.
 
 The first renderer is a vertical proof of the production pipeline, not yet the complete hybrid 2D/3D animation system. Horizontal 16:9 rendering, richer scene planning, advanced motion design and audio mixing remain future upgrades.
+
+
+## Buffer publishing integration (draft-only test)
+
+QuantaTale includes a manually triggered integration check that renders the sample video, uploads it to Cloudinary, verifies that the resulting HTTPS video URL is publicly reachable, and creates a **Buffer draft** for the selected connected channel(s). It does not schedule or publish posts. YouTube drafts are explicitly marked private and use the Education category by default (category ID 27); the optional repository variable `BUFFER_YOUTUBE_CATEGORY_ID` can override that category.
+
+Configure these GitHub Actions secrets in **Settings → Secrets and variables → Actions**:
+
+- `BUFFER_API_KEY`
+- `BUFFER_YOUTUBE_CHANNEL_ID`
+- `BUFFER_TIKTOK_CHANNEL_ID`
+- `CLOUDINARY_CLOUD_NAME`
+- `CLOUDINARY_API_KEY`
+- `CLOUDINARY_API_SECRET`
+
+Optionally configure the repository variable `BUFFER_YOUTUBE_CATEGORY_ID`. The integration never prints secret values. Do not put credentials in workflow files, source code, issue comments or chat messages.
+
+To run the test, open **Actions → QuantaTale Buffer draft integration test → Run workflow**, choose `both`, `youtube` or `tiktok`, and start the run. Check the job output for a successful draft ID and then inspect the corresponding draft in Buffer. A successful run proves that the selected channel accepted a video draft; it does not prove that the social network will accept or publish every future video. Publishing remains disabled until the editorial approval and scheduling workflow is separately implemented and tested.
+
+Buffer requires video media to be hosted at a direct, public, stable HTTPS URL. The Cloudinary delivery URL is public so Buffer can retrieve it; never use an expiring signed delivery URL. The sample's draft description is explicitly marked as an integration test. Re-running the workflow creates new drafts and new Cloudinary assets; remove test drafts in Buffer when finished.
+
+The workflow uses the current Buffer GraphQL API and Cloudinary's signed server-side upload SDK. See the [Buffer video-post example](https://developers.buffer.com/examples/create-video-post.html), [Buffer draft-post example](https://developers.buffer.com/examples/create-draft-post.html), [Buffer media-hosting requirements](https://developers.buffer.com/guides/hosting-media.html), and [Cloudinary Upload API](https://cloudinary.com/documentation/upload_images).

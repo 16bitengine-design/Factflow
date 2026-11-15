@@ -1,0 +1,90 @@
+name: QuantaTale Buffer draft integration test
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Which connected Buffer channel should receive the test draft?
+        required: true
+        type: choice
+        options:
+          - both
+          - youtube
+          - tiktok
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quantatale-buffer-draft-test
+  cancel-in-progress: false
+
+jobs:
+  create-draft:
+    name: Render, host and save a non-publishing Buffer draft
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install free rendering tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends ffmpeg espeak-ng fonts-dejavu-core
+
+      - name: Cache Kokoro model files
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface/hub
+          key: kokoro-82m-af-heart-v1
+
+      - name: Install QuantaTale renderer and publishing SDK
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -e ".[render,tts]"
+          python -m pip install "cloudinary>=1.44,<2"
+
+      - name: Run renderer and integration unit tests
+        run: |
+          python -m pytest tests/test_video_render.py tests/test_buffer_publish.py -v
+
+      - name: Render the reviewed sample demonstration
+        run: |
+          quantatale render-sample examples/videos/why-the-sky-is-blue.json --output-dir build/sample-video
+
+      - name: Upload video and save Buffer drafts only
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_YOUTUBE_CHANNEL_ID: ${{ secrets.BUFFER_YOUTUBE_CHANNEL_ID }}
+          BUFFER_TIKTOK_CHANNEL_ID: ${{ secrets.BUFFER_TIKTOK_CHANNEL_ID }}
+          BUFFER_YOUTUBE_CATEGORY_ID: ${{ vars.BUFFER_YOUTUBE_CATEGORY_ID }}
+          CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
+          CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+          CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+        run: |
+          python -m factflow.buffer_publish \
+            --video build/sample-video/quantatale-sample-vertical.mp4 \
+            --target "${{ inputs.target }}" \
+            --run-id "${{ github.run_id }}-${{ github.run_attempt }}" \
+            --title "Why Is the Sky Blue? | QuantaTale Sample" \
+            --description "A QuantaTale integration-test draft explaining Rayleigh scattering. This is a private editorial test and is not approved for public release. Sources: NASA Space Place and NOAA. #Science #Education #QuantaTale"
+
+      - name: Upload integration evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quantatale-buffer-integration-${{ github.run_id }}
+          path: |
+            build/sample-video/sample-metadata.json
+            build/sample-video/thumbnail.png
+            build/sample-video/captions.srt
+          if-no-files-found: warn
+          retention-days: 7
