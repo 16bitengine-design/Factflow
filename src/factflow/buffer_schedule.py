@@ -102,7 +102,7 @@ def run_scheduled_publish(*, video_path: str, target: str, content_id: str, due_
         if results_path:
             results_path.parent.mkdir(parents=True, exist_ok=True)
             temporary = results_path.with_suffix(results_path.suffix + ".tmp")
-            temporary.write_text(json.dumps(results, indent=2) + "\\n", encoding="utf-8")
+            temporary.write_text(json.dumps(results, indent=2) + "\n", encoding="utf-8")
             temporary.replace(results_path)
     return results
 
