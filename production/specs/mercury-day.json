@@ -1,0 +1,49 @@
+{
+  "title": "A Day on Mercury Lasts Two Mercury Years",
+  "category": "space",
+  "voice": "af_heart",
+  "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "A Day on Mercury Lasts Two Mercury Years | QuantaTale",
+  "post_description": "On Mercury, one sunrise-to-sunrise day lasts longer than two trips around the Sun. Discover the science behind it. Sources: https://science.nasa.gov/mercury/facts/ https://spaceplace.nasa.gov/years-on-other-planets/en/ #Science #ScienceFacts #Education #QuantaTale",
+  "content_id_prefix": "qt-mercury-day",
+  "publish_timezone": "Africa/Kampala",
+  "editorial_approved": false,
+  "editorial_status": "awaiting_human_editorial_review",
+  "editorial_review_required": true,
+  "narration": "Mercury races around the Sun, completing a year in about 88 Earth days. But its slow spin and orbital motion combine to make one sunrise-to-sunrise solar day last about 176 Earth days. That means a single Mercury day-night cycle lasts roughly twice as long as a Mercury year. The distinction matters: one rotation relative to the stars takes about 59 Earth days, while the solar day is much longer.",
+  "sources": [
+    {
+      "publisher": "NASA Science",
+      "title": "Mercury: Facts",
+      "url": "https://science.nasa.gov/mercury/facts/",
+      "supports": "NASA states Mercury rotates once every 59 Earth days and has a 176-Earth-day solar day.",
+      "review_status": "source_lead_requires_human_passage_check"
+    },
+    {
+      "publisher": "NASA Space Place",
+      "title": "How Long is a Year on Other Planets?",
+      "url": "https://spaceplace.nasa.gov/years-on-other-planets/en/",
+      "supports": "NASA gives Mercury's orbital year as 88 Earth days.",
+      "review_status": "source_lead_requires_human_passage_check"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Opening hook",
+      "visual_description": "Mercury races around the Sun while a calendar advances 88 Earth days.",
+      "visual_style": "hybrid"
+    },
+    {
+      "narration_segment": "Core explanation",
+      "visual_description": "A separate rotation counter advances more slowly, with labels for sidereal rotation and solar day.",
+      "visual_style": "3d"
+    },
+    {
+      "narration_segment": "Memorable conclusion",
+      "visual_description": "Two Mercury orbits complete while one sunrise-to-sunrise cycle finishes.",
+      "visual_style": "hybrid"
+    }
+  ],
+  "editorial_review_notes": "Automated preparation only. Reviewer must open each source, verify the cited passage and context, check the narration against the sources, and explicitly approve before scheduling.",
+  "visual_profile": "holographic_science_v1"
+}
