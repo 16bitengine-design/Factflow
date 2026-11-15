@@ -261,3 +261,8 @@ To run the test, open **Actions → QuantaTale Buffer draft integration test →
 Buffer requires video media to be hosted at a direct, public, stable HTTPS URL. The Cloudinary delivery URL is public so Buffer can retrieve it; never use an expiring signed delivery URL. The sample's draft description is explicitly marked as an integration test. Re-running the workflow creates new drafts and new Cloudinary assets; remove test drafts in Buffer when finished.
 
 The workflow uses the current Buffer GraphQL API and Cloudinary's signed server-side upload SDK. See the [Buffer video-post example](https://developers.buffer.com/examples/create-video-post.html), [Buffer draft-post example](https://developers.buffer.com/examples/create-draft-post.html), [Buffer media-hosting requirements](https://developers.buffer.com/guides/hosting-media.html), and [Cloudinary Upload API](https://cloudinary.com/documentation/upload_images).
+
+
+## Global audiovisual production standards
+
+Every topic and production workflow follows the shared [visual and narration standards](docs/visual-production-standards.md). The renderer enforces the Kokoro voice policy (default `af_heart`; eSpeak is phonemization-only) and records the shared standards in render metadata. New storyboards must map every important narration beat to a scientifically accurate, animated holographic visual. A topic must never inherit another topic's storyboard. Automated checks and human editorial approval are required before public release.
