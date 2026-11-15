@@ -44,12 +44,12 @@ concurrency:
 jobs:
   schedule-video:
     name: Render, quality-check and schedule approved video
-    if: \${{ inputs.editorial_approved && inputs.confirm_publication }}
+    if: ${{ inputs.editorial_approved && inputs.confirm_publication }}
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
       - name: Reject workflow reruns to avoid duplicate posts
-        if: \${{ github.run_attempt != 1 }}
+        if: ${{ github.run_attempt != 1 }}
         run: |
           echo "::error::This production workflow cannot be rerun. Check Buffer and use a new content_id."
           exit 1
@@ -78,29 +78,29 @@ jobs:
       - name: Run complete automated test suite
         run: python -m pytest -v
       - name: Render the selected video
-        run: quantatale render-sample "\${{ inputs.content_spec }}" --output-dir build/production-video
+        run: quantatale render-sample "${{ inputs.content_spec }}" --output-dir build/production-video
       - name: Schedule public video through Buffer
         env:
-          BUFFER_API_KEY: \${{ secrets.BUFFER_API_KEY }}
-          BUFFER_YOUTUBE_CHANNEL_ID: \${{ secrets.BUFFER_YOUTUBE_CHANNEL_ID }}
-          BUFFER_TIKTOK_CHANNEL_ID: \${{ secrets.BUFFER_TIKTOK_CHANNEL_ID }}
-          BUFFER_YOUTUBE_CATEGORY_ID: \${{ vars.BUFFER_YOUTUBE_CATEGORY_ID }}
-          CLOUDINARY_CLOUD_NAME: \${{ secrets.CLOUDINARY_CLOUD_NAME }}
-          CLOUDINARY_API_KEY: \${{ secrets.CLOUDINARY_API_KEY }}
-          CLOUDINARY_API_SECRET: \${{ secrets.CLOUDINARY_API_SECRET }}
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_YOUTUBE_CHANNEL_ID: ${{ secrets.BUFFER_YOUTUBE_CHANNEL_ID }}
+          BUFFER_TIKTOK_CHANNEL_ID: ${{ secrets.BUFFER_TIKTOK_CHANNEL_ID }}
+          BUFFER_YOUTUBE_CATEGORY_ID: ${{ vars.BUFFER_YOUTUBE_CATEGORY_ID }}
+          CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
+          CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+          CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
         run: |
           python -m factflow.buffer_schedule \
             --video build/production-video/quantatale-sample-vertical.mp4 \
-            --target "\${{ inputs.target }}" \
-            --content-id "\${{ inputs.content_id }}" \
-            --due-at "\${{ inputs.due_at }}" \
+            --target "${{ inputs.target }}" \
+            --content-id "${{ inputs.content_id }}" \
+            --due-at "${{ inputs.due_at }}" \
             --title "Why Is the Sky Blue? | QuantaTale" \
             --description "Sunlight contains all visible colours, but Earth's atmosphere scatters shorter blue wavelengths more strongly. Discover the science of Rayleigh scattering. Sources: NASA Space Place https://spaceplace.nasa.gov/blue-sky/en/ and NOAA https://www.nesdis.noaa.gov/about/k-12-education/atmosphere/why-the-sky-blue #Science #ScienceFacts #Education #QuantaTale"
       - name: Upload production review evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: quantatale-production-\${{ inputs.content_id }}
+          name: quantatale-production-${{ inputs.content_id }}
           path: |
             build/production-video/quantatale-sample-vertical.mp4
             build/production-video/thumbnail.png
