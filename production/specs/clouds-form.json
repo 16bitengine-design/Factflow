@@ -1,0 +1,49 @@
+{
+  "title": "Clouds Need Tiny Particles to Form",
+  "category": "weather",
+  "voice": "af_heart",
+  "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "Clouds Need Tiny Particles to Form | QuantaTale",
+  "post_description": "A cloud can begin with something as tiny as a speck of dust. Discover the science behind it. Sources: https://www.noaa.gov/jetstream/clouds/how-clouds-form https://science.nasa.gov/kids/earth/how-do-clouds-form/ #Science #ScienceFacts #Education #QuantaTale",
+  "content_id_prefix": "qt-clouds",
+  "publish_timezone": "Africa/Kampala",
+  "editorial_approved": false,
+  "editorial_status": "awaiting_human_editorial_review",
+  "editorial_review_required": true,
+  "narration": "Clouds may look weightless, but their droplets need a starting point. Water evaporates into invisible water vapour. When moist air rises, it expands and cools. Once it reaches saturation, water vapour can condense onto microscopic particles such as dust, sea salt or smoke. These are called cloud condensation nuclei. Countless tiny droplets or ice crystals gather to make a visible cloud. A cloud is not simply water vapour floating in the sky.",
+  "sources": [
+    {
+      "publisher": "NOAA JetStream",
+      "title": "How Clouds Form",
+      "url": "https://www.noaa.gov/jetstream/clouds/how-clouds-form",
+      "supports": "NOAA explains the roles of condensation nuclei, rising air, cooling and saturation in cloud formation.",
+      "review_status": "source_lead_requires_human_passage_check"
+    },
+    {
+      "publisher": "NASA Science",
+      "title": "How Do Clouds Form?",
+      "url": "https://science.nasa.gov/kids/earth/how-do-clouds-form/",
+      "supports": "NASA explains evaporation, condensation and how airborne particles provide surfaces for cloud droplets and ice crystals.",
+      "review_status": "source_lead_requires_human_passage_check"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Opening hook",
+      "visual_description": "A lake evaporates into invisible water-vapour particles rising upward.",
+      "visual_style": "hybrid"
+    },
+    {
+      "narration_segment": "Core explanation",
+      "visual_description": "An air parcel rises, expands and cools as a temperature gauge drops.",
+      "visual_style": "3d"
+    },
+    {
+      "narration_segment": "Memorable conclusion",
+      "visual_description": "Microscopic dust and salt nuclei collect droplets, building a cloud from the inside.",
+      "visual_style": "hybrid"
+    }
+  ],
+  "editorial_review_notes": "Automated preparation only. Reviewer must open each source, verify the cited passage and context, check the narration against the sources, and explicitly approve before scheduling.",
+  "visual_profile": "holographic_science_v1"
+}
