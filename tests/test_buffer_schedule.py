@@ -107,13 +107,16 @@ def test_partial_platform_success_is_persisted_before_next_platform_fails(monkey
     monkeypatch.setenv("CLOUDINARY_API_SECRET", "cloud-secret")
     monkeypatch.setattr(buffer_schedule, "upload_video_to_cloudinary", lambda *a: "https://example.com/video.mp4")
     monkeypatch.setattr(buffer_schedule, "verify_public_video_url", lambda *a: None)
-    monkeypatch.setattr(
-        buffer_schedule, "create_buffer_scheduled_video",
-        side_effect=[
-            {"target": "youtube", "post_id": "yt-1", "status": "buffer", "due_at": "2026-11-16T09:00:00Z"},
-            PublishingIntegrationError("TikTok API unavailable"),
-        ],
-    )
+    outcomes = iter([
+        {"target": "youtube", "post_id": "yt-1", "status": "buffer", "due_at": "2026-11-16T09:00:00Z"},
+        PublishingIntegrationError("TikTok API unavailable"),
+    ])
+    def schedule_next(*args, **kwargs):
+        outcome = next(outcomes)
+        if isinstance(outcome, Exception):
+            raise outcome
+        return outcome
+    monkeypatch.setattr(buffer_schedule, "create_buffer_scheduled_video", schedule_next)
 
     with pytest.raises(PublishingIntegrationError, match="TikTok API unavailable"):
         buffer_schedule.run_scheduled_publish(
