@@ -1,0 +1,49 @@
+{
+  "title": "Why Space Is Silent",
+  "category": "space",
+  "voice": "af_heart",
+  "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "Why Space Is Silent | QuantaTale",
+  "post_description": "A spacecraft can explode on screen with a huge bang—but real space is silent. Discover the science behind it. Sources: https://science.nasa.gov/ems/02_anatomy/ https://howthingsfly.si.edu/ask-an-explainer/what-speed-sound-space #Science #ScienceFacts #Education #QuantaTale",
+  "content_id_prefix": "qt-sound-space",
+  "publish_timezone": "Africa/Kampala",
+  "editorial_approved": false,
+  "editorial_status": "awaiting_human_editorial_review",
+  "editorial_review_required": true,
+  "narration": "Sound is a vibration that travels through a material such as air, water or metal. In the near-vacuum of space, there are far too few particles to carry an ordinary sound wave from one place to another. Light is different: it is an electromagnetic wave and does not need air or another material to travel. So a real explosion in open space would not reach a nearby observer as a movie-style boom. Inside a spacecraft, sound can travel through the cabin air.",
+  "sources": [
+    {
+      "publisher": "NASA Science",
+      "title": "Anatomy of an Electromagnetic Wave",
+      "url": "https://science.nasa.gov/ems/02_anatomy/",
+      "supports": "NASA explains that sound waves cannot travel through vacuum because there is no medium to transmit mechanical waves, while electromagnetic waves can.",
+      "review_status": "source_lead_requires_human_passage_check"
+    },
+    {
+      "publisher": "Smithsonian National Air and Space Museum",
+      "title": "What is the speed of sound in space?",
+      "url": "https://howthingsfly.si.edu/ask-an-explainer/what-speed-sound-space",
+      "supports": "The Smithsonian explains that sound requires vibrating particles and cannot propagate through the near-vacuum of space.",
+      "review_status": "source_lead_requires_human_passage_check"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Opening hook",
+      "visual_description": "A cinematic spacecraft floats in space as an explosion flashes silently.",
+      "visual_style": "hybrid"
+    },
+    {
+      "narration_segment": "Core explanation",
+      "visual_description": "Sound-wave rings stop at the boundary of a vacuum while light continues outward.",
+      "visual_style": "3d"
+    },
+    {
+      "narration_segment": "Memorable conclusion",
+      "visual_description": "A cutaway of a spacecraft shows sound travelling through cabin air.",
+      "visual_style": "hybrid"
+    }
+  ],
+  "editorial_review_notes": "Automated preparation only. Reviewer must open each source, verify the cited passage and context, check the narration against the sources, and explicitly approve before scheduling.",
+  "visual_profile": "holographic_science_v1"
+}
