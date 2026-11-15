@@ -124,3 +124,9 @@ def test_project_wide_visual_standards_cover_holographic_motion_and_storytelling
     storytelling = set(PRODUCTION_STANDARDS["storytelling_requirements"])
     assert "every_important_narrated_concept_has_a_visual" in storytelling
     assert "muted_playback_remains_understandable" in storytelling
+
+
+def test_renderer_refuses_to_reuse_sky_storyboard_for_another_topic():
+    spec = {**valid_spec(), "visual_profile": "sunset_red_v1"}
+    with pytest.raises(ValueError, match="unrelated storyboard"):
+        validate_sample_spec(spec)
