@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 import pytest
-from factflow.publishing_slots import select_next_slot
+from factflow.publishing_slots import select_next_slot, select_immediate_slot
 
 def _spec(path, prefix, title):
     return {"spec_path": path, "content_id_prefix": prefix, "title": title, "post_title": title,
@@ -69,3 +69,30 @@ def test_unverified_source_lead_still_blocks_publication():
         "sources": [{"review_status": "source_lead_requires_human_passage_check"}]}
     with pytest.raises(ValueError, match="No enabled production specs"):
         select_next_slot({"production_specs": [spec]}, {}, now=now)
+
+
+def test_immediate_selection_uses_safe_future_time_and_unused_topic():
+    now = datetime(2026, 11, 16, 14, 11, tzinfo=timezone.utc)
+    library = {"production_specs": [
+        _spec("already-used.json", "qt-used", "Used"),
+        _spec("next.json", "qt-next", "Next"),
+    ]}
+    ledger = {"used": {"spec": "already-used.json", "due_at": "2026-11-16T12:00:00+03:00",
+                       "publish_timezone": "Africa/Kampala"}}
+    result = select_immediate_slot(library, ledger, now=now)
+    assert result["spec_path"] == "next.json"
+    assert result["due_at"] == "2026-11-16T17:31:00+03:00"
+    assert result["content_id"] == "qt-next-20261116-1731"
+
+def test_immediate_selection_keeps_evidence_safety_gate():
+    now = datetime(2026, 11, 16, 14, 11, tzinfo=timezone.utc)
+    blocked = {**_spec("blocked.json", "qt-blocked", "Blocked"),
+               "source_passage_verification_required_before_publication": True}
+    with pytest.raises(ValueError, match="No enabled production specs"):
+        select_immediate_slot({"production_specs": [blocked]}, {}, now=now)
+
+def test_immediate_selection_requires_rendering_lead_time():
+    now = datetime(2026, 11, 16, 14, 11, tzinfo=timezone.utc)
+    with pytest.raises(ValueError, match="at least ten minutes"):
+        select_immediate_slot({"production_specs": [_spec("a.json", "qt-a", "A")]}, {},
+                              now=now, lead_time=timedelta(minutes=5))
