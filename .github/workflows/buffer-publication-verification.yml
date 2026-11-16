@@ -2,6 +2,13 @@ name: QuantaTale Buffer publication verification
 on:
   schedule:
     - cron: "20 * * * *"
+    # Recheck shortly after the noon/evening publishing windows.
+    - cron: "*/10 9,15 * * *"
+  push:
+    # Run verification immediately when this workflow's configuration changes.
+    branches: [main]
+    paths:
+      - ".github/workflows/buffer-publication-verification.yml"
   workflow_dispatch:
   workflow_run:
     workflows:

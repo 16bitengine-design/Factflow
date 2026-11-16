@@ -104,3 +104,14 @@ def test_does_not_match_recovery_reservation_on_a_later_local_day():
         }
     }
     assert find_recovery_entry(ledger, due) is None
+
+
+def test_intentionally_cancelled_duplicate_is_terminal_not_retryable():
+    entry = {
+        "status": "cancelled_duplicate",
+        "buffer_posts": {
+            "youtube": {"post_id": "yt-1", "buffer_status": "deleted"},
+            "tiktok": {"post_id": "tt-1", "buffer_status": "deleted"},
+        },
+    }
+    assert slot_entry_state(entry) == "cancelled"
