@@ -107,10 +107,19 @@ jobs:
               raise SystemExit(0)
 
           print(f'No ledger reservation exists for {due.isoformat()} and no production run is active.')
-          subprocess.run([
-              'gh', 'api', '-X', 'POST',
-              f'repos/{repo}/actions/workflows/buffer-production-publish.yml/dispatches',
-              '-f', 'ref=main'
-          ], check=True)
-          print('Dispatched the production workflow for automatic recovery.')
+          if due.astimezone(timezone.utc) <= now:
+              payload = json.dumps({'ref': 'main', 'inputs': {'publish_now': 'true'}})
+              subprocess.run([
+                  'gh', 'api', '-X', 'POST',
+                  f'repos/{repo}/actions/workflows/buffer-production-publish.yml/dispatches',
+                  '--input', '-'
+              ], input=payload, text=True, check=True)
+              print('Dispatched an immediate production recovery for the missed slot.')
+          else:
+              subprocess.run([
+                  'gh', 'api', '-X', 'POST',
+                  f'repos/{repo}/actions/workflows/buffer-production-publish.yml/dispatches',
+                  '-f', 'ref=main'
+              ], check=True)
+              print('Dispatched the production workflow for the upcoming slot.')
           PY
