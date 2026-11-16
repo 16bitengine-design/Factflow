@@ -39,24 +39,17 @@ def select_immediate_slot(library: dict[str, Any], ledger: dict[str, Any], *,
         if isinstance(item, dict) and is_publishable_spec(item)]
     if not eligible:
         raise ValueError("No enabled production specs clear the evidence safety gates.")
-    used_today: set[str] = set()
-    for entry in ledger.values():
-        if not isinstance(entry, dict) or not entry.get("spec") or not entry.get("due_at"):
-            continue
-        try:
-            due = _parse_datetime(entry["due_at"])
-        except (TypeError, ValueError):
-            continue
-        zone_name = entry.get("publish_timezone")
-        if zone_name:
-            local_date = due.astimezone(ZoneInfo(zone_name)).date()
-        else:
-            local_date = due.date()
-        if local_date == current.astimezone(ZoneInfo("Africa/Kampala")).date():
-            used_today.add(str(entry["spec"]))
-    candidates = [item for item in eligible if str(item.get("spec_path", "")) not in used_today]
+    # A production specification is a one-time topic, not a daily reusable slot.
+    # Any ledger reservation consumes it, including scheduled and cancelled
+    # duplicate entries; failed runs require explicit ledger reconciliation.
+    used_specs = {
+        str(entry["spec"])
+        for entry in ledger.values()
+        if isinstance(entry, dict) and entry.get("spec")
+    }
+    candidates = [item for item in eligible if str(item.get("spec_path", "")) not in used_specs]
     if not candidates:
-        raise ValueError("No unused eligible topic remains for an immediate post today.")
+        raise ValueError("No unused eligible topic remains in publishing history for an immediate post.")
     spec = sorted(candidates, key=lambda item: str(item.get("spec_path", "")))[0]
     zone_name = str(spec.get("publish_timezone") or "Africa/Kampala")
     zone = ZoneInfo(zone_name)
@@ -127,19 +120,20 @@ def select_next_slot(library: dict[str, Any], ledger: dict[str, Any], *,
     chosen_specs = [spec for due, spec in candidates if due == slot_utc]
     zone = ZoneInfo(chosen_specs[0]["publish_timezone"])
     local_slot = slot_utc.astimezone(zone)
-    used_spec_paths: set[str] = set()
-    for entry in ledger.values():
-        if not isinstance(entry, dict) or not entry.get("spec") or not entry.get("due_at"):
-            continue
-        try:
-            prior_due = _parse_datetime(entry["due_at"]).astimezone(zone)
-        except (TypeError, ValueError):
-            continue
-        if prior_due.date() == local_slot.date():
-            used_spec_paths.add(str(entry["spec"]))
+    # Do not recycle a topic on a later day or during emergency recovery.
+    # Ledger entries intentionally consume their spec even when a run was
+    # cancelled; operators must reconcile a genuinely unused failed run.
+    used_spec_paths = {
+        str(entry["spec"])
+        for entry in ledger.values()
+        if isinstance(entry, dict) and entry.get("spec")
+    }
     unused = [spec for spec in chosen_specs if str(spec.get("spec_path", "")) not in used_spec_paths]
     if not unused:
-        raise ValueError(f"No unused eligible topic remains for the {local_slot:%Y-%m-%d %H:%M} {zone.key} publishing slot.")
+        raise ValueError(
+            f"No unused eligible topic remains in publishing history for the "
+            f"{local_slot:%Y-%m-%d %H:%M} {zone.key} publishing slot."
+        )
     spec = sorted(unused, key=lambda item: str(item.get("spec_path", "")))[0]
     prefix = str(spec.get("content_id_prefix", "")).strip()
     if not prefix:
