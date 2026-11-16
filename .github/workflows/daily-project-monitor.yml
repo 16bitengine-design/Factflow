@@ -61,7 +61,7 @@ jobs:
                 if (verification === "published" || verification === "confirmed_public") confirmed++;
               }
             }
-            const approved = (library.production_specs || []).filter(item => item.editorial_approved === true).length;
+            const eligible = (library.production_specs || []).filter(item =>\n              item.publishing_enabled !== false &&\n              item.source_passage_verification_required_before_publication !== true &&\n              !(item.sources || []).some(source =>\n                String(source.review_status || "").startsWith("source_lead_requires_human")\n              )\n            ).length;
             const leads = library.discovery_leads || [];
             const unreviewed = leads.filter(item => item.status === "candidate_unreviewed").length;
             const failed = [...latestByName.values()].filter(run =>
@@ -73,7 +73,7 @@ jobs:
               `- Checked: ${new Date().toISOString()}`,
               `- Main: [${commit.data.sha.slice(0, 12)}](${commit.data.html_url}) — ${commit.data.commit.message.split("\n")[0]}`,
               `- Open pull requests: ${prs.data.length}`,
-              `- Topic library: ${approved} explicitly approved production specs; ${leads.length} discovery leads; ${unreviewed} unreviewed leads`,
+              `- Topic library: ${eligible} enabled production specs passing the configured evidence gates; ${leads.length} discovery leads; ${unreviewed} unreviewed leads`,
               `- Publishing ledger: ${production.length} content entries; ${postCount} Buffer platform posts; ${confirmed} explicitly confirmed public outcomes; ${awaiting} awaiting confirmation`,
               "",
               "## Latest relevant workflow runs",
