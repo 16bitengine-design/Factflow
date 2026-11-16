@@ -25,7 +25,7 @@ A topic cannot be used twice on the same Kampala calendar day. The publishing le
 
 ## Autonomous recovery
 
-The publishing watchdog runs in the same preparation windows as production. It checks for an active production run and the exact slot's ledger entry:
+The publishing watchdog checks every ten minutes during the surrounding UTC hours (08:00–09:50 and 14:00–15:50 UTC). These staggered checks are intentionally broader than the production cron window, so it can recover when a production schedule event is delayed or dropped. It checks for an active production run and the exact slot's ledger entry:
 - If a complete YouTube and TikTok Buffer post pair is already recorded as scheduled, it does nothing.
 - If no reservation exists and no production run is active, it dispatches the production workflow automatically.
 - If a reservation exists but the Buffer result is incomplete, it creates an operational GitHub issue and deliberately does not retry blindly. A timed-out request may have created a post even if the response was lost; automatic retry could duplicate public content.
