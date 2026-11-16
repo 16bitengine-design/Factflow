@@ -69,13 +69,14 @@ def create_buffer_scheduled_video(*, target: str, channel_id: str, video_url: st
 
 def run_scheduled_publish(*, video_path: str, target: str, content_id: str, due_at: str,
                           title: str, description: str,
-                          results_file: str | Path | None = None) -> list[dict[str, str]]:
+                          results_file: str | Path | None = None,
+                          now: datetime | None = None) -> list[dict[str, str]]:
     """Upload one video and schedule it on the selected Buffer channels."""
     if not os.path.isfile(video_path):
         raise PublishingIntegrationError(f"Rendered video does not exist: {video_path}")
     if not re.fullmatch(r"[a-z0-9][a-z0-9._-]{2,63}", content_id):
         raise ValueError("content_id must be 3-64 lowercase letters, digits, dots, underscores or hyphens.")
-    scheduled_at = normalize_due_at(due_at)
+    scheduled_at = normalize_due_at(due_at, now=now)
     targets = ["youtube", "tiktok"] if target == "both" else [target]
     if any(item not in {"youtube", "tiktok"} for item in targets):
         raise ValueError("target must be youtube, tiktok or both")

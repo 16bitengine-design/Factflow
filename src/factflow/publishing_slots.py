@@ -21,6 +21,59 @@ def is_publishable_spec(item: dict[str, Any]) -> bool:
         for source in sources
     )
 
+def select_immediate_slot(library: dict[str, Any], ledger: dict[str, Any], *,
+    now: datetime | None = None, lead_time: timedelta = timedelta(minutes=20)
+) -> dict[str, str]:
+    """Select an unused evidence-eligible topic for an operator-triggered ASAP post.
+
+    The lead time gives rendering and upload enough room before Buffer's
+    five-minute minimum scheduling boundary. Normal noon/evening slots are
+    unchanged; this path is only used by an explicit manual dispatch input.
+    """
+    current = now or datetime.now(timezone.utc)
+    if current.tzinfo is None or current.utcoffset() is None:
+        raise ValueError("now must be timezone-aware")
+    if lead_time < timedelta(minutes=10):
+        raise ValueError("lead_time must be at least ten minutes")
+    eligible = [item for item in library.get("production_specs", [])
+        if isinstance(item, dict) and is_publishable_spec(item)]
+    if not eligible:
+        raise ValueError("No enabled production specs clear the evidence safety gates.")
+    used_today: set[str] = set()
+    for entry in ledger.values():
+        if not isinstance(entry, dict) or not entry.get("spec") or not entry.get("due_at"):
+            continue
+        try:
+            due = _parse_datetime(entry["due_at"])
+        except (TypeError, ValueError):
+            continue
+        zone_name = entry.get("publish_timezone")
+        if zone_name:
+            local_date = due.astimezone(ZoneInfo(zone_name)).date()
+        else:
+            local_date = due.date()
+        if local_date == current.astimezone(ZoneInfo("Africa/Kampala")).date():
+            used_today.add(str(entry["spec"]))
+    candidates = [item for item in eligible if str(item.get("spec_path", "")) not in used_today]
+    if not candidates:
+        raise ValueError("No unused eligible topic remains for an immediate post today.")
+    spec = sorted(candidates, key=lambda item: str(item.get("spec_path", "")))[0]
+    zone_name = str(spec.get("publish_timezone") or "Africa/Kampala")
+    zone = ZoneInfo(zone_name)
+    due_local = (current.astimezone(timezone.utc) + lead_time).astimezone(zone)
+    prefix = str(spec.get("content_id_prefix", "")).strip()
+    if not prefix:
+        raise ValueError(f"Eligible spec {spec.get('spec_path')} has no content_id_prefix.")
+    return {
+        "spec_path": str(spec["spec_path"]),
+        "content_id": f"{prefix}-{due_local:%Y%m%d}-{due_local:%H%M}",
+        "due_at": due_local.isoformat(timespec="seconds"),
+        "post_title": str(spec.get("post_title") or spec.get("title") or ""),
+        "post_description": str(spec.get("post_description") or ""),
+        "publish_timezone": zone.key,
+        "slot_local": due_local.strftime("%Y-%m-%d %H:%M"),
+    }
+
 def _parse_datetime(value: str) -> datetime:
     parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
     if parsed.tzinfo is None or parsed.utcoffset() is None:

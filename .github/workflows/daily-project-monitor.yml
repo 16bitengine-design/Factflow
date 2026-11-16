@@ -2,14 +2,15 @@ name: QuantaTale daily project monitor
 
 on:
   schedule:
-    - cron: "0 6 * * *" # 09:00 Africa/Kampala daily.
+    - cron: "0 6 * * *" # 09:00 Africa/Kampala daily health report.
+    - cron: "30 8,14 * * *" # Independent publishing recovery at 11:30 and 17:30 Kampala.
   workflow_dispatch:
   pull_request:
     paths:
       - ".github/workflows/daily-project-monitor.yml"
 
 permissions:
-  actions: read
+  actions: write
   contents: read
   issues: write
   pull-requests: read
@@ -60,7 +61,13 @@ jobs:
                 if (verification === "published" || verification === "confirmed_public") confirmed++;
               }
             }
-            const approved = (library.production_specs || []).filter(item => item.editorial_approved === true).length;
+            const eligible = (library.production_specs || []).filter(item =>
+              item.publishing_enabled !== false &&
+              item.source_passage_verification_required_before_publication !== true &&
+              !(item.sources || []).some(source =>
+                String(source.review_status || "").startsWith("source_lead_requires_human")
+              )
+            ).length;
             const leads = library.discovery_leads || [];
             const unreviewed = leads.filter(item => item.status === "candidate_unreviewed").length;
             const failed = [...latestByName.values()].filter(run =>
@@ -72,7 +79,7 @@ jobs:
               `- Checked: ${new Date().toISOString()}`,
               `- Main: [${commit.data.sha.slice(0, 12)}](${commit.data.html_url}) — ${commit.data.commit.message.split("\n")[0]}`,
               `- Open pull requests: ${prs.data.length}`,
-              `- Topic library: ${approved} explicitly approved production specs; ${leads.length} discovery leads; ${unreviewed} unreviewed leads`,
+              `- Topic library: ${eligible} enabled production specs passing the configured evidence gates; ${leads.length} discovery leads; ${unreviewed} unreviewed leads`,
               `- Publishing ledger: ${production.length} content entries; ${postCount} Buffer platform posts; ${confirmed} explicitly confirmed public outcomes; ${awaiting} awaiting confirmation`,
               "",
               "## Latest relevant workflow runs",
@@ -124,3 +131,70 @@ jobs:
                 body: existing.body + "\n\nResolved by the daily monitor at " + new Date().toISOString() + "."
               });
             }
+
+  recover-missed-publishing:
+    name: Fallback recovery for missed production cron
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Dispatch production only when the current slot has no attempt
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const now = new Date();
+            const parts = Object.fromEntries(
+              new Intl.DateTimeFormat("en-CA", {
+                timeZone: "Africa/Kampala",
+                year: "numeric", month: "2-digit", day: "2-digit",
+                hour: "2-digit", minute: "2-digit", hourCycle: "h23"
+              }).formatToParts(now).map(part => [part.type, part.value])
+            );
+            const date = `${parts.year}-${parts.month}-${parts.day}`;
+            const dayStartUtc = Date.UTC(Number(parts.year), Number(parts.month) - 1, Number(parts.day));
+            const dueCandidates = [12, 18].map(hour =>
+              new Date(dayStartUtc + (hour - 3) * 60 * 60 * 1000)
+            );
+            const due = dueCandidates.find(candidate => {
+              const lead = candidate.getTime() - now.getTime();
+              return lead > 5 * 60 * 1000 && lead <= 30 * 60 * 1000;
+            });
+            if (!due) {
+              core.info(`No Kampala publishing slot is inside its recovery window at ${now.toISOString()}.`);
+              return;
+            }
+
+            const [ledgerResponse, runsResponse] = await Promise.all([
+              github.rest.repos.getContent({ owner, repo, path: "production/publishing-ledger.json", ref: "main" }),
+              github.rest.actions.listWorkflowRuns({ owner, repo, workflow_id: "buffer-production-publish.yml", per_page: 30 })
+            ]);
+            const ledger = JSON.parse(Buffer.from(ledgerResponse.data.content, "base64").toString("utf8"));
+            const active = (runsResponse.data.workflow_runs || []).filter(run =>
+              run.status === "queued" || run.status === "in_progress"
+            );
+            if (active.length) {
+              core.info("A production run is already queued or running; no duplicate dispatch.");
+              return;
+            }
+
+            const entry = Object.entries(ledger).find(([, value]) =>
+              value && value.due_at && Date.parse(value.due_at) === due.getTime()
+            );
+            if (entry) {
+              const [contentId, record] = entry;
+              const posts = record.buffer_posts || {};
+              const bothPostIds = Boolean(posts.youtube?.post_id && posts.tiktok?.post_id);
+              if (record.status === "scheduled" && bothPostIds) {
+                core.info(`${contentId} already has both Buffer post IDs; no recovery needed.`);
+              } else {
+                core.warning(`${contentId} has an incomplete reservation. Refusing automatic retry to avoid duplicate public posts.`);
+              }
+              return;
+            }
+
+            await github.rest.actions.createWorkflowDispatch({
+              owner, repo, workflow_id: "buffer-production-publish.yml", ref: "main"
+            });
+            core.notice(`Dispatched QuantaTale production recovery for ${due.toISOString()} (Kampala ${date}).`);
