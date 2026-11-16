@@ -16,6 +16,16 @@ def test_ignores_slots_outside_recovery_window():
     assert upcoming_slot(now) is None
 
 
+def test_recovers_recently_missed_noon_slot():
+    now = datetime(2026, 11, 16, 9, 10, tzinfo=timezone.utc)
+    assert upcoming_slot(now) == datetime(2026, 11, 16, 12, 0, tzinfo=ZoneInfo("Africa/Kampala"))
+
+
+def test_does_not_recover_a_slot_older_than_thirty_minutes():
+    now = datetime(2026, 11, 16, 9, 31, tzinfo=timezone.utc)
+    assert upcoming_slot(now) is None
+
+
 def test_rejects_naive_watchdog_clock():
     with pytest.raises(ValueError, match="timezone-aware"):
         upcoming_slot(datetime(2026, 11, 16, 8, 35))
