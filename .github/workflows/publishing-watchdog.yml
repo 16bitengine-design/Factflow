@@ -2,6 +2,7 @@ name: QuantaTale publishing watchdog
 on:
   schedule:
     # Staggered checks around the noon/evening slots.
+    # Push-triggered checks also recover a slot if setup latency crosses its due time.
     - cron: "*/10 8-9,14-15 * * *"
   push:
     # A watchdog code change also provides an event-driven recovery check when
