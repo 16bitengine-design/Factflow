@@ -13,31 +13,36 @@ def read_json(path: str) -> dict[str, Any]:
 def words(value: str) -> list[str]:
     return re.findall(r"\b[\w’'-]+\b", value)
 
+def normalize_title(value: Any) -> str:
+    return re.sub(r"[^a-z0-9]+", " ", str(value).casefold()).strip()
+
 def choose_ideas(report: dict[str, Any], library: dict[str, Any], limit: int = 5) -> list[dict[str, Any]]:
+    # Discovery leads are the inputs to this research run, not previously produced
+    # videos. Exclude only existing production specs; otherwise every newly
+    # discovered article is incorrectly filtered out by its own lead title.
     existing_titles = {
-        re.sub(r"[^a-z0-9]+", " ", str(item.get("title", "")).casefold()).strip()
+        normalize_title(item.get("title", ""))
         for item in library.get("production_specs", [])
-    }
-    existing_titles |= {
-        re.sub(r"[^a-z0-9]+", " ", str(item.get("title", "")).casefold()).strip()
-        for item in library.get("discovery_leads", [])
+        if isinstance(item, dict)
     }
     chosen: list[dict[str, Any]] = []
     seen_urls: set[str] = set()
+    seen_titles: set[str] = set()
     for item in report.get("claim_candidates", []):
         if not isinstance(item, dict):
             continue
         claim = " ".join(str(item.get("text", "")).split())
-        url = str(item.get("source_url", "")).strip()
+        url = str(item.get("final_url") or item.get("source_url") or "").strip()
         publisher = str(item.get("publisher_id", "")).strip()
         title = str(item.get("discovered_title") or item.get("source_title") or "").strip()
-        normalized_title = re.sub(r"[^a-z0-9]+", " ", title.casefold()).strip()
+        normalized_title = normalize_title(title)
         if not (45 <= len(claim) <= 220) or not (8 <= len(words(claim)) <= 25):
             continue
-        if not url or not title or url in seen_urls or normalized_title in existing_titles:
+        if not url or not title or url in seen_urls or normalized_title in existing_titles or normalized_title in seen_titles:
             continue
         chosen.append(item)
         seen_urls.add(url)
+        seen_titles.add(normalized_title)
         if len(chosen) == limit:
             break
     return chosen
@@ -87,7 +92,7 @@ def main() -> int:
     ideas = choose_ideas(report, library, limit=5)
     if len(ideas) < 5:
         raise SystemExit(
-            f"Only {len(ideas)} sufficiently short, distinct, not-yet-listed source-backed candidates were found; "
+            f"Only {len(ideas)} sufficiently short, distinct, not-yet-produced source-backed candidates were found; "
             "refusing to pad the weekly pack with repeated or unsupported topics."
         )
     output = [
