@@ -70,3 +70,5 @@ jobs:
           git add production/publishing-ledger.json
           git commit -m "Cancel duplicate QuantaTale recovery posts"
           git push origin HEAD:main
+
+# Trigger immediate duplicate cleanup.
