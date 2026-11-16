@@ -192,3 +192,100 @@ def draw_holographic_scene(draw: Any, scene: int, progress: float,
     _label(draw,(195,870),"RAYLEIGH SCATTERING",fonts["heading"])
     _label(draw,(165,920),"BLUE LIGHT ARRIVES FROM ALL DIRECTIONS",fonts["small"],WHITE)
     return "WHY THE SKY LOOKS BLUE", "Scattered blue light fills the daytime sky"
+
+
+def draw_sunset_scene(draw: Any, scene: int, progress: float,
+                      seconds: float, fonts: dict[str, Any]) -> tuple[str, str]:
+    """Draw topic-specific holographic scenes explaining red sunsets."""
+    warm = (255, 139, 83, 230)
+    red = (255, 91, 105, 230)
+    orange = (255, 177, 83, 230)
+    pale = (255, 235, 190, 235)
+    scan = int((seconds * 95) % 430)
+    draw.line((70, 280 + scan, 650, 280 + scan), fill=(255, 142, 96, 38), width=2)
+
+    if scene == 0:
+        _label(draw, (115, 340), "THE SUN SINKS TOWARD THE HORIZON", fonts["label"], pale)
+        # Layered Earth limb and transparent atmosphere.
+        earth = (360, 910, 700)
+        for radius, alpha, width in ((310, 28, 3), (285, 65, 4), (260, 115, 5)):
+            draw.arc((earth[0]-radius, earth[1]-radius, earth[0]+radius, earth[1]+radius),
+                     195, 345, fill=(255, 139, 83, alpha), width=width)
+        draw.ellipse((earth[0]-earth[2]//2, earth[1]-earth[2]//2,
+                      earth[0]+earth[2]//2, earth[1]+earth[2]//2),
+                     outline=(73, 190, 255, 120), width=3)
+        sx, sy = 360, 635
+        for radius, alpha in ((70, 28), (54, 55), (38, 105)):
+            draw.ellipse((sx-radius, sy-radius, sx+radius, sy+radius),
+                         outline=(255, 171, 95, alpha), width=4)
+        draw.ellipse((sx-25, sy-25, sx+25, sy+25), fill=pale)
+        _label(draw, (300, 730), "LOW SUN", fonts["tiny"], orange)
+        # The long slanted sunlight path is the key causal visual.
+        for offset in (-15, 0, 15):
+            draw.line((70, 410+offset, 330, 630+offset), fill=(255, 210, 150, 55), width=15)
+            draw.line((70, 410+offset, 330, 630+offset), fill=pale, width=3)
+        for i in range(8):
+            t = (progress * 1.4 + i/8) % 1
+            x, y = int(70+260*t), int(410+220*t)
+            draw.ellipse((x-5, y-5, x+5, y+5), fill=pale)
+        _label(draw, (125, 825), "A LONGER ATMOSPHERIC PATH", fonts["small"], warm)
+        return "SUNLIGHT TRAVELS FARTHER", "Low-angle sunlight crosses more atmosphere"
+
+    if scene == 1:
+        _label(draw, (150, 350), "AIR MOLECULES SCATTER SHORT WAVES", fonts["label"], pale)
+        centers = [(190,470),(330,430),(480,480),(255,610),(420,650),(545,575),(180,755),(365,790)]
+        for i, (mx, my) in enumerate(centers):
+            x = int(mx + math.sin(seconds*1.25+i)*10)
+            y = int(my + math.cos(seconds*1.1+i)*9)
+            _glow_circle(draw, x, y, 14, CYAN, 3)
+            for k in range(3):
+                angle = seconds*1.4 + i + k*2.1
+                ex, ey = int(x+math.cos(angle)*75), int(y+math.sin(angle)*75)
+                color = BLUE if k < 2 else (255, 120, 120, 185)
+                draw.line((x,y,ex,ey), fill=(*color[:3],95), width=7)
+                draw.line((x,y,ex,ey), fill=color, width=3)
+        _label(draw, (105, 875), "BLUE AND VIOLET: REDIRECTED", fonts["heading"], BLUE)
+        _label(draw, (105, 925), "LONGER RED WAVELENGTHS CONTINUE", fonts["small"], warm)
+        return "BLUE LIGHT SCATTERS AWAY", "Shorter wavelengths leave the direct sunlight path"
+
+    if scene == 2:
+        _label(draw, (175, 350), "WHAT REACHES THE OBSERVER?", fonts["label"], pale)
+        # A beam with blue side-scattering and a warm direct beam.
+        for i in range(7):
+            y = 470 + i*48
+            draw.line((90, y, 590, y+int(25*math.sin(seconds*1.2+i))), fill=(255, 170, 95, 55), width=12)
+            draw.line((90, y, 590, y+int(25*math.sin(seconds*1.2+i))), fill=orange, width=3)
+        for i in range(10):
+            x = 170 + i*42
+            y = 615 + int(18*math.sin(seconds*2+i))
+            draw.line((x,y,x-55,y-95), fill=(70,160,255,165), width=3)
+            draw.ellipse((x-5,y-5,x+5,y+5), fill=BLUE)
+        _glow_circle(draw, 575, 760, 62, warm, 4)
+        draw.ellipse((545,730,605,790), fill=orange)
+        _label(draw, (150, 865), "RED • ORANGE • PINK", fonts["heading"], warm)
+        _label(draw, (160, 915), "LONGER WAVES REACH YOUR EYES", fonts["small"], pale)
+        return "WARM COLOURS REACH YOUR EYES", "Less blue remains in the direct beam"
+
+    # A final holographic horizon with layered sunset bands and drifting particles.
+    _label(draw, (180, 350), "THE SCIENCE OF A RED SUNSET", fonts["label"], pale)
+    bands = [
+        (420, 500, (90, 65, 145, 90)), (500, 590, (155, 75, 125, 115)),
+        (590, 680, (220, 92, 92, 145)), (680, 770, (255, 135, 78, 165)),
+        (770, 870, (255, 185, 100, 180)),
+    ]
+    for top, bottom, color in bands:
+        draw.rectangle((65, top, 655, bottom), fill=color)
+        draw.line((65, top, 655, top), fill=(255, 205, 145, 90), width=2)
+    sun_x = 360
+    sun_y = int(825 + 10*math.sin(seconds*0.7))
+    for radius, alpha in ((95, 28), (76, 55), (58, 105)):
+        draw.ellipse((sun_x-radius, sun_y-radius, sun_x+radius, sun_y+radius),
+                     outline=(255, 170, 92, alpha), width=4)
+    draw.ellipse((sun_x-48, sun_y-48, sun_x+48, sun_y+48), fill=(255, 183, 100, 235))
+    draw.line((65, 875, 655, 875), fill=(73, 226, 255, 175), width=3)
+    for i in range(24):
+        x = int(80 + (i*71 + seconds*18) % 560)
+        y = int(465 + (i*37) % 340)
+        draw.ellipse((x-2,y-2,x+2,y+2), fill=(255, 218, 165, 150))
+    _label(draw, (150, 930), "ONE SCATTERING PROCESS", fonts["heading"], pale)
+    return "WHY SUNSETS TURN RED", "The atmosphere filters sunlight before it reaches us"
