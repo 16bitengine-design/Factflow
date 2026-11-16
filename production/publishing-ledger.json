@@ -36,7 +36,7 @@
   "qt-sky-blue-20261116-1822": {
     "status": "scheduled",
     "spec": "examples/videos/why-the-sky-is-blue-production.json",
-    "due_at": "2026-11-16T18:22:37+03:00",
+    "due_at": "2026-11-16T18:00:00+03:00",
     "reserved_at": "2026-11-16T15:02:37+00:00",
     "workflow_run_id": "43891861988",
     "slot_local": "2026-11-16 18:22",
@@ -59,6 +59,8 @@
         }
       }
     },
-    "scheduled_at": "2026-11-16T15:03:27.870011+00:00"
+    "scheduled_at": "2026-11-16T15:03:27.870011+00:00",
+    "actual_scheduled_due_at": "2026-11-16T18:22:37+03:00",
+    "recovered_from_slot": "2026-11-16T18:00:00+03:00"
   }
 }
