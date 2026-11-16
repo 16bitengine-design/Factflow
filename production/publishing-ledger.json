@@ -34,7 +34,7 @@
     }
   },
   "qt-sky-blue-20261116-1822": {
-    "status": "scheduled",
+    "status": "cancelled_duplicate",
     "spec": "examples/videos/why-the-sky-is-blue-production.json",
     "due_at": "2026-11-16T18:00:00+03:00",
     "reserved_at": "2026-11-16T15:02:37+00:00",
@@ -44,23 +44,26 @@
     "buffer_posts": {
       "youtube": {
         "post_id": "6afb1b3c75345b4eae968994",
-        "buffer_status": "scheduled",
+        "buffer_status": "deleted",
         "due_at": "2026-11-16T15:22:37.000Z",
         "verification": {
-          "status": "awaiting_confirmation"
+          "status": "deleted_as_duplicate",
+          "checked_at": "2026-11-16T15:19:00Z"
         }
       },
       "tiktok": {
         "post_id": "6afb1b3df37d25fd22306a2c",
-        "buffer_status": "scheduled",
+        "buffer_status": "deleted",
         "due_at": "2026-11-16T15:22:37.000Z",
         "verification": {
-          "status": "awaiting_confirmation"
+          "status": "deleted_as_duplicate",
+          "checked_at": "2026-11-16T15:19:00Z"
         }
       }
     },
     "scheduled_at": "2026-11-16T15:03:27.870011+00:00",
     "actual_scheduled_due_at": "2026-11-16T18:22:37+03:00",
-    "recovered_from_slot": "2026-11-16T18:00:00+03:00"
+    "recovered_from_slot": "2026-11-16T18:00:00+03:00",
+    "cancellation_reason": "Same production specification was already published on 2026-11-15."
   }
-}
+}\n
