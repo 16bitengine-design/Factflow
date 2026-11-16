@@ -24,7 +24,6 @@ def choose_ideas(report: dict[str, Any], library: dict[str, Any], limit: int = 5
     }
     chosen: list[dict[str, Any]] = []
     seen_urls: set[str] = set()
-    seen_publishers: set[str] = set()
     for item in report.get("claim_candidates", []):
         if not isinstance(item, dict):
             continue
@@ -39,8 +38,6 @@ def choose_ideas(report: dict[str, Any], library: dict[str, Any], limit: int = 5
             continue
         chosen.append(item)
         seen_urls.add(url)
-        if publisher:
-            seen_publishers.add(publisher)
         if len(chosen) == limit:
             break
     return chosen
