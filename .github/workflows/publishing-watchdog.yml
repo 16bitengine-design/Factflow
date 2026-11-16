@@ -1,8 +1,9 @@
 name: QuantaTale publishing watchdog
 on:
   schedule:
-    # Independent watchdog checks throughout each 30-minute pre-publication window.
-    - cron: "30,35,40,45,50,55 8,14 * * *"
+    # Staggered checks across each hour around the noon/evening slots. This gives
+    # the watchdog recovery chances even if the production cron event is dropped.
+    - cron: "*/10 8-9,14-15 * * *"
   workflow_dispatch:
     inputs:
       publish_now:
