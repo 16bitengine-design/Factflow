@@ -3,7 +3,7 @@ from zoneinfo import ZoneInfo
 
 import pytest
 
-from factflow.publishing_watchdog import find_slot_entry, slot_entry_state, upcoming_slot
+from factflow.publishing_watchdog import find_recovery_entry, find_slot_entry, slot_entry_state, upcoming_slot
 
 
 def test_detects_noon_slot_inside_recovery_window():
@@ -70,3 +70,37 @@ def test_incomplete_slot_is_blocked_from_automatic_redispatch(entry):
 def test_ignores_exact_five_minute_boundary_used_by_selector():
     now = datetime(2026, 11, 16, 8, 55, tzinfo=timezone.utc)
     assert upcoming_slot(now) is None
+
+
+
+def test_finds_immediate_recovery_reservation_for_missed_slot():
+    due = datetime(2026, 11, 16, 18, 0, tzinfo=ZoneInfo("Africa/Kampala"))
+    ledger = {
+        "qt-evening-recovery": {
+            "due_at": "2026-11-16T18:22:37+03:00",
+            "status": "reserved",
+        }
+    }
+    assert find_recovery_entry(ledger, due)[0] == "qt-evening-recovery"
+
+
+def test_does_not_match_recovery_reservation_outside_grace_window():
+    due = datetime(2026, 11, 16, 18, 0, tzinfo=ZoneInfo("Africa/Kampala"))
+    ledger = {
+        "qt-later": {
+            "due_at": "2026-11-16T18:31:00+03:00",
+            "status": "reserved",
+        }
+    }
+    assert find_recovery_entry(ledger, due) is None
+
+
+def test_does_not_match_recovery_reservation_on_a_later_local_day():
+    due = datetime(2026, 11, 16, 18, 0, tzinfo=ZoneInfo("Africa/Kampala"))
+    ledger = {
+        "qt-next-day": {
+            "due_at": "2026-11-17T00:10:00+03:00",
+            "status": "reserved",
+        }
+    }
+    assert find_recovery_entry(ledger, due) is None
