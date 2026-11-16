@@ -61,7 +61,13 @@ jobs:
                 if (verification === "published" || verification === "confirmed_public") confirmed++;
               }
             }
-            const eligible = (library.production_specs || []).filter(item =>\n              item.publishing_enabled !== false &&\n              item.source_passage_verification_required_before_publication !== true &&\n              !(item.sources || []).some(source =>\n                String(source.review_status || "").startsWith("source_lead_requires_human")\n              )\n            ).length;
+            const eligible = (library.production_specs || []).filter(item =>
+              item.publishing_enabled !== false &&
+              item.source_passage_verification_required_before_publication !== true &&
+              !(item.sources || []).some(source =>
+                String(source.review_status || "").startsWith("source_lead_requires_human")
+              )
+            ).length;
             const leads = library.discovery_leads || [];
             const unreviewed = leads.filter(item => item.status === "candidate_unreviewed").length;
             const failed = [...latestByName.values()].filter(run =>
