@@ -93,3 +93,14 @@ def test_does_not_match_recovery_reservation_outside_grace_window():
         }
     }
     assert find_recovery_entry(ledger, due) is None
+
+
+def test_does_not_match_recovery_reservation_on_a_later_local_day():
+    due = datetime(2026, 11, 16, 18, 0, tzinfo=ZoneInfo("Africa/Kampala"))
+    ledger = {
+        "qt-next-day": {
+            "due_at": "2026-11-17T00:10:00+03:00",
+            "status": "reserved",
+        }
+    }
+    assert find_recovery_entry(ledger, due) is None
