@@ -9,6 +9,8 @@ on:
       - "src/factflow/holographic_scenes.py"
       - "src/factflow/cli.py"
       - "examples/videos/**"
+      - "production/specs/**"
+      - "production/topic-library.json"
       - "tests/test_video_render.py"
       - "pyproject.toml"
 
@@ -61,8 +63,8 @@ jobs:
       - name: Render production blue-sky explainer preview
         run: quantatale render-sample examples/videos/why-the-sky-is-blue-production.json --output-dir build/production-sky-blue
 
-      # Sunset is intentionally excluded until its topic-specific renderer exists.
-      # The renderer must fail closed rather than reuse the sky-blue storyboard.
+      - name: Render production sunset explainer preview
+        run: quantatale render-sample production/specs/sunset-red.json --output-dir build/production-sunset
 
       - name: Upload sample video and production assets
         uses: actions/upload-artifact@v4
@@ -78,5 +80,6 @@ jobs:
           name: quantatale-production-video-previews
           path: |
             build/production-sky-blue/*
+            build/production-sunset/*
           if-no-files-found: error
           retention-days: 14

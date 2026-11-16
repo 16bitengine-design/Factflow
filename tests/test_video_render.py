@@ -126,7 +126,30 @@ def test_project_wide_visual_standards_cover_holographic_motion_and_storytelling
     assert "muted_playback_remains_understandable" in storytelling
 
 
-def test_renderer_refuses_to_reuse_sky_storyboard_for_another_topic():
+def test_sunset_profile_has_its_own_topic_specific_renderer():
     spec = {**valid_spec(), "visual_profile": "sunset_red_v1"}
+    validate_sample_spec(spec)
+
+
+def test_renderer_still_refuses_unknown_visual_profiles():
+    spec = {**valid_spec(), "visual_profile": "unrelated_topic_v1"}
     with pytest.raises(ValueError, match="unrelated storyboard"):
         validate_sample_spec(spec)
+
+
+def test_sunset_storyboard_contains_four_distinct_explanatory_scenes():
+    pytest.importorskip("PIL")
+    from factflow.holographic_scenes import draw_sunset_scene
+    from PIL import Image, ImageDraw, ImageFont
+
+    image = Image.new("RGBA", (720, 1280))
+    draw = ImageDraw.Draw(image)
+    font = ImageFont.load_default()
+    fonts = {name: font for name in ("label", "tiny", "heading", "small")}
+    scenes = [draw_sunset_scene(draw, index, 0.5, 2.0, fonts) for index in range(4)]
+    assert [item[0] for item in scenes] == [
+        "SUNLIGHT TRAVELS FARTHER",
+        "BLUE LIGHT SCATTERS AWAY",
+        "WARM COLOURS REACH YOUR EYES",
+        "WHY SUNSETS TURN RED",
+    ]

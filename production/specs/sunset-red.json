@@ -1,0 +1,65 @@
+{
+  "title": "Why Are Sunsets Red?",
+  "voice": "af_heart",
+  "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "Why Are Sunsets Red? | QuantaTale",
+  "post_description": "Why do sunsets glow red, orange and pink? Discover how sunlight travels through more atmosphere and how scattering changes the colours we see. Sources: NASA https://spaceplace.nasa.gov/blue-sky/en/ and National Weather Service https://www.weather.gov/fgz/SkyBlue #Science #Nature #ScienceFacts #QuantaTale",
+  "content_id_prefix": "qt-sunset-red",
+  "publish_timezone": "Africa/Kampala",
+  "editorial_approved": true,
+  "editorial_status": "eligible_under_project_default_policy",
+  "editorial_review_required": false,
+  "narration": "At midday, sunlight travels through a shorter path in Earth's atmosphere. But at sunset, the Sun is low, so its light travels through much more air before reaching you. Air molecules scatter the shorter blue and violet wavelengths out of the direct path. More of the longer red and orange wavelengths continue toward your eyes. Dust and other tiny particles can change the colours even further. That's why sunsets can glow red, orange, and pink.",
+  "sources": [
+    {
+      "publisher": "NASA Space Place",
+      "title": "Why Is the Sky Blue? — What makes a red sunset?",
+      "url": "https://spaceplace.nasa.gov/blue-sky/en/",
+      "supports": "NASA explains that when the Sun is low, sunlight passes through more atmosphere; more blue light is scattered, allowing red and yellow light to reach the observer. Dust, pollution and aerosols can also affect sunset colours.",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "direct_page_review",
+      "reviewed_at": "2026-11-16"
+    },
+    {
+      "publisher": "National Weather Service",
+      "title": "Why Is The Sky Blue?",
+      "url": "https://www.weather.gov/fgz/SkyBlue",
+      "supports": "The NWS explains that sunrise and sunset sunlight passes through more atmosphere; blue and violet light are redirected out of the line of sight while pink, orange and red light continues toward the observer.",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "direct_page_review",
+      "reviewed_at": "2026-11-16"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Opening hook",
+      "visual_description": "A holographic low Sun and curved Earth horizon reveal a long slanted beam through layered atmosphere.",
+      "visual_style": "procedural_2d_holographic"
+    },
+    {
+      "narration_segment": "Core explanation",
+      "visual_description": "Animated air molecules redirect blue and violet wavelengths away from the direct sunlight path.",
+      "visual_style": "procedural_2d_holographic"
+    },
+    {
+      "narration_segment": "What reaches the observer",
+      "visual_description": "A warm red-orange beam continues toward an observer while shorter blue wavelengths scatter sideways.",
+      "visual_style": "procedural_2d_holographic"
+    },
+    {
+      "narration_segment": "Memorable conclusion",
+      "visual_description": "A layered holographic sunset horizon and glowing Sun summarize the filtering effect.",
+      "visual_style": "procedural_2d_holographic"
+    }
+  ],
+  "visual_profile": "sunset_red_v1",
+  "source_passage_verification_required_before_publication": false,
+  "source_assessment": {
+    "assessment_type": "automated_source_passage_assessment",
+    "independent_sources": 2,
+    "supporting_sources": 2,
+    "contradicting_sources": 0,
+    "uncertainty": "The exact sunset colour varies with atmospheric composition, clouds, aerosols and viewing conditions; the narration states this variability.",
+    "human_fact_check_claim": "Automated passage assessment is not a guarantee of complete fact verification."
+  }
+}

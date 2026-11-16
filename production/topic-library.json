@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-15T00:00:00+00:00",
+  "updated_at": "2026-11-16T01:45:00Z",
   "production_specs": [
     {
       "spec_path": "examples/videos/why-the-sky-is-blue-production.json",
@@ -179,6 +179,19 @@
       "editorial_approved_at": "2026-11-15T13:27:57.027Z",
       "editorial_approval_basis": "explicit_project_owner_batch_approval",
       "source_passage_verification_required_before_publication": true
+    },
+    {
+      "spec_path": "production/specs/sunset-red.json",
+      "content_id_prefix": "qt-sunset-red",
+      "title": "Why Are Sunsets Red? | QuantaTale",
+      "publish_timezone": "Africa/Kampala",
+      "editorial_approved": true,
+      "status": "approved_ready",
+      "registered_at": "2026-11-16T01:45:00Z",
+      "editorial_approval_basis": "project_owner_default_topic_eligibility",
+      "source_passage_verification_required_before_publication": false,
+      "source_assessment_status": "automated_passage_assessment_supports_claims",
+      "renderer_profile": "sunset_red_v1"
     }
   ],
   "discovery_leads": []
