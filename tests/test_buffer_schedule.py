@@ -64,7 +64,7 @@ def test_run_publish_requires_all_secrets_before_upload(monkeypatch, tmp_path):
     with pytest.raises(buffer_schedule.PublishingIntegrationError, match="BUFFER_API_KEY"):
         buffer_schedule.run_scheduled_publish(
             video_path=str(video), target="both", content_id="sky-blue-20261115",
-            due_at="2026-11-16T15:00:00+03:00", title="Title", description="Caption")
+            due_at="2026-11-16T15:00:00+03:00", title="Title", description="Caption",\n            now=datetime(2026, 11, 16, 8, 0, tzinfo=timezone.utc))
     assert uploaded == []
 
 def test_content_id_is_validated_before_upload(monkeypatch, tmp_path):
