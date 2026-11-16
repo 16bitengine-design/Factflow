@@ -32,5 +32,14 @@
         }
       }
     }
+  },
+  "qt-sky-blue-20261116-1822": {
+    "status": "reserved",
+    "spec": "examples/videos/why-the-sky-is-blue-production.json",
+    "due_at": "2026-11-16T18:22:37+03:00",
+    "reserved_at": "2026-11-16T15:02:37+00:00",
+    "workflow_run_id": "43891861988",
+    "slot_local": "2026-11-16 18:22",
+    "publish_timezone": "Africa/Kampala"
   }
 }
