@@ -4,6 +4,12 @@ on:
     # Independent watchdog checks throughout each 30-minute pre-publication window.
     - cron: "30,35,40,45,50,55 8,14 * * *"
   workflow_dispatch:
+    inputs:
+      publish_now:
+        description: "Immediately start one safe recovery publication instead of checking a daily slot."
+        required: false
+        type: boolean
+        default: false
 permissions:
   actions: write
   contents: read
@@ -23,6 +29,7 @@ jobs:
           ref: main
       - name: Inspect slot and recover only when no attempt exists
         env:
+          PUBLISH_NOW: ${{ github.event.inputs.publish_now || 'false' }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
         run: |
@@ -36,14 +43,15 @@ jobs:
 
           repo = os.environ['GH_REPO']
           now = datetime.now(timezone.utc)
-          due = upcoming_slot(now)
-          if due is None:
+          immediate = os.environ.get('PUBLISH_NOW', 'false').lower() == 'true'
+          due = None if immediate else upcoming_slot(now)
+          if not immediate and due is None:
               print(f'No publishing slot is inside its recovery window at {now.isoformat()}.')
               raise SystemExit(0)
 
           ledger_path = Path('production/publishing-ledger.json')
           ledger = json.loads(ledger_path.read_text(encoding='utf-8')) if ledger_path.exists() else {}
-          slot_entry = find_slot_entry(ledger, due)
+          slot_entry = find_slot_entry(ledger, due) if due is not None else None
 
           runs_raw = subprocess.check_output([
               'gh', 'api', f'repos/{repo}/actions/workflows/buffer-production-publish.yml/runs?per_page=30'
@@ -54,6 +62,16 @@ jobs:
               print('A production workflow is already active; waiting rather than dispatching a duplicate.')
               for run in active[:5]:
                   print(f"Active run {run.get('id')}: {run.get('status')} ({run.get('html_url')})")
+              raise SystemExit(0)
+
+          if immediate:
+              payload = json.dumps({'ref': 'main', 'inputs': {'publish_now': 'true'}})
+              subprocess.run([
+                  'gh', 'api', '-X', 'POST',
+                  f'repos/{repo}/actions/workflows/buffer-production-publish.yml/dispatches',
+                  '--input', '-'
+              ], input=payload, text=True, check=True)
+              print('Dispatched one immediate recovery production run.')
               raise SystemExit(0)
 
           if slot_entry:
