@@ -1,9 +1,15 @@
 name: QuantaTale publishing watchdog
 on:
   schedule:
-    # Staggered checks across each hour around the noon/evening slots. This gives
-    # the watchdog recovery chances even if the production cron event is dropped.
+    # Staggered checks around the noon/evening slots.
     - cron: "*/10 8-9,14-15 * * *"
+  push:
+    # A watchdog code change also provides an event-driven recovery check when
+    # the repository scheduler has delayed or dropped its scheduled event.
+    branches: [main]
+    paths:
+      - ".github/workflows/publishing-watchdog.yml"
+      - "src/factflow/publishing_watchdog.py"
   workflow_dispatch:
     inputs:
       publish_now:
@@ -101,10 +107,19 @@ jobs:
               raise SystemExit(0)
 
           print(f'No ledger reservation exists for {due.isoformat()} and no production run is active.')
-          subprocess.run([
-              'gh', 'api', '-X', 'POST',
-              f'repos/{repo}/actions/workflows/buffer-production-publish.yml/dispatches',
-              '-f', 'ref=main'
-          ], check=True)
-          print('Dispatched the production workflow for automatic recovery.')
+          if due.astimezone(timezone.utc) <= now:
+              payload = json.dumps({'ref': 'main', 'inputs': {'publish_now': 'true'}})
+              subprocess.run([
+                  'gh', 'api', '-X', 'POST',
+                  f'repos/{repo}/actions/workflows/buffer-production-publish.yml/dispatches',
+                  '--input', '-'
+              ], input=payload, text=True, check=True)
+              print('Dispatched an immediate production recovery for the missed slot.')
+          else:
+              subprocess.run([
+                  'gh', 'api', '-X', 'POST',
+                  f'repos/{repo}/actions/workflows/buffer-production-publish.yml/dispatches',
+                  '-f', 'ref=main'
+              ], check=True)
+              print('Dispatched the production workflow for the upcoming slot.')
           PY
