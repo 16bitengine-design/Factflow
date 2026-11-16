@@ -47,7 +47,7 @@ jobs:
           import subprocess
           from datetime import datetime, timezone
           from pathlib import Path
-          from factflow.publishing_watchdog import find_slot_entry, slot_entry_state, upcoming_slot
+          from factflow.publishing_watchdog import find_recovery_entry, find_slot_entry, slot_entry_state, upcoming_slot
 
           repo = os.environ['GH_REPO']
           now = datetime.now(timezone.utc)
@@ -60,6 +60,10 @@ jobs:
           ledger_path = Path('production/publishing-ledger.json')
           ledger = json.loads(ledger_path.read_text(encoding='utf-8')) if ledger_path.exists() else {}
           slot_entry = find_slot_entry(ledger, due) if due is not None else None
+          if slot_entry is None and due is not None and due.astimezone(timezone.utc) <= now:
+              slot_entry = find_recovery_entry(ledger, due)
+              if slot_entry:
+                  print(f"Found existing immediate-recovery reservation {slot_entry[0]} for the missed slot.")
 
           runs_raw = subprocess.check_output([
               'gh', 'api', f'repos/{repo}/actions/workflows/buffer-production-publish.yml/runs?per_page=30'

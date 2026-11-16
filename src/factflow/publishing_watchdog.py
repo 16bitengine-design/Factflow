@@ -55,6 +55,37 @@ def find_slot_entry(
     return None
 
 
+def find_recovery_entry(
+    ledger: dict[str, Any],
+    due: datetime,
+    *,
+    timezone_name: str = "Africa/Kampala",
+    window: timedelta = timedelta(minutes=30),
+) -> tuple[str, dict[str, Any]] | None:
+    """Find an immediate-recovery reservation associated with a missed slot.
+
+    Immediate recovery schedules the actual Buffer time slightly after the
+    original slot. Treat a ledger entry within the following recovery window as
+    the slot's recovery so later watchdog ticks do not dispatch duplicate posts.
+    """
+    zone = ZoneInfo(timezone_name)
+    target = due.astimezone(zone)
+    latest = target + window
+    for content_id, entry in ledger.items():
+        if not isinstance(entry, dict) or not entry.get("due_at"):
+            continue
+        try:
+            recorded = datetime.fromisoformat(str(entry["due_at"]).replace("Z", "+00:00"))
+            if recorded.tzinfo is None or recorded.utcoffset() is None:
+                continue
+            local_recorded = recorded.astimezone(zone)
+            if target <= local_recorded <= latest and local_recorded.date() == target.date():
+                return content_id, entry
+        except (TypeError, ValueError):
+            continue
+    return None
+
+
 def slot_entry_state(entry: dict[str, Any]) -> str:
     """Classify a slot as safely scheduled or blocked/unsafe to retry."""
     posts = entry.get("buffer_posts")
