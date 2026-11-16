@@ -109,7 +109,7 @@ def verify_ledger(ledger_path: Path) -> dict[str, int]:
     if not ledger_path.exists():
         raise FileNotFoundError(f"Publishing ledger not found: {ledger_path}")
     ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
-    counts = {"published": 0, "failed": 0, "awaiting_confirmation": 0, "unknown": 0}
+    counts = {"published": 0, "failed": 0, "awaiting_confirmation": 0, "unknown": 0, "deleted_as_duplicate": 0}
     changed = False
     for content_id, entry in ledger.items():
         platforms = entry.get("buffer_posts", {})
@@ -119,7 +119,7 @@ def verify_ledger(ledger_path: Path) -> dict[str, int]:
             if not isinstance(record, dict) or not record.get("post_id"):
                 continue
             previous = record.get("verification", {}).get("status")
-            if previous in {"published", "failed"}:
+            if previous in {"published", "failed", "deleted_as_duplicate"}:
                 counts[previous] += 1
                 continue
             post = fetch_buffer_post(str(record["post_id"]))

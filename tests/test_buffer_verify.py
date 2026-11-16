@@ -107,3 +107,23 @@ def test_overdue_detection_requires_timezone_aware_clock():
     from datetime import datetime
     with pytest.raises(ValueError, match="timezone-aware"):
         buffer_verify.find_posts_needing_attention({}, now=datetime(2026, 11, 16, 9, 20))
+
+
+def test_verify_does_not_fetch_intentionally_deleted_duplicate_posts(monkeypatch, tmp_path):
+    ledger_path = tmp_path / "ledger.json"
+    ledger_path.write_text(json.dumps({"content-1": {"buffer_posts": {
+        "youtube": {"post_id": "yt-1", "verification": {"status": "deleted_as_duplicate"}},
+        "tiktok": {"post_id": "tt-1", "verification": {"status": "deleted_as_duplicate"}},
+    }}}))
+    monkeypatch.setattr(buffer_verify, "fetch_buffer_post", lambda _: pytest.fail("deleted post must not be fetched"))
+    counts = buffer_verify.verify_ledger(ledger_path)
+    assert counts["deleted_as_duplicate"] == 2
+    assert counts["published"] == counts["failed"] == 0
+
+
+def test_deleted_duplicate_posts_do_not_raise_attention():
+    ledger = {"content-1": {"buffer_posts": {
+        "youtube": {"post_id": "yt-1", "verification": {"status": "deleted_as_duplicate"}},
+        "tiktok": {"post_id": "tt-1", "verification": {"status": "deleted_as_duplicate"}},
+    }}}
+    assert buffer_verify.find_posts_needing_attention(ledger) == []
