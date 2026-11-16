@@ -1,0 +1,137 @@
+name: QuantaTale weekly project health check
+
+on:
+  schedule:
+    - cron: "0 14 * * 1" # Mondays at 17:00 Africa/Kampala.
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - ".github/workflows/weekly-project-health.yml"
+
+permissions:
+  actions: read
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: quantatale-weekly-project-health
+  cancel-in-progress: false
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install QuantaTale
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+
+      - name: Inspect latest CI run, Stage 3 and research artifacts
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const response = await github.rest.actions.listWorkflowRuns({
+              owner, repo, workflow_id: "ci.yml", per_page: 10
+            });
+            const latest = response.data.workflow_runs?.[0];
+            const lines = [
+              "# QuantaTale weekly project health",
+              "",
+              `- Checked: ${new Date().toISOString()}`,
+              ""
+            ];
+            if (!latest) {
+              lines.push("**CI:** No run was found for ci.yml.");
+              core.warning("No CI workflow run found.");
+            } else {
+              lines.push(`**Latest CI:** [Run #${latest.run_number}](${latest.html_url}) — ${latest.status}${latest.conclusion ? " / " + latest.conclusion : ""}`);
+              lines.push(`- Commit: \`${latest.head_sha}\``);
+              lines.push(`- Created: ${latest.created_at}`);
+              if (latest.status === "completed" && latest.conclusion === "success") {
+                const [jobsResponse, artifactsResponse] = await Promise.all([
+                  github.rest.actions.listJobsForWorkflowRun({ owner, repo, run_id: latest.id, per_page: 100 }),
+                  github.rest.actions.listWorkflowRunArtifacts({ owner, repo, run_id: latest.id, per_page: 100 })
+                ]);
+                const steps = (jobsResponse.data.jobs || []).flatMap(job => job.steps || []);
+                const discovery = steps.find(step => /Discover candidate story leads/i.test(step.name));
+                const upload = steps.find(step => /Upload discovery and research reports/i.test(step.name));
+                const artifact = (artifactsResponse.data.artifacts || []).find(item => item.name === "quantatale-research-reports");
+                lines.push(`- Stage 3 discovery step: ${discovery ? discovery.conclusion : "not found"}`);
+                lines.push(`- Research artifact upload step: ${upload ? upload.conclusion : "not found"}`);
+                lines.push(`- Research artifact: ${artifact ? (artifact.expired ? "expired" : "available") + " (" + artifact.name + ")" : "missing"}`);
+                if (!discovery || discovery.conclusion !== "success" || !upload || upload.conclusion !== "success" || !artifact || artifact.expired) {
+                  core.warning("Latest successful CI run is missing a successful discovery step or an available research artifact.");
+                }
+              } else {
+                lines.push("Latest CI has not completed successfully; Stage 3/artifact success is not assumed.");
+                core.warning("Latest CI is incomplete or unsuccessful.");
+              }
+            }
+            await core.summary.addRaw(lines.join("\n")).write();
+
+      - name: Run a fresh Stage 3 discovery and research sample
+        run: |
+          mkdir -p build
+          quantatale discover --limit 100 --output build/weekly-discovery.json
+          quantatale research-candidates build/weekly-discovery.json --limit 30 --output build/weekly-research-candidates.json
+
+      - name: Summarize configured feed health
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          summary = Path(os.environ["GITHUB_STEP_SUMMARY"])
+          discovery_path = Path("build/weekly-discovery.json")
+          research_path = Path("build/weekly-research-candidates.json")
+          lines = ["## Fresh discovery check", ""]
+          if not discovery_path.exists():
+              lines.append("Discovery report was not produced; feed health is unverified.")
+          else:
+              report = json.loads(discovery_path.read_text(encoding="utf-8"))
+              candidates = report.get("candidates", [])
+              feeds = report.get("feed_results", [])
+              errors = [item for item in feeds if item.get("status") not in {"collected"}]
+              zero = [item for item in feeds if item.get("status") == "collected" and item.get("candidate_count", 0) == 0]
+              lines.extend([
+                  f"- Candidate leads collected: **{len(candidates)}**",
+                  f"- Configured feeds checked: **{len(feeds)}**",
+                  f"- Feed errors/rejections: **{len(errors)}**",
+                  f"- Feeds returning zero candidates: **{len(zero)}**",
+              ])
+              for item in errors:
+                  lines.append(f"  - ERROR {item.get('publisher_id')}: {item.get('status')} — {item.get('error', item.get('feed_url', 'no details'))}")
+              for item in zero:
+                  lines.append(f"  - ZERO {item.get('publisher_id')}: {item.get('feed_url')}")
+          if research_path.exists():
+              research = json.loads(research_path.read_text(encoding="utf-8"))
+              lines.append(f"- Source pages retrieved for research: **{research.get('source_count', 0)}**")
+              lines.append(f"- Extracted unreviewed claim candidates: **{research.get('claim_candidate_count', 0)}**")
+          else:
+              lines.append("- Research report not produced.")
+          lines.extend(["", "Feed headlines and extracted claims remain unreviewed leads, not verified facts."])
+          with summary.open("a", encoding="utf-8") as handle:
+              handle.write("\n".join(lines) + "\n")
+          PY
+
+      - name: Upload weekly health reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quantatale-weekly-health-${{ github.run_id }}
+          path: build/weekly-*.json
+          if-no-files-found: warn
+          retention-days: 30
