@@ -31,6 +31,9 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -e ".[dev]"
 
+      - name: Validate weekly idea builder syntax
+        run: python -m py_compile .github/scripts/build_weekly_ideas.py
+
       - name: Discover fresh story leads
         run: quantatale discover --limit 100 --output build/weekly-discovery.json
 
