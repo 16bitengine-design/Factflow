@@ -10,20 +10,28 @@ def upcoming_slot(
     now: datetime,
     *,
     timezone_name: str = "Africa/Kampala",
-    slot_hours: tuple[int, ...] = (12,  18),
+    slot_hours: tuple[int, ...] = (12, 18),
     min_lead: timedelta = timedelta(minutes=5),
     window: timedelta = timedelta(minutes=30),
 ) -> datetime | None:
-    """Return the next local publishing slot inside the recovery window."""
+    """Return a local slot in its pre-publication or missed-slot recovery window.
+
+    Future slots retain the minimum lead-time guard. A slot that has just passed
+    remains recoverable for one window, allowing a later watchdog tick to recover
+    a dropped cron event without retrying an old slot indefinitely.
+    """
     if now.tzinfo is None or now.utcoffset() is None:
         raise ValueError("now must be timezone-aware")
     local_now = now.astimezone(ZoneInfo(timezone_name))
+    candidates = []
     for hour in slot_hours:
         due = local_now.replace(hour=hour, minute=0, second=0, microsecond=0)
-        lead = due - local_now
-        if min_lead < lead <= window:
-            return due
-    return None
+        delta = due - local_now
+        if min_lead < delta <= window or -window <= delta <= timedelta(0):
+            candidates.append((abs(delta.total_seconds()), due))
+    if not candidates:
+        return None
+    return min(candidates, key=lambda item: item[0])[1]
 
 
 def find_slot_entry(
