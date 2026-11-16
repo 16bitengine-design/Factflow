@@ -34,7 +34,7 @@
     }
   },
   "qt-sky-blue-20261116-1822": {
-    "status": "reserved",
+    "status": "scheduled",
     "spec": "examples/videos/why-the-sky-is-blue-production.json",
     "due_at": "2026-11-16T18:22:37+03:00",
     "reserved_at": "2026-11-16T15:02:37+00:00",
@@ -58,6 +58,7 @@
           "status": "awaiting_confirmation"
         }
       }
-    }
+    },
+    "scheduled_at": "2026-11-16T15:03:27.870011+00:00"
   }
 }
