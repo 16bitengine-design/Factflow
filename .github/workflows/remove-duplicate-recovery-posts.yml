@@ -1,0 +1,72 @@
+name: Remove duplicate QuantaTale recovery posts
+on:
+  push:
+    paths:
+      - ".github/workflows/remove-duplicate-recovery-posts.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: quantatale-duplicate-post-cleanup
+  cancel-in-progress: false
+jobs:
+  delete-duplicate-posts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install QuantaTale
+        run: python -m pip install -e .
+      - name: Delete the two exact duplicate Buffer posts
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from factflow.buffer_publish import _buffer_graphql
+
+          content_id = "qt-sky-blue-20261116-1822"
+          post_ids = {
+              "youtube": "6afb1b3c75345b4eae968994",
+              "tiktok": "6afb1b3df37d25fd22306a2c",
+          }
+          ledger_path = Path("production/publishing-ledger.json")
+          ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
+          entry = ledger.get(content_id)
+          if not entry or entry.get("status") != "scheduled":
+              raise SystemExit("Expected duplicate ledger entry is missing or not scheduled; refusing blind cleanup.")
+          for platform, post_id in post_ids.items():
+              recorded = entry.get("buffer_posts", {}).get(platform, {}).get("post_id")
+              if recorded != post_id:
+                  raise SystemExit(f"{platform} ledger post ID mismatch; refusing deletion.")
+          for platform, post_id in post_ids.items():
+              result = _buffer_graphql(
+                  "mutation DeleteQuantaTaleDuplicate($input: DeletePostInput!) { deletePost(input: $input) { __typename } }",
+                  {"input": {"id": post_id}},
+              )
+              print(f"Buffer delete response for {platform}: {json.dumps(result.get('data', {}))}")
+              if result.get("errors"):
+                  raise SystemExit(f"Buffer deletion failed for {platform}.")
+          for platform in ("youtube", "tiktok"):
+              entry["buffer_posts"][platform]["buffer_status"] = "deleted"
+              entry["buffer_posts"][platform]["verification"] = {
+                  "status": "deleted_as_duplicate",
+                  "checked_at": "2026-11-16T15:19:00Z"
+              }
+          entry["status"] = "cancelled_duplicate"
+          entry["cancellation_reason"] = "Same production specification was already published on 2026-11-15."
+          ledger_path.write_text(json.dumps(ledger, indent=2) + "\\n", encoding="utf-8")
+          PY
+      - name: Persist duplicate cancellation
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add production/publishing-ledger.json
+          git commit -m "Cancel duplicate QuantaTale recovery posts"
+          git push origin HEAD:main
