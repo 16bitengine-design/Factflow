@@ -37,8 +37,6 @@ def choose_ideas(report: dict[str, Any], library: dict[str, Any], limit: int = 5
             continue
         if not url or not title or url in seen_urls or normalized_title in existing_titles:
             continue
-        if publisher and publisher in seen_publishers:
-            continue
         chosen.append(item)
         seen_urls.add(url)
         if publisher:
