@@ -21,6 +21,36 @@ def is_publishable_spec(item: dict[str, Any]) -> bool:
         for source in sources
     )
 
+
+def _last_used_by_spec(ledger: dict[str, Any]) -> dict[str, datetime]:
+    """Return the most recent recorded use of each spec, normalized to UTC."""
+    last_used: dict[str, datetime] = {}
+    for entry in ledger.values():
+        if not isinstance(entry, dict) or not entry.get("spec") or not entry.get("due_at"):
+            continue
+        try:
+            due = _parse_datetime(entry["due_at"]).astimezone(timezone.utc)
+        except (TypeError, ValueError):
+            continue
+        spec_path = str(entry["spec"])
+        if spec_path not in last_used or due > last_used[spec_path]:
+            last_used[spec_path] = due
+    return last_used
+
+
+def _least_recently_used(candidates: list[dict[str, Any]], ledger: dict[str, Any]) -> dict[str, Any]:
+    """Choose the least recently published spec, with a stable path tie-break."""
+    last_used = _last_used_by_spec(ledger)
+    oldest = datetime.min.replace(tzinfo=timezone.utc)
+    return sorted(
+        candidates,
+        key=lambda item: (
+            last_used.get(str(item.get("spec_path", "")), oldest),
+            str(item.get("spec_path", "")),
+        ),
+    )[0]
+
+
 def select_immediate_slot(library: dict[str, Any], ledger: dict[str, Any], *,
     now: datetime | None = None, lead_time: timedelta = timedelta(minutes=20)
 ) -> dict[str, str]:
@@ -57,7 +87,7 @@ def select_immediate_slot(library: dict[str, Any], ledger: dict[str, Any], *,
     candidates = [item for item in eligible if str(item.get("spec_path", "")) not in used_today]
     if not candidates:
         raise ValueError("No unused eligible topic remains for an immediate post today.")
-    spec = sorted(candidates, key=lambda item: str(item.get("spec_path", "")))[0]
+    spec = _least_recently_used(candidates, ledger)
     zone_name = str(spec.get("publish_timezone") or "Africa/Kampala")
     zone = ZoneInfo(zone_name)
     due_local = (current.astimezone(timezone.utc) + lead_time).astimezone(zone)
@@ -140,7 +170,7 @@ def select_next_slot(library: dict[str, Any], ledger: dict[str, Any], *,
     unused = [spec for spec in chosen_specs if str(spec.get("spec_path", "")) not in used_spec_paths]
     if not unused:
         raise ValueError(f"No unused eligible topic remains for the {local_slot:%Y-%m-%d %H:%M} {zone.key} publishing slot.")
-    spec = sorted(unused, key=lambda item: str(item.get("spec_path", "")))[0]
+    spec = _least_recently_used(unused, ledger)
     prefix = str(spec.get("content_id_prefix", "")).strip()
     if not prefix:
         raise ValueError(f"Eligible spec {spec.get('spec_path')} has no content_id_prefix.")
