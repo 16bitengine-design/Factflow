@@ -88,8 +88,12 @@ jobs:
 
           if slot_entry:
               content_id, entry = slot_entry
-              if slot_entry_state(entry) == 'scheduled':
+              entry_state = slot_entry_state(entry)
+              if entry_state == 'scheduled':
                   print(f'{content_id} already has Buffer post IDs for both platforms; no recovery needed.')
+                  raise SystemExit(0)
+              if entry_state == 'cancelled':
+                  print(f'{content_id} was intentionally cancelled; no automatic retry will be attempted.')
                   raise SystemExit(0)
               title = f"QuantaTale publishing slot blocked: {due.strftime('%Y-%m-%d %H:%M')} Africa/Kampala"
               body = (

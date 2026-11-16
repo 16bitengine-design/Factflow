@@ -94,6 +94,9 @@ def slot_entry_state(entry: dict[str, Any]) -> str:
         isinstance(posts.get(platform), dict) and posts[platform].get("post_id")
         for platform in ("youtube", "tiktok")
     )
+    status = str(entry.get("status", "")).lower()
+    if status in {"cancelled", "cancelled_duplicate"}:
+        return "cancelled"
     if entry.get("status") == "scheduled" and has_both:
         return "scheduled"
     return "blocked"
