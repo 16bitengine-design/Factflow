@@ -96,3 +96,38 @@ def test_immediate_selection_requires_rendering_lead_time():
     with pytest.raises(ValueError, match="at least ten minutes"):
         select_immediate_slot({"production_specs": [_spec("a.json", "qt-a", "A")]}, {},
                               now=now, lead_time=timedelta(minutes=5))
+
+def test_next_slot_never_reuses_a_topic_published_on_a_previous_day():
+    now = datetime(2026, 11, 16, 14, 40, tzinfo=timezone.utc)
+    library = {"production_specs": [_spec("yesterday.json", "qt-yesterday", "Yesterday"),
+                                   _spec("fresh.json", "qt-fresh", "Fresh")]}
+    ledger = {"yesterday": {"spec": "yesterday.json", "due_at": "2026-11-15T18:00:00+03:00",
+                            "status": "published"}}
+    assert select_next_slot(library, ledger, now=now)["spec_path"] == "fresh.json"
+
+
+def test_next_slot_fails_closed_when_only_previously_published_topic_remains():
+    now = datetime(2026, 11, 16, 14, 40, tzinfo=timezone.utc)
+    library = {"production_specs": [_spec("yesterday.json", "qt-yesterday", "Yesterday")]}
+    ledger = {"yesterday": {"spec": "yesterday.json", "due_at": "2026-11-15T18:00:00+03:00",
+                            "status": "published"}}
+    with pytest.raises(ValueError, match="publishing history"):
+        select_next_slot(library, ledger, now=now)
+
+
+def test_immediate_selection_never_reuses_a_topic_from_a_previous_day():
+    now = datetime(2026, 11, 16, 14, 11, tzinfo=timezone.utc)
+    library = {"production_specs": [_spec("yesterday.json", "qt-yesterday", "Yesterday"),
+                                   _spec("fresh.json", "qt-fresh", "Fresh")]}
+    ledger = {"yesterday": {"spec": "yesterday.json", "due_at": "2026-11-15T18:00:00+03:00",
+                            "status": "published", "publish_timezone": "Africa/Kampala"}}
+    assert select_immediate_slot(library, ledger, now=now)["spec_path"] == "fresh.json"
+
+
+def test_immediate_selection_fails_closed_when_all_topics_were_used_before():
+    now = datetime(2026, 11, 16, 14, 11, tzinfo=timezone.utc)
+    library = {"production_specs": [_spec("yesterday.json", "qt-yesterday", "Yesterday")]}
+    ledger = {"yesterday": {"spec": "yesterday.json", "due_at": "2026-11-15T18:00:00+03:00",
+                            "status": "published", "publish_timezone": "Africa/Kampala"}}
+    with pytest.raises(ValueError, match="publishing history"):
+        select_immediate_slot(library, ledger, now=now)
