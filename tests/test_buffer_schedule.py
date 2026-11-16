@@ -123,7 +123,7 @@ def test_partial_platform_success_is_persisted_before_next_platform_fails(monkey
         buffer_schedule.run_scheduled_publish(
             video_path=str(video), target="both", content_id="qt-test-20261116-1200",
             due_at="2026-11-16T12:00:00+03:00", title="Title", description="Caption",
-            results_file=results_path,
+            results_file=results_path, now=datetime(2026, 11, 16, 8, 0, tzinfo=timezone.utc),
         )
 
     saved = json.loads(results_path.read_text(encoding="utf-8"))
