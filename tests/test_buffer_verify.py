@@ -107,3 +107,13 @@ def test_overdue_detection_requires_timezone_aware_clock():
     from datetime import datetime
     with pytest.raises(ValueError, match="timezone-aware"):
         buffer_verify.find_posts_needing_attention({}, now=datetime(2026, 11, 16, 9, 20))
+
+
+def test_verify_skips_posts_deleted_as_duplicate(monkeypatch, tmp_path):
+    ledger_path = tmp_path / "ledger.json"
+    ledger_path.write_text(json.dumps({"qt-dup": {"status": "cancelled_duplicate", "buffer_posts": {
+        "youtube": {"post_id": "gone", "verification": {"status": "deleted_as_duplicate"}},
+    }}}), encoding="utf-8")
+    monkeypatch.setattr(buffer_verify, "fetch_buffer_post", lambda _: pytest.fail("deleted post must not be fetched"))
+    counts = buffer_verify.verify_ledger(ledger_path)
+    assert counts == {"published": 0, "failed": 0, "awaiting_confirmation": 0, "unknown": 0}

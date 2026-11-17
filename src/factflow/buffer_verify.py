@@ -104,6 +104,11 @@ def find_posts_needing_attention(
                 })
     return attention
 
+# Outcomes that never change, so Buffer is not queried again. A post deleted on
+# purpose is gone from Buffer and would otherwise fail every verification run.
+FINAL_VERIFICATION_STATUSES = {"published", "failed", "deleted_as_duplicate"}
+
+
 def verify_ledger(ledger_path: Path) -> dict[str, int]:
     """Refresh each non-final platform outcome in the publishing ledger."""
     if not ledger_path.exists():
@@ -119,8 +124,9 @@ def verify_ledger(ledger_path: Path) -> dict[str, int]:
             if not isinstance(record, dict) or not record.get("post_id"):
                 continue
             previous = record.get("verification", {}).get("status")
-            if previous in {"published", "failed"}:
-                counts[previous] += 1
+            if previous in FINAL_VERIFICATION_STATUSES:
+                if previous in counts:
+                    counts[previous] += 1
                 continue
             post = fetch_buffer_post(str(record["post_id"]))
             outcome = classify_post(post)
