@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-16T07:40:40.418683+00:00",
+  "updated_at": "2026-11-17T08:53:05.269530+00:00",
   "production_specs": [
     {
       "spec_path": "examples/videos/why-the-sky-is-blue-production.json",
@@ -1292,6 +1292,127 @@
       "published": "Wed, 15 Jul 2020 12:00:12 Z",
       "description": "WHO and UNICEF call for immediate efforts to vaccinate all children as new data shows that, before the COVID-19 pandemic, vaccine coverage stalled at 85 per cent for nearly a decade, with 14 million unvaccinated infants yearly",
       "discovered_at": "2026-11-16T07:40:40.418646+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000101",
+      "title": "A Collage Showing 49 Drill Holes Made by NASA’s Curiosity Mars Rover",
+      "url": "https://science.nasa.gov/photojournal/a-collage-showing-49-drill-holes-made-by-nasas-curiosity-mars-rover/",
+      "publisher_id": "NASA",
+      "published": "Mon, 16 Nov 2026 22:05:23 +0000",
+      "description": "Description This collage shows 49 drill holes captured by NASA’s Curiosity Mars rover as of November 2026. Each hole represents a sample collected from rocks on the Martian surface; Curiosity’s drill, located on the end of its robotic arm, drops pulverized rock samples into instruments in its belly that analyze their composition. These images were […]",
+      "discovered_at": "2026-11-17T08:53:05.268948+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000102",
+      "title": "APOD: 2026 November 17 – Milky Way versus Aurora",
+      "url": "https://science.nasa.gov/image-article/apod-2026-november-17-milky-way-versus-aurora/",
+      "publisher_id": "NASA",
+      "published": "Tue, 17 Nov 2026 05:05:00 +0000",
+      "description": "APOD Science APOD APOD: 2026 November 17 –… Today’s APOD Archive Submissions Index Search Calendar RSS Education About Discuss APOD Astronomy Picture of the Day Discover the cosmos! Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer. OriginalAnnotated Milky Way […]",
+      "discovered_at": "2026-11-17T08:53:05.268979+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000103",
+      "title": "Contractor to Civil Servant: NASA Welcomes Jim Mirandy",
+      "url": "https://www.nasa.gov/centers-and-facilities/stennis/contractor-to-civil-servant-jim-mirandy/",
+      "publisher_id": "NASA",
+      "published": "Mon, 16 Nov 2026 15:22:09 +0000",
+      "description": "The rumble of a rocket engine might be considered a soundtrack for Jim Mirandy’s life. Mirandy has grown up with NASA as a constant presence, and his path to becoming a civil servant at NASA’s Stennis Space Center near Bay St. Louis, Mississippi, has been decades in the making. Hired under the agency’s workforce directive […]",
+      "discovered_at": "2026-11-17T08:53:05.268994+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000104",
+      "title": "NASA Receives 16th Consecutive ‘Clean’ Financial Audit Opinion",
+      "url": "https://www.nasa.gov/news-release/nasa-receives-16th-consecutive-clean-financial-audit-opinion/",
+      "publisher_id": "NASA",
+      "published": "Mon, 16 Nov 2026 20:30:40 +0000",
+      "description": "For the 16th consecutive year, NASA has received an unmodified, or “clean,” opinion from an external auditor on its fiscal year 2026 financial statements. The rating is the best possible audit opinion, certifying that NASA’s financial statements conform with Generally Accepted Accounting Principles for federal agencies and accurately present the agency’s financial position. “Our responsibility […]",
+      "discovered_at": "2026-11-17T08:53:05.269006+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000105",
+      "title": "Perseverance Update: The Ghostly Rocks of ‘Idubi’ — Bright Remnants of Aqueous Systems from Long Ago",
+      "url": "https://science.nasa.gov/blog/perseverance-update-the-ghostly-rocks-of-idubi-bright-remnants-of-aqueous-systems-from-long-ago/",
+      "publisher_id": "NASA",
+      "published": "Mon, 16 Nov 2026 23:12:45 +0000",
+      "description": "Written by Candice Bedford, Research Scientist at Purdue University Date: Nov. 16, 2026 During the Perseverance rover’s investigation of “Idubi” — an area of ancient Martian crust exposed in the “Lac de Charmes” region, outside of Jezero crater — the Perseverance rover team has been captivated by a cluster of eerily bright, light-toned rocks in […]",
+      "discovered_at": "2026-11-17T08:53:05.269020+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000106",
+      "title": "Sentinel-6B in Orbit Around Earth",
+      "url": "https://science.nasa.gov/photojournal/sentinel-6b-in-orbit-around-earth/",
+      "publisher_id": "NASA",
+      "published": "Mon, 16 Nov 2026 18:52:32 +0000",
+      "description": "Description This artist’s concept shows the Sentinel-6B satellite, which will become the reference satellite for other missions studying sea surface height.",
+      "discovered_at": "2026-11-17T08:53:05.269029+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000107",
+      "title": "Thunderbirds in Formation",
+      "url": "https://www.nasa.gov/image-article/thunderbirds-in-formation/",
+      "publisher_id": "NASA",
+      "published": "Mon, 16 Nov 2026 18:34:47 +0000",
+      "description": "U.S. Air Force Thunderbirds fighter jets pass overhead during the agency’s MAX POWER expo and air show on Saturday, Nov. 7, 2026, at NASA’s Kennedy Space Center in Florida. NASA’s inaugural MAX POWER was an aerospace festival celebrating the past, present, and future of flight and space exploration in honor of America’s 250th anniversary. Image […]",
+      "discovered_at": "2026-11-17T08:53:05.269042+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000108",
+      "title": "Tossing Fireworks from Cloud to Cloud",
+      "url": "https://science.nasa.gov/earth/earth-observatory/tossing-fireworks-from-cloud-to-cloud/",
+      "publisher_id": "NASA",
+      "published": "Tue, 17 Nov 2026 05:01:00 +0000",
+      "description": "For many astronauts, the spectacular sight of lightning stands out when looking back at Earth from the International Space Station.",
+      "discovered_at": "2026-11-17T08:53:05.269050+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000109",
+      "title": "Announcing Volcano Awareness Month Programs in January 2027!",
+      "url": "https://www.usgs.gov/observatories/hvo/news/announcing-volcano-awareness-month-programs-january-2027?utm_source=comms&amp;utm_medium=rss&amp;utm_campaign=news",
+      "publisher_id": "USGS",
+      "published": "Mon, 16 Nov 2026 23:02:43 EST",
+      "description": "Every January, the USGS Hawaiian Volcano Observatory organizes Volcano Awareness Month — a chance for all of us who live, work, or visit the Hawaiian Islands to learn about the volcanoes and earthquakes that shape this landscape. Join us at one of the many free events being offered in January 2027 to commemorate the Island of Hawaiʻi's 18th annual Volcano Awareness Month.",
+      "discovered_at": "2026-11-17T08:53:05.269074+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000110",
+      "title": "Mapping the Potomac: New Model Merges Land and River Depths into One 3D Surface",
+      "url": "https://www.usgs.gov/3d-elevation-program/news/mapping-potomac-new-model-merges-land-and-river-depths-one-3d-surface?utm_source=comms&amp;utm_medium=rss&amp;utm_campaign=news",
+      "publisher_id": "USGS",
+      "published": "Mon, 16 Nov 2026 12:37:40 EST",
+      "description": "Integrated topobathymetric digital elevation model published.",
+      "discovered_at": "2026-11-17T08:53:05.269090+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000111",
+      "title": "Photo & Video Chronology — Kīlauea summit satellite images",
+      "url": "https://www.usgs.gov/observatories/hvo/news/photo-video-chronology-kilauea-summit-satellite-images?utm_source=comms&amp;utm_medium=rss&amp;utm_campaign=news",
+      "publisher_id": "USGS",
+      "published": "Mon, 16 Nov 2026 17:10:28 EST",
+      "description": "Satellite images on November 3, 2026, provide views of activity within Halemaʻumaʻu crater at the summit of Kīlauea just two days before lava fountaining episode 56 took place on November 5, 2026.",
+      "discovered_at": "2026-11-17T08:53:05.269144+00:00",
       "status": "candidate_unreviewed",
       "editorial_review_required": false
     }
