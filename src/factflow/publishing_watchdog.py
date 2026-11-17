@@ -97,3 +97,24 @@ def slot_entry_state(entry: dict[str, Any]) -> str:
     if entry.get("status") == "scheduled" and has_both:
         return "scheduled"
     return "blocked"
+
+
+def unrecovered_missed_slot(
+    ledger: dict[str, Any],
+    now: datetime,
+    *,
+    timezone_name: str = "Africa/Kampala",
+) -> datetime | None:
+    """Return a slot that has just passed with no reservation or recovery.
+
+    Used by the production workflow so a run that finds nothing to schedule
+    fails loudly, instead of exiting green, when a slot was actually missed.
+    """
+    due = upcoming_slot(now, timezone_name=timezone_name)
+    if due is None or due > now:
+        return None
+    if find_slot_entry(ledger, due, timezone_name=timezone_name):
+        return None
+    if find_recovery_entry(ledger, due, timezone_name=timezone_name):
+        return None
+    return due

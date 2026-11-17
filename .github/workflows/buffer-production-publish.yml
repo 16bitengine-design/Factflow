@@ -1,9 +1,11 @@
 name: QuantaTale hands-off video publishing
 on:
   schedule:
-    # Retry safely during each pre-publication window. The selector and ledger
-    # make repeated invocations idempotent for each local publishing slot.
-    - cron: "30,35,40,45,50,55 8,14 * * *"
+    # A slot is selectable from 150 minutes to 15 minutes before it is due
+    # (09:00 and 15:00 UTC). Several attempts, starting early, absorb delayed or
+    # dropped GitHub cron events. The ledger makes repeats idempotent.
+    - cron: "10,40 7,13 * * *"
+    - cron: "10,25,40 8,14 * * *"
   workflow_dispatch:
     inputs:
       publish_now:
@@ -31,33 +33,18 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
-      - name: Install free rendering tools
-        run: |
-          sudo apt-get update
-          sudo apt-get install --yes --no-install-recommends ffmpeg espeak-ng fonts-dejavu-core
-      - name: Cache Kokoro model files
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/huggingface/hub
-          key: kokoro-82m-af-heart-v1
-      - name: Install QuantaTale and publishing dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
-          python -m pip install -e ".[dev,render,tts]"
-          python -m pip install "cloudinary>=1.44,<2"
-      - name: Run complete automated test suite
-        run: python -m pytest -v
       - name: Select an eligible video for the next slot or immediate recovery
         id: select
         env:
           PUBLISH_NOW: ${{ github.event.inputs.publish_now || 'false' }}
+          PYTHONPATH: src
         run: |
           python - <<'PY'
           import json, os
           from datetime import datetime, timezone
           from pathlib import Path
           from factflow.publishing_slots import select_next_slot, select_immediate_slot
+          from factflow.publishing_watchdog import unrecovered_missed_slot
 
           library_path = Path("production/topic-library.json")
           library = json.loads(library_path.read_text(encoding="utf-8")) if library_path.exists() else {}
@@ -72,8 +59,18 @@ jobs:
               selection = select_next_slot(library, ledger, now=now)
           output = Path(os.environ["GITHUB_OUTPUT"])
           if selection is None:
-              output.write_text("selected=false\n", encoding="utf-8")
-              print("This run is outside the 30-minute window for a configured publishing slot.")
+              with output.open("a", encoding="utf-8") as handle:
+                  handle.write("selected=false\n")
+              missed = unrecovered_missed_slot(ledger, now)
+              if missed is not None:
+                  print(
+                      f"::error title=Publishing slot missed::The {missed:%Y-%m-%d %H:%M} "
+                      "Africa/Kampala slot has no reservation or recovery. The watchdog should "
+                      "dispatch an immediate recovery; if it does not, run this workflow "
+                      "manually with publish_now enabled."
+                  )
+                  raise SystemExit(1)
+              print("No configured slot is inside its selection window (150 to 15 minutes before due); nothing to do.")
               raise SystemExit(0)
 
           spec_path = Path(selection["spec_path"])
@@ -108,6 +105,24 @@ jobs:
           git add production/publishing-ledger.json
           git commit -m "Reserve daily QuantaTale publishing slot"
           git push origin HEAD:main
+      - name: Install free rendering tools
+        if: steps.select.outputs.selected == 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends ffmpeg espeak-ng fonts-dejavu-core
+      - name: Cache Kokoro model files
+        if: steps.select.outputs.selected == 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface/hub
+          key: kokoro-82m-af-heart-v1
+      - name: Install QuantaTale and publishing dependencies
+        if: steps.select.outputs.selected == 'true'
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -e ".[dev,render,tts]"
+          python -m pip install "cloudinary>=1.44,<2"
       - name: Render automatically selected video
         if: steps.select.outputs.selected == 'true'
         env:

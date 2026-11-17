@@ -6,9 +6,11 @@ QuantaTale is designed to discover eligible topics, render narration-led videos 
 
 The target publishing times are **12:00 and 18:00 Africa/Kampala** every day.
 
-GitHub Actions uses UTC. The production workflow and its independent watchdog check during the 30-minute preparation windows before each slot:
-- 11:30–11:55 Africa/Kampala (08:30–08:55 UTC)
-- 17:30–17:55 Africa/Kampala (14:30–14:55 UTC)
+GitHub Actions uses UTC (slots are 09:00 and 15:00 UTC). A slot becomes selectable **150 minutes before** it is due and stays selectable until **15 minutes before** it is due, leaving time to render and upload before Buffer's five-minute minimum lead. The production workflow runs several attempts inside that window (07:10, 07:40, 08:10, 08:25, 08:40 UTC and the same minutes for the 15:00 UTC slot), so a delayed or dropped GitHub cron event does not lose the slot. Repeated attempts are idempotent because the ledger records each slot.
+
+Slot selection runs first, before any heavy installation. The FFmpeg, TTS and Python dependencies are installed only when a slot was actually selected, and the full test suite is left to the CI workflow rather than being repeated in every publishing run.
+
+If a run finds nothing to schedule **and** a slot has just passed with no reservation or recovery entry, the run **fails** with a "Publishing slot missed" error instead of exiting green. The watchdog then dispatches an immediate recovery run.
 
 The production workflow selects the next available slot, renders the video, uploads it to the configured public media host, and schedules YouTube and TikTok through Buffer. Buffer performs the actual publication at the scheduled time. A successful workflow run or Buffer schedule response is **not** proof that a platform post has been published; the verification workflow checks the exact Buffer post IDs and records the final outcomes.
 

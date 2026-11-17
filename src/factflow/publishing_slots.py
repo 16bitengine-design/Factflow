@@ -5,6 +5,12 @@ from zoneinfo import ZoneInfo
 from typing import Any
 
 DEFAULT_PUBLISH_SLOTS = ("12:00", "18:00")
+# A slot becomes selectable up to 2.5 hours ahead so delayed or dropped GitHub
+# cron events still land inside the window, and stays selectable until 15
+# minutes before it is due so rendering and upload fit before Buffer's
+# five-minute minimum scheduling lead.
+DEFAULT_MIN_LEAD = timedelta(minutes=15)
+DEFAULT_MAX_LEAD = timedelta(minutes=150)
 
 def is_publishable_spec(item: dict[str, Any]) -> bool:
     """Check default topic enablement and retain independent evidence safeguards."""
@@ -112,7 +118,7 @@ def _parse_datetime(value: str) -> datetime:
 
 def select_next_slot(library: dict[str, Any], ledger: dict[str, Any], *,
     now: datetime | None = None, slot_times: tuple[str, ...] = DEFAULT_PUBLISH_SLOTS,
-    min_lead: timedelta = timedelta(minutes=5), max_lead: timedelta = timedelta(minutes=30)
+    min_lead: timedelta = DEFAULT_MIN_LEAD, max_lead: timedelta = DEFAULT_MAX_LEAD
 ) -> dict[str, str] | None:
     """Return the next imminent slot and an unused enabled spec, or None.
 
