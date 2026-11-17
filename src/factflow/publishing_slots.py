@@ -28,6 +28,22 @@ def is_publishable_spec(item: dict[str, Any]) -> bool:
     )
 
 
+def _ever_used_specs(ledger: dict[str, Any]) -> set[str]:
+    """Specs that already have a reservation or post. A topic is never reused.
+
+    Only entries explicitly cancelled before any public post (status starting
+    with "cancelled") free a topic again.
+    """
+    used: set[str] = set()
+    for entry in ledger.values():
+        if not isinstance(entry, dict) or not entry.get("spec"):
+            continue
+        if str(entry.get("status", "")).startswith("cancelled"):
+            continue
+        used.add(str(entry["spec"]))
+    return used
+
+
 def _last_used_by_spec(ledger: dict[str, Any]) -> dict[str, datetime]:
     """Return the most recent recorded use of each spec, normalized to UTC."""
     last_used: dict[str, datetime] = {}
@@ -90,9 +106,11 @@ def select_immediate_slot(library: dict[str, Any], ledger: dict[str, Any], *,
             local_date = due.date()
         if local_date == current.astimezone(ZoneInfo("Africa/Kampala")).date():
             used_today.add(str(entry["spec"]))
-    candidates = [item for item in eligible if str(item.get("spec_path", "")) not in used_today]
+    ever_used = _ever_used_specs(ledger)
+    candidates = [item for item in eligible if str(item.get("spec_path", "")) not in used_today
+        and str(item.get("spec_path", "")) not in ever_used]
     if not candidates:
-        raise ValueError("No unused eligible topic remains for an immediate post today.")
+        raise ValueError("No never-used eligible topic remains; topics are never repeated. Add and verify new topics.")
     spec = _least_recently_used(candidates, ledger)
     zone_name = str(spec.get("publish_timezone") or "Africa/Kampala")
     zone = ZoneInfo(zone_name)
@@ -173,9 +191,11 @@ def select_next_slot(library: dict[str, Any], ledger: dict[str, Any], *,
             continue
         if prior_due.date() == local_slot.date():
             used_spec_paths.add(str(entry["spec"]))
-    unused = [spec for spec in chosen_specs if str(spec.get("spec_path", "")) not in used_spec_paths]
+    ever_used = _ever_used_specs(ledger)
+    unused = [spec for spec in chosen_specs if str(spec.get("spec_path", "")) not in used_spec_paths
+        and str(spec.get("spec_path", "")) not in ever_used]
     if not unused:
-        raise ValueError(f"No unused eligible topic remains for the {local_slot:%Y-%m-%d %H:%M} {zone.key} publishing slot.")
+        raise ValueError(f"No unused eligible topic remains for the {local_slot:%Y-%m-%d %H:%M} {zone.key} publishing slot; topics are never repeated. Add and verify new topics.")
     spec = _least_recently_used(unused, ledger)
     prefix = str(spec.get("content_id_prefix", "")).strip()
     if not prefix:

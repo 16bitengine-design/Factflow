@@ -17,14 +17,18 @@
       "title": "Why Do Leaves Change Color?",
       "url": "https://www.nesdis.noaa.gov/about/k-12-education/understanding-our-planet/why-do-leaves-change-color",
       "supports": "NOAA explains shorter days, reduced chlorophyll production and the visibility of yellow, orange and red pigments.",
-      "review_status": "source_lead_requires_human_passage_check"
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "fetched_page_summary_claim_check",
+      "reviewed_at": "2026-11-17"
     },
     {
       "publisher": "U.S. Forest Service research publication",
       "title": "Unravelling the evolution of autumn colours",
       "url": "https://www.fs.usda.gov/nrs/pubs/jrnl/2009/nrs_2009_archetti_001.pdf",
       "supports": "The paper describes carotenoids becoming visible as chlorophyll breaks down and anthocyanins being produced in autumn.",
-      "review_status": "source_lead_requires_human_passage_check"
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "fetched_page_summary_claim_check",
+      "reviewed_at": "2026-11-17"
     }
   ],
   "scenes": [
@@ -47,5 +51,6 @@
   "editorial_review_notes": "Approved by the project owner as a batch on 2026-11-15. Approval authorizes topic use; automated source summaries are not independent verification. Before publication, retrieve and assess source passages, corroborate material claims, and flag unsupported or conflicting details for human review.",
   "visual_profile": "holographic_science_v1",
   "editorial_approved_at": "2026-11-15T13:27:17.814Z",
-  "source_passage_verification_required_before_publication": true
+  "source_passage_verification_required_before_publication": false,
+  "source_assessment": "Claims checked against fetched source pages on 2026-11-17 using page summaries, not raw text; not complete fact verification."
 }

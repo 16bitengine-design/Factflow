@@ -23,7 +23,9 @@ Topics are eligible by default unless `publishing_enabled` is explicitly `false`
 
 The `editorial_approved` field is retained as provenance but is not a universal publication gate. Automated claim extraction or assessment is not treated as complete fact verification. Evidence safeguards remain mandatory.
 
-A topic cannot be used twice on the same Kampala calendar day. The publishing ledger reserves each content ID before external upload/scheduling so concurrent or repeated workflow runs do not create duplicate posts.
+**A topic is never published twice.** Any topic with a ledger reservation or post is permanently used (only a reservation explicitly cancelled before posting, status `cancelled_*`, frees it). When no never-used eligible topic remains, selection fails loudly with "No unused eligible topic remains" instead of repeating one, so new topics must be added and source-checked before then. Topics whose source passages have been checked carry `passage_checked_supports_claim` with `review_method` and `reviewed_at`; checks made from fetched page summaries are recorded as such and are not complete fact verification.
+
+A topic cannot be used twice on the same Kampala calendar day (implied by the rule above). The publishing ledger reserves each content ID before external upload/scheduling so concurrent or repeated workflow runs do not create duplicate posts.
 
 ## Autonomous recovery
 

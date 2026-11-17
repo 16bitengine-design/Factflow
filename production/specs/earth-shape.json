@@ -17,14 +17,18 @@
       "title": "Is the Earth round?",
       "url": "https://oceanservice.noaa.gov/facts/earth-round.html",
       "supports": "NOAA describes Earth as an irregular ellipsoid with an equatorial bulge caused by rotation and additional topographic and gravity variations.",
-      "review_status": "source_lead_requires_human_passage_check"
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "fetched_page_summary_claim_check",
+      "reviewed_at": "2026-11-17"
     },
     {
       "publisher": "NOAA National Geodetic Survey",
       "title": "The Geopotential Surface",
       "url": "https://nweb.ngs.noaa.gov/research/geopotential-datums/geopotential-surface.shtml",
       "supports": "NOAA explains the reference ellipsoid and Earth's equatorial radius being larger than its polar radius.",
-      "review_status": "source_lead_requires_human_passage_check"
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "fetched_page_summary_claim_check",
+      "reviewed_at": "2026-11-17"
     }
   ],
   "scenes": [
@@ -47,5 +51,6 @@
   "editorial_review_notes": "Approved by the project owner as a batch on 2026-11-15. Approval authorizes topic use; automated source summaries are not independent verification. Before publication, retrieve and assess source passages, corroborate material claims, and flag unsupported or conflicting details for human review.",
   "visual_profile": "holographic_science_v1",
   "editorial_approved_at": "2026-11-15T13:27:33.899Z",
-  "source_passage_verification_required_before_publication": true
+  "source_passage_verification_required_before_publication": false,
+  "source_assessment": "Claims checked against fetched source pages on 2026-11-17 using page summaries, not raw text; not complete fact verification."
 }

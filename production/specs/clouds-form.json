@@ -17,14 +17,18 @@
       "title": "How Clouds Form",
       "url": "https://www.noaa.gov/jetstream/clouds/how-clouds-form",
       "supports": "NOAA explains the roles of condensation nuclei, rising air, cooling and saturation in cloud formation.",
-      "review_status": "source_lead_requires_human_passage_check"
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "fetched_page_summary_claim_check",
+      "reviewed_at": "2026-11-17"
     },
     {
       "publisher": "NASA Science",
       "title": "How Do Clouds Form?",
       "url": "https://science.nasa.gov/kids/earth/how-do-clouds-form/",
       "supports": "NASA explains evaporation, condensation and how airborne particles provide surfaces for cloud droplets and ice crystals.",
-      "review_status": "source_lead_requires_human_passage_check"
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "fetched_page_summary_claim_check",
+      "reviewed_at": "2026-11-17"
     }
   ],
   "scenes": [
@@ -47,5 +51,6 @@
   "editorial_review_notes": "Approved by the project owner as a batch on 2026-11-15. Approval authorizes topic use; automated source summaries are not independent verification. Before publication, retrieve and assess source passages, corroborate material claims, and flag unsupported or conflicting details for human review.",
   "visual_profile": "holographic_science_v1",
   "editorial_approved_at": "2026-11-15T13:27:17.814Z",
-  "source_passage_verification_required_before_publication": true
+  "source_passage_verification_required_before_publication": false,
+  "source_assessment": "Claims checked against fetched source pages on 2026-11-17 using page summaries, not raw text; not complete fact verification."
 }

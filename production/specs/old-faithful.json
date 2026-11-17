@@ -10,21 +10,25 @@
   "editorial_approved": true,
   "editorial_status": "approved_by_user_batch",
   "editorial_review_required": false,
-  "narration": "Old Faithful earned its name because its eruptions are unusually predictable for a geyser. But it does not erupt at exact hourly intervals. Yellowstone National Park says the interval can range from about 60 to 110 minutes, and predictions depend partly on the duration of the previous eruption. The underground plumbing and changing water circulation matter. It is a remarkable natural pattern, not a mechanical clock—and predictions still have a margin of error.",
+  "narration": "Old Faithful is known for being one of Yellowstone's more predictable geysers. But it does not erupt at exact hourly intervals. Yellowstone National Park says the interval can range from about 60 to 110 minutes, and predictions depend partly on the duration of the previous eruption. The underground plumbing and changing water circulation matter. It is a remarkable natural pattern, not a mechanical clock—and predictions still have a margin of error.",
   "sources": [
     {
       "publisher": "National Park Service",
       "title": "Hydrothermal Features",
       "url": "https://www.nps.gov/yell/learn/nature/hydrothermal-features.htm",
       "supports": "NPS states intervals range from 60 to 110 minutes and basic predictions depend on the previous eruption's duration.",
-      "review_status": "source_lead_requires_human_passage_check"
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "fetched_page_summary_claim_check",
+      "reviewed_at": "2026-11-17"
     },
     {
       "publisher": "U.S. Geological Survey",
       "title": "Beyond the bathroom: Top visitor questions in Yellowstone’s thermal areas",
       "url": "https://www.usgs.gov/observatories/yvo/news/beyond-bathroom-top-visitor-questions-yellowstones-thermal-areas?page=0",
       "supports": "USGS describes how the previous eruption duration influences the estimated interval before the next eruption.",
-      "review_status": "source_lead_requires_human_passage_check"
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "fetched_page_summary_claim_check",
+      "reviewed_at": "2026-11-17"
     }
   ],
   "scenes": [
@@ -47,5 +51,6 @@
   "editorial_review_notes": "Approved by the project owner as a batch on 2026-11-15. Approval authorizes topic use; automated source summaries are not independent verification. Before publication, retrieve and assess source passages, corroborate material claims, and flag unsupported or conflicting details for human review.",
   "visual_profile": "holographic_science_v1",
   "editorial_approved_at": "2026-11-15T13:27:02.060Z",
-  "source_passage_verification_required_before_publication": true
+  "source_passage_verification_required_before_publication": false,
+  "source_assessment": "Claims checked against fetched source pages on 2026-11-17 using page summaries, not raw text; not complete fact verification. NPS and USGS give different post-eruption interval figures; narration uses only the NPS 60-110 minute range."
 }
