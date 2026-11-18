@@ -32,7 +32,7 @@ def validate_sample_spec(spec: dict[str, Any]) -> None:
     if not isinstance(spec, dict):
         raise ValueError("Sample specification must be a JSON object.")
     visual_profile = spec.get("visual_profile", "sky_blue_v1")
-    if visual_profile not in {"sky_blue_v1", "sunset_red_v1"}:
+    if visual_profile not in {"sky_blue_v1", "sunset_red_v1", "holographic_science_v1"}:
         raise ValueError(f"No renderer exists for visual profile {visual_profile!r}; refusing to reuse an unrelated storyboard.")
     for field in ("title", "narration", "sources"):
         if field not in spec:
@@ -136,7 +136,7 @@ def _fit_font(draw: Any, text: str, font: Any, max_width: int, min_size: int = 1
 def _draw_frame(spec: dict[str, Any], seconds: float, duration: float, caption: str, fonts: dict[str, Any], stars: list[tuple[int, int, int]]) -> Any:
     """Render a narration-led frame using only holographic scientific imagery."""
     from PIL import Image, ImageDraw
-    from .holographic_scenes import draw_holographic_scene, draw_sunset_scene
+    from .holographic_scenes import draw_generic_science_scene, draw_holographic_scene, draw_sunset_scene
 
     image = Image.new("RGB", (WIDTH, HEIGHT), NAVY)
     draw = ImageDraw.Draw(image, "RGBA")
@@ -152,13 +152,19 @@ def _draw_frame(spec: dict[str, Any], seconds: float, duration: float, caption: 
                      fill=(93, 204, 255, alpha))
 
     draw.text((48, 55), "QUANTATALE", font=fonts["small"], fill=CYAN)
-    draw.text((48, 105), spec["title"].upper(), font=fonts["title"], fill=WHITE,
+    title_text = spec["title"].upper()
+    title_font = _fit_font(draw, title_text, fonts["title"], WIDTH - 96, min_size=20)
+    draw.text((48, 105), title_text, font=title_font, fill=WHITE,
               stroke_width=1, stroke_fill=(25, 88, 120))
     draw.line((48, 177, WIDTH-48, 177), fill=(73, 226, 255, 150), width=2)
 
     scene_index, scene_progress = _scene_state(seconds, duration)
-    scene_renderer = draw_sunset_scene if spec.get("visual_profile", "sky_blue_v1") == "sunset_red_v1" else draw_holographic_scene
-    headline, subline = scene_renderer(draw, scene_index, scene_progress, seconds, fonts)
+    profile = spec.get("visual_profile", "sky_blue_v1")
+    if profile == "holographic_science_v1":
+        headline, subline = draw_generic_science_scene(draw, scene_index, scene_progress, seconds, fonts, spec.get("scenes") or [])
+    else:
+        scene_renderer = draw_sunset_scene if profile == "sunset_red_v1" else draw_holographic_scene
+        headline, subline = scene_renderer(draw, scene_index, scene_progress, seconds, fonts)
 
     # Scene identity is explicit and changes with the narrated explanation.
     panel = (48, 985, WIDTH-48, 1080)
@@ -307,6 +313,8 @@ def render_sample_video(spec_path: str | Path, output_dir: str | Path) -> dict[s
         "visual_scenes": (
             ["long_sunset_atmospheric_path", "short_wavelength_scattering", "red_orange_light_reaching_observer", "holographic_sunset_horizon"]
             if spec.get("visual_profile", "sky_blue_v1") == "sunset_red_v1"
+            else [f"generic_scene_{i + 1}" for i in range(len(spec.get("scenes") or [None] * 4))]
+            if spec.get("visual_profile") == "holographic_science_v1"
             else ["sunlight_visible_spectrum", "atmospheric_molecular_scattering", "holographic_human_eye", "holographic_earth_and_blue_sky"]
         ),
         "render_engine": "FFmpeg",

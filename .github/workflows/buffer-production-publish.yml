@@ -127,10 +127,30 @@ jobs:
           python -m pip install -e ".[dev,render,tts]"
           python -m pip install "cloudinary>=1.44,<2"
       - name: Render automatically selected video
+        id: render
         if: steps.select.outputs.selected == 'true'
         env:
           CONTENT_SPEC: ${{ steps.select.outputs.spec }}
         run: quantatale render-sample "$CONTENT_SPEC" --output-dir build/production-video
+      - name: Release the reservation if rendering failed (nothing was uploaded or scheduled)
+        if: failure() && steps.render.outcome == 'failure'
+        env:
+          CONTENT_ID: ${{ steps.select.outputs.content_id }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          path = Path("production/publishing-ledger.json")
+          ledger = json.loads(path.read_text(encoding="utf-8"))
+          ledger.pop(os.environ["CONTENT_ID"], None)
+          path.write_text(json.dumps(ledger, indent=2) + "\n", encoding="utf-8")
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add production/publishing-ledger.json
+          git commit -m "Release publishing reservation after render failure"
+          git pull --rebase origin main
+          git push origin HEAD:main
       - name: Schedule public video through Buffer
         if: steps.select.outputs.selected == 'true'
         env:

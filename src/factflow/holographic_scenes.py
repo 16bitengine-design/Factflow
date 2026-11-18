@@ -289,3 +289,70 @@ def draw_sunset_scene(draw: Any, scene: int, progress: float,
         draw.ellipse((x-2,y-2,x+2,y+2), fill=(255, 218, 165, 150))
     _label(draw, (150, 930), "ONE SCATTERING PROCESS", fonts["heading"], pale)
     return "WHY SUNSETS TURN RED", "The atmosphere filters sunlight before it reaches us"
+
+
+def _wrap(draw: Any, text: str, font: Any, max_width: int) -> list[str]:
+    lines: list[str] = []
+    current = ""
+    for word in text.split():
+        trial = f"{current} {word}".strip()
+        if draw.textbbox((0, 0), trial, font=font)[2] <= max_width or not current:
+            current = trial
+        else:
+            lines.append(current)
+            current = word
+    if current:
+        lines.append(current)
+    return lines
+
+
+def draw_generic_science_scene(draw: Any, scene: int, progress: float, seconds: float,
+                               fonts: dict[str, Any], scenes: list[dict[str, Any]]) -> tuple[str, str]:
+    """Generic holographic scene for authored topics.
+
+    The topic's own scene description is shown as an on-screen explanation card,
+    over an animated holographic core. Per-topic bespoke animation is not
+    implied; the description and captions carry the explanation.
+    """
+    count = max(1, len(scenes))
+    position = min(count - 1, scene * count // 4)
+    description = str(scenes[position].get("visual_description", "")).strip() if scenes else ""
+    palette = [CYAN, VIOLET, BLUE, CYAN]
+    color = palette[position % 4]
+    cx, cy = 360, 690
+    scan = int((seconds * 110) % 560)
+    draw.line((90, 250 + scan, 630, 250 + scan), fill=(75, 226, 255, 35), width=2)
+
+    # Explanation card from the scene description.
+    lines = _wrap(draw, description, fonts["label"], 560)[:4]
+    card_h = 28 + 34 * max(1, len(lines))
+    draw.rounded_rectangle((60, 215, 660, 215 + card_h), radius=18, fill=(3, 15, 36, 205),
+                           outline=(*color[:3], 170), width=2)
+    for i, line in enumerate(lines):
+        draw.text((80, 230 + i * 34), line, font=fonts["label"], fill=WHITE)
+
+    # Pulsing holographic core with orbiting nodes; node count grows with the scene.
+    for k in range(4):
+        radius = 70 + k * 52 + int(10 * math.sin(seconds * 2.2 + k + position))
+        _glow_circle(draw, cx, cy, radius, color, width=2 + (k == 0))
+    nodes = 3 + position * 2
+    points = []
+    for n in range(nodes):
+        angle = seconds * (0.7 + 0.15 * (n % 3)) + n * 2 * math.pi / nodes
+        orbit = 120 + 52 * (n % 3)
+        x, y = int(cx + orbit * math.cos(angle)), int(cy + orbit * 0.62 * math.sin(angle))
+        points.append((x, y))
+        draw.ellipse((x - 9, y - 9, x + 9, y + 9), fill=(*color[:3], 220))
+    for a, b in zip(points, points[1:] + points[:1]):
+        draw.line((*a, *b), fill=(*color[:3], 70), width=2)
+    draw.ellipse((cx - 22, cy - 22, cx + 22, cy + 22), fill=(*color[:3], 235))
+    end = 360 * min(1.0, max(0.0, progress))
+    draw.arc((cx - 250, cy - 250, cx + 250, cy + 250), -90, -90 + end, fill=(*WHITE[:3], 200), width=4)
+
+    if position == 0:
+        headline = "THE QUESTION"
+    elif position == count - 1:
+        headline = "THE TAKEAWAY"
+    else:
+        headline = "HOW IT WORKS"
+    return headline, f"Scene {position + 1} of {count}"
