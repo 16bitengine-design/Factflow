@@ -116,4 +116,24 @@ def test_verify_skips_posts_deleted_as_duplicate(monkeypatch, tmp_path):
     }}}), encoding="utf-8")
     monkeypatch.setattr(buffer_verify, "fetch_buffer_post", lambda _: pytest.fail("deleted post must not be fetched"))
     counts = buffer_verify.verify_ledger(ledger_path)
-    assert counts == {"published": 0, "failed": 0, "awaiting_confirmation": 0, "unknown": 0}
+    assert counts == {"published": 0, "failed": 0, "awaiting_confirmation": 0, "unknown": 0, "deleted_as_duplicate": 1}
+
+
+def test_verify_counts_both_deleted_duplicate_platforms(monkeypatch, tmp_path):
+    ledger_path = tmp_path / "ledger.json"
+    ledger_path.write_text(json.dumps({"content-1": {"buffer_posts": {
+        "youtube": {"post_id": "yt-1", "verification": {"status": "deleted_as_duplicate"}},
+        "tiktok": {"post_id": "tt-1", "verification": {"status": "deleted_as_duplicate"}},
+    }}}))
+    monkeypatch.setattr(buffer_verify, "fetch_buffer_post", lambda _: pytest.fail("deleted post must not be fetched"))
+    counts = buffer_verify.verify_ledger(ledger_path)
+    assert counts["deleted_as_duplicate"] == 2
+    assert counts["published"] == counts["failed"] == 0
+
+
+def test_deleted_duplicate_posts_do_not_raise_attention():
+    ledger = {"content-1": {"buffer_posts": {
+        "youtube": {"post_id": "yt-1", "verification": {"status": "deleted_as_duplicate"}},
+        "tiktok": {"post_id": "tt-1", "verification": {"status": "deleted_as_duplicate"}},
+    }}}
+    assert buffer_verify.find_posts_needing_attention(ledger) == []
