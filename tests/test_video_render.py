@@ -153,3 +153,34 @@ def test_sunset_storyboard_contains_four_distinct_explanatory_scenes():
         "WARM COLOURS REACH YOUR EYES",
         "WHY SUNSETS TURN RED",
     ]
+
+
+def test_every_publishable_library_topic_has_a_renderer():
+    """Regression: topics were enabled for publishing though no renderer existed for their profile."""
+    import json
+    from pathlib import Path
+
+    from factflow.publishing_slots import is_publishable_spec
+
+    root = Path(__file__).resolve().parents[1]
+    library = json.loads((root / "production/topic-library.json").read_text(encoding="utf-8"))
+    for record in library["production_specs"]:
+        spec = json.loads((root / record["spec_path"]).read_text(encoding="utf-8"))
+        if is_publishable_spec({**record, "sources": spec.get("sources", [])}):
+            validate_sample_spec(spec)
+
+
+def test_generic_science_scene_shows_the_topics_own_scene_description():
+    pytest.importorskip("PIL")
+    from factflow.holographic_scenes import draw_generic_science_scene
+    from PIL import Image, ImageDraw, ImageFont
+
+    image = Image.new("RGBA", (720, 1280))
+    draw = ImageDraw.Draw(image)
+    font = ImageFont.load_default()
+    fonts = {name: font for name in ("label", "tiny", "heading", "small")}
+    scenes = [{"visual_description": f"Scene {i}"} for i in range(3)]
+    titles = [draw_generic_science_scene(draw, index, 0.5, 2.0, fonts, scenes) for index in range(4)]
+    assert titles[0][0] == "THE QUESTION" and titles[-1][0] == "THE TAKEAWAY"
+    assert {t[1] for t in titles} <= {"Scene 1 of 3", "Scene 2 of 3", "Scene 3 of 3"}
+    assert draw_generic_science_scene(draw, 0, 0.5, 2.0, fonts, [])[0] == "THE QUESTION"

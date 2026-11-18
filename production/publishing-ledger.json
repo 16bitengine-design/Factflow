@@ -65,14 +65,5 @@
     "actual_scheduled_due_at": "2026-11-16T18:22:37+03:00",
     "recovered_from_slot": "2026-11-16T18:00:00+03:00",
     "cancellation_reason": "Same production specification was already published on 2026-11-15."
-  },
-  "qt-clouds-20261118-1211": {
-    "status": "reserved",
-    "spec": "production/specs/clouds-form.json",
-    "due_at": "2026-11-18T12:11:22+03:00",
-    "reserved_at": "2026-11-18T08:51:22+00:00",
-    "workflow_run_id": "44270562864",
-    "slot_local": "2026-11-18 12:11",
-    "publish_timezone": "Africa/Kampala"
   }
 }
