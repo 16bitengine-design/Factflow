@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-17T08:53:05.269530+00:00",
+  "updated_at": "2026-11-18T08:15:27.173713+00:00",
   "production_specs": [
     {
       "spec_path": "examples/videos/why-the-sky-is-blue-production.json",
@@ -1413,6 +1413,149 @@
       "published": "Mon, 16 Nov 2026 17:10:28 EST",
       "description": "Satellite images on November 3, 2026, provide views of activity within Halemaʻumaʻu crater at the summit of Kīlauea just two days before lava fountaining episode 56 took place on November 5, 2026.",
       "discovered_at": "2026-11-17T08:53:05.269144+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000112",
+      "title": "APOD: 2026 November 18 – An M-class Solar Flare",
+      "url": "https://science.nasa.gov/image-article/apod-2026-november-18-an-m-class-solar-flare/",
+      "publisher_id": "NASA",
+      "published": "Wed, 18 Nov 2026 05:05:00 +0000",
+      "description": "APOD Science APOD APOD: 2026 November 18 – An… Today’s APOD Archive Submissions Index Search Calendar RSS Education About Discuss APOD Astronomy Picture of the Day Discover the cosmos! Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer. A Medium-Sized […]",
+      "discovered_at": "2026-11-18T08:15:27.173228+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000113",
+      "title": "BPS Digital AVATAR Challenge",
+      "url": "https://www.nasa.gov/directorates/stmd/prizes-challenges-crowdsourcing-program/center-of-excellence-for-collaborative-innovation-coeci/bps-digital-avatar-challenge/",
+      "publisher_id": "NASA",
+      "published": "Tue, 17 Nov 2026 20:39:38 +0000",
+      "description": "The NASA Space Biology Program within the Biological and Physical Sciences (BPS) Division investigates how living systems respond across the full spectrum of biological organization to advance understanding of how living systems respond to the unique stressors of space exploration—including microgravity, ionizing radiation, low magnetic fields, and elevated CO₂. As NASA prepares for long-duration deep […]",
+      "discovered_at": "2026-11-18T08:15:27.173249+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000114",
+      "title": "Curiosity Blog, Sols 5072-5076: The Return of the Polygons",
+      "url": "https://science.nasa.gov/blog/curiosity-blog-sols-5072-5076-the-return-of-the-polygons/",
+      "publisher_id": "NASA",
+      "published": "Tue, 17 Nov 2026 17:06:07 +0000",
+      "description": "Written by Abigail Fraeman, Deputy Project Scientist, Jet Propulsion Laboratory, California Institute of Technology Earth planning date: Friday, Nov. 13, 2026 Curiosity’s past several weeks have been very focused on drilling and analysis of the “Basque Lakes” and “Nazca” samples. We learned a lot from those drilled samples, but it’s time to hit the Martian […]",
+      "discovered_at": "2026-11-18T08:15:27.173261+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000115",
+      "title": "NASA Launches Nuclear Power Systems Student Contest",
+      "url": "https://science.nasa.gov/centers-and-facilities/glenn/nasa-launches-nuclear-power-systems-student-contest/",
+      "publisher_id": "NASA",
+      "published": "Tue, 17 Nov 2026 22:02:48 +0000",
+      "description": "NASA’s Power to Explore Student Challenge kicked off Tuesday, Nov. 17. The science, engineering, technology, and mathematics (STEM) challenge invites kindergarten through 12th grade students in the United States to learn about space nuclear power systems and illustrate how these nuclear “batteries” could help power their lunar exploration vision. Students are also invited to write […]",
+      "discovered_at": "2026-11-18T08:15:27.173269+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000116",
+      "title": "NASA Space Apps Challenge Breaks Global Hackathon Records",
+      "url": "https://science.nasa.gov/open-science/nasa-space-apps-challenge-breaks-global-hackathon-records/",
+      "publisher_id": "NASA",
+      "published": "Tue, 17 Nov 2026 21:50:34 +0000",
+      "description": "On Nov. 14 and 15, NASA held the annual Space Apps Challenge with a record-breaking 181,835 registered participants taking part in 593 events around the world. The annual hackathon invites participants to use NASA’s open data to address one of 14 challenges focused on space exploration or Earth science. This year, the hackathon drew 59% […]",
+      "discovered_at": "2026-11-18T08:15:27.173276+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000117",
+      "title": "NASA to Conduct Low-Altitude Flights Over Texas Farmland",
+      "url": "https://www.nasa.gov/general/nasa-to-conduct-low-altitude-flights-over-texas-farmland/",
+      "publisher_id": "NASA",
+      "published": "Tue, 17 Nov 2026 17:12:20 +0000",
+      "description": "Editor’s Note: This article was originally published on Oct. 15, 2026, and has been updated to correct the location and update the duration of the flight deployment. A NASA Dynamic Aviation A200 aircraft will conduct low-flying research flights over farmland near Amarillo, Texas, from Thursday, Oct. 22, through Monday, Nov. 2. These flights will measure […]",
+      "discovered_at": "2026-11-18T08:15:27.173283+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000118",
+      "title": "NASA to Cover 35th SpaceX Resupply Mission Space Station Departure",
+      "url": "https://www.nasa.gov/news-release/nasa-to-cover-35th-spacex-resupply-mission-space-station-departure/",
+      "publisher_id": "NASA",
+      "published": "Tue, 17 Nov 2026 19:16:22 +0000",
+      "description": "NASA and its international partners are set to receive scientific research samples and hardware as a SpaceX Dragon spacecraft departs the International Space Station no earlier than Wednesday, Nov. 18, for its return to Earth. Pending weather conditions, the Dragon spacecraft will undock from the Harmony module’s space-facing port at 11:05 a.m. EST, following a […]",
+      "discovered_at": "2026-11-18T08:15:27.173291+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000119",
+      "title": "New Album of Baby Star Sounds Shared by NASA’s Chandra",
+      "url": "https://science.nasa.gov/missions/chandra/new-album-of-baby-star-sounds-shared-by-nasas-chandra/",
+      "publisher_id": "NASA",
+      "published": "Tue, 17 Nov 2026 20:26:17 +0000",
+      "description": "A new album from NASA’s Chandra X-ray Observatory collects snapshots of baby stars across the galaxy and beyond and transforms that data into sound. Four new sonifications use data of stars that are actively forming, captured by Chandra and other NASA telescopes By studying places in the universe where stars are currently being born and […]",
+      "discovered_at": "2026-11-18T08:15:27.173298+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000120",
+      "title": "NICER Status Updates",
+      "url": "https://www.nasa.gov/missions/station/nicer-status-updates/",
+      "publisher_id": "NASA",
+      "published": "Tue, 17 Nov 2026 18:18:16 +0000",
+      "description": "November 17, 2026 NASA’s NICER Telescope Ends Science Operations After studying the universe for six and a half years beyond its initial mission, NASA’s NICER (Neutron star Interior Composition Explorer) telescope on the International Space Station has ended science operations. The mission and space station teams are now focused on plans to finalize NICER’s 8-year […]",
+      "discovered_at": "2026-11-18T08:15:27.173305+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000121",
+      "title": "Sierra Snow Season Spins Up",
+      "url": "https://science.nasa.gov/earth/earth-observatory/sierra-snow-season-spins-up/",
+      "publisher_id": "NASA",
+      "published": "Wed, 18 Nov 2026 05:01:00 +0000",
+      "description": "A widespread, early-season snowstorm blanketed California’s mountains in white in mid-November 2026.",
+      "discovered_at": "2026-11-18T08:15:27.173312+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000122",
+      "title": "Reading the Potomac, Preparing a Nation: What Washington's Forgotten Floods Reveal",
+      "url": "https://www.usgs.gov/programs/ecosystems-land-change-science-program/news/reading-potomac-preparing-a-nation-what?utm_source=comms&amp;utm_medium=rss&amp;utm_campaign=news",
+      "publisher_id": "USGS",
+      "published": "Tue, 17 Nov 2026 09:26:43 EST",
+      "description": "By combining streamgage records, historic accounts, and geologic evidence, USGS scientists are uncovering centuries of flood history to help communities better understand risk and build resilience.",
+      "discovered_at": "2026-11-18T08:15:27.173379+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000123",
+      "title": "Recreational Sonar as a Tool for Mapping Aquatic Habitat",
+      "url": "https://www.usgs.gov/mission-areas/ecosystems/news/recreational-sonar-a-tool-mapping-aquatic-habitat?utm_source=comms&amp;utm_medium=rss&amp;utm_campaign=news",
+      "publisher_id": "USGS",
+      "published": "Tue, 17 Nov 2026 14:45:19 EST",
+      "description": "It's Geography Awareness Week this week! Join us at Friday's Findings to learn how USGS scientists are investigating the use of recreational sonar in assessing aquatic habitat in shallow inland waters.",
+      "discovered_at": "2026-11-18T08:15:27.173387+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000124",
+      "title": "USGS CoastCam captures stranding of 55-foot fin whale in Santa Cruz",
+      "url": "https://www.usgs.gov/programs/cmhrp/news/usgs-coastcam-captures-stranding-55-foot-fin-whale-santa-cruz?utm_source=comms&amp;utm_medium=rss&amp;utm_campaign=news",
+      "publisher_id": "USGS",
+      "published": "Tue, 17 Nov 2026 11:09:29 EST",
+      "description": "On November 12, 2026, a 55-foot (16.8-meter) fin whale stranded on Main Beach in Santa Cruz, directly in view of a USGS CoastCam.",
+      "discovered_at": "2026-11-18T08:15:27.173407+00:00",
       "status": "candidate_unreviewed",
       "editorial_review_required": false
     }
