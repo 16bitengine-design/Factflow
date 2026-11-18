@@ -6,6 +6,9 @@ on:
     # dropped GitHub cron events. The ledger makes repeats idempotent.
     - cron: "10,40 7,13 * * *"
     - cron: "10,25,40 8,14 * * *"
+    # GitHub delays or drops scheduled events by hours for this repository; an
+    # hourly check lets a run catch up on any slot missed within the last 8 hours.
+    - cron: "7 * * * *"
   workflow_dispatch:
     inputs:
       publish_now:
@@ -52,25 +55,23 @@ jobs:
           ledger_path.parent.mkdir(parents=True, exist_ok=True)
           ledger = json.loads(ledger_path.read_text(encoding="utf-8")) if ledger_path.exists() else {}
           now = datetime.now(timezone.utc)
+          recovers_slot = None
           if os.environ.get("PUBLISH_NOW", "false").lower() == "true":
               selection = select_immediate_slot(library, ledger, now=now)
               print("Manual immediate-publishing mode enabled.")
           else:
               selection = select_next_slot(library, ledger, now=now)
+              if selection is None:
+                  missed = unrecovered_missed_slot(ledger, now)
+                  if missed is not None:
+                      recovers_slot = f"{missed:%Y-%m-%d %H:%M}"
+                      print(f"::warning title=Catching up missed slot::The {recovers_slot} Africa/Kampala slot was never scheduled; publishing one video now.")
+                      selection = select_immediate_slot(library, ledger, now=now)
           output = Path(os.environ["GITHUB_OUTPUT"])
           if selection is None:
               with output.open("a", encoding="utf-8") as handle:
                   handle.write("selected=false\n")
-              missed = unrecovered_missed_slot(ledger, now)
-              if missed is not None:
-                  print(
-                      f"::error title=Publishing slot missed::The {missed:%Y-%m-%d %H:%M} "
-                      "Africa/Kampala slot has no reservation or recovery. The watchdog should "
-                      "dispatch an immediate recovery; if it does not, run this workflow "
-                      "manually with publish_now enabled."
-                  )
-                  raise SystemExit(1)
-              print("No configured slot is inside its selection window (150 to 15 minutes before due); nothing to do.")
+              print("No configured slot is inside its selection window and no missed slot needs catching up; nothing to do.")
               raise SystemExit(0)
 
           spec_path = Path(selection["spec_path"])
@@ -85,6 +86,8 @@ jobs:
               "slot_local": selection["slot_local"],
               "publish_timezone": selection["publish_timezone"],
           }
+          if recovers_slot:
+              ledger[content_id]["recovers_slot"] = recovers_slot
           ledger_path.write_text(json.dumps(ledger, indent=2) + "\n", encoding="utf-8")
           with output.open("a", encoding="utf-8") as handle:
               handle.write("selected=true\n")

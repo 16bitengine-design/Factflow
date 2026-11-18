@@ -10,7 +10,7 @@ GitHub Actions uses UTC (slots are 09:00 and 15:00 UTC). A slot becomes selectab
 
 Slot selection runs first, before any heavy installation. The FFmpeg, TTS and Python dependencies are installed only when a slot was actually selected, and the full test suite is left to the CI workflow rather than being repeated in every publishing run.
 
-If a run finds nothing to schedule **and** a slot has just passed with no reservation or recovery entry, the run **fails** with a "Publishing slot missed" error instead of exiting green. The watchdog then dispatches an immediate recovery run.
+GitHub's scheduler can delay or drop cron events by hours, so the workflow also runs hourly (minute 07). If a slot passed within the last 8 hours with no reservation, recovery entry, or catch-up entry (`recovers_slot`), the run **catches up**: it publishes one never-used topic immediately and records `recovers_slot` in the ledger so the same slot is not recovered twice. If no never-used topic remains, the run fails loudly.
 
 The production workflow selects the next available slot, renders the video, uploads it to the configured public media host, and schedules YouTube and TikTok through Buffer. Buffer performs the actual publication at the scheduled time. A successful workflow run or Buffer schedule response is **not** proof that a platform post has been published; the verification workflow checks the exact Buffer post IDs and records the final outcomes.
 
