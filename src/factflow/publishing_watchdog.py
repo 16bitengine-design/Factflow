@@ -104,17 +104,39 @@ def unrecovered_missed_slot(
     now: datetime,
     *,
     timezone_name: str = "Africa/Kampala",
+    slot_hours: tuple[int, ...] = (12, 18),
+    horizon: timedelta = timedelta(hours=8),
 ) -> datetime | None:
-    """Return a slot that has just passed with no reservation or recovery.
+    """Return the oldest slot that passed within ``horizon`` with no coverage.
 
-    Used by the production workflow so a run that finds nothing to schedule
-    fails loudly, instead of exiting green, when a slot was actually missed.
+    GitHub's scheduler can delay or drop cron events by hours, so a slot may be
+    discovered long after it was due. A slot counts as covered by a ledger entry
+    at its exact time, an immediate-recovery entry within 30 minutes after it,
+    or an entry whose ``recovers_slot`` names it (catch-up reservations).
     """
-    due = upcoming_slot(now, timezone_name=timezone_name)
-    if due is None or due > now:
-        return None
-    if find_slot_entry(ledger, due, timezone_name=timezone_name):
-        return None
-    if find_recovery_entry(ledger, due, timezone_name=timezone_name):
-        return None
-    return due
+    if now.tzinfo is None or now.utcoffset() is None:
+        raise ValueError("now must be timezone-aware")
+    zone = ZoneInfo(timezone_name)
+    local_now = now.astimezone(zone)
+    missed: list[datetime] = []
+    for day_offset in (-1, 0):
+        day = local_now.date() + timedelta(days=day_offset)
+        for hour in slot_hours:
+            due = datetime(day.year, day.month, day.day, hour, 0, tzinfo=zone)
+            if timedelta(0) < local_now - due <= horizon:
+                missed.append(due)
+    for due in sorted(missed):
+        label = f"{due:%Y-%m-%d %H:%M}"
+        if find_slot_entry(ledger, due, timezone_name=timezone_name):
+            continue
+        if find_recovery_entry(ledger, due, timezone_name=timezone_name):
+            continue
+        if any(
+            isinstance(e, dict)
+            and e.get("recovers_slot") == label
+            and not str(e.get("status", "")).startswith("cancelled")
+            for e in ledger.values()
+        ):
+            continue
+        return due
+    return None
