@@ -135,7 +135,7 @@
     "scheduled_at": "2026-11-18T12:59:13.703023+00:00"
   },
   "qt-leaf-colours-20261118-1943": {
-    "status": "reserved",
+    "status": "scheduled",
     "spec": "production/specs/leaves-colour.json",
     "due_at": "2026-11-18T19:43:23+03:00",
     "reserved_at": "2026-11-18T16:23:23+00:00",
@@ -160,6 +160,7 @@
           "status": "awaiting_confirmation"
         }
       }
-    }
+    },
+    "scheduled_at": "2026-11-18T16:25:39.344591+00:00"
   }
 }
