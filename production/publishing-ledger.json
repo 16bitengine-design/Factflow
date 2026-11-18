@@ -67,7 +67,7 @@
     "cancellation_reason": "Same production specification was already published on 2026-11-15."
   },
   "qt-clouds-20261118-1231": {
-    "status": "reserved",
+    "status": "scheduled",
     "spec": "production/specs/clouds-form.json",
     "due_at": "2026-11-18T12:31:09+03:00",
     "reserved_at": "2026-11-18T09:11:09+00:00",
@@ -91,6 +91,7 @@
           "status": "awaiting_confirmation"
         }
       }
-    }
+    },
+    "scheduled_at": "2026-11-18T09:13:17.284762+00:00"
   }
 }
