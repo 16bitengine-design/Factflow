@@ -101,5 +101,14 @@
       }
     },
     "scheduled_at": "2026-11-18T09:13:17.284762+00:00"
+  },
+  "qt-earth-shape-20261118-1800": {
+    "status": "reserved",
+    "spec": "production/specs/earth-shape.json",
+    "due_at": "2026-11-18T18:00:00+03:00",
+    "reserved_at": "2026-11-18T12:57:37+00:00",
+    "workflow_run_id": "44308879833",
+    "slot_local": "2026-11-18 18:00",
+    "publish_timezone": "Africa/Kampala"
   }
 }
