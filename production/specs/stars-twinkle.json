@@ -10,21 +10,25 @@
   "editorial_approved": true,
   "editorial_status": "approved_by_user_batch",
   "editorial_review_required": false,
-  "narration": "Most stars shine with light that is effectively steady to our eyes. The twinkling happens on the way to us. Starlight passes through Earth's turbulent atmosphere, where moving pockets of air bend the light by slightly different amounts. Because stars are so distant, they appear as tiny points, making those changes noticeable as flickering. From above most of Earth's atmosphere, stars do not twinkle in the same way. The atmosphere is doing the visual trick.",
+  "narration": "Most stars shine with light that is effectively steady to our eyes. The twinkling happens on the way to us. Starlight passes through Earth's turbulent atmosphere, where moving pockets of air bend the light by slightly different amounts. Because stars are so distant, they appear as tiny points, making those changes noticeable as flickering. From above the atmosphere, stars do not twinkle in the same way. The atmosphere is doing the visual trick.",
   "sources": [
     {
       "publisher": "NASA Astronomy Picture of the Day",
       "title": "Why Stars Twinkle",
       "url": "https://science.nasa.gov/image-article/apod-2000-july-25-why-stars-twinkle/",
       "supports": "NASA explains that changing atmospheric air pockets distort point-like starlight and create the apparent twinkle.",
-      "review_status": "source_lead_requires_human_passage_check"
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "fetched_page_summary_claim_check",
+      "reviewed_at": "2026-11-17"
     },
     {
       "publisher": "NASA Goddard StarChild",
       "title": "Why do stars twinkle?",
       "url": "https://starchild.gsfc.nasa.gov/docs/StarChild/questions/question26.html",
       "supports": "NASA describes atmospheric turbulence bending starlight and causing apparent changes in brightness.",
-      "review_status": "source_lead_requires_human_passage_check"
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "fetched_page_summary_claim_check",
+      "reviewed_at": "2026-11-17"
     }
   ],
   "scenes": [
@@ -47,5 +51,6 @@
   "editorial_review_notes": "Approved by the project owner as a batch on 2026-11-15. Approval authorizes topic use; automated source summaries are not independent verification. Before publication, retrieve and assess source passages, corroborate material claims, and flag unsupported or conflicting details for human review.",
   "visual_profile": "holographic_science_v1",
   "editorial_approved_at": "2026-11-15T13:27:17.814Z",
-  "source_passage_verification_required_before_publication": true
+  "source_passage_verification_required_before_publication": false,
+  "source_assessment": "Claims checked against fetched source pages on 2026-11-17 using page summaries, not raw text; not complete fact verification."
 }

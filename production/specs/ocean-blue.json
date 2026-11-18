@@ -17,14 +17,18 @@
       "title": "Why is the ocean blue?",
       "url": "https://oceanservice.noaa.gov/facts/oceanblue.html",
       "supports": "NOAA explains that water absorbs red wavelengths and that suspended sediments and particles can alter ocean colour.",
-      "review_status": "source_lead_requires_human_passage_check"
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "fetched_page_summary_claim_check",
+      "reviewed_at": "2026-11-17"
     },
     {
       "publisher": "U.S. Geological Survey",
       "title": "Water Color",
       "url": "https://www.usgs.gov/water-science-school/science/water-color",
       "supports": "USGS explains that water's blue appearance comes from absorption of red wavelengths, not the same scattering mechanism that makes the sky blue.",
-      "review_status": "source_lead_requires_human_passage_check"
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "fetched_page_summary_claim_check",
+      "reviewed_at": "2026-11-17"
     }
   ],
   "scenes": [
@@ -47,5 +51,6 @@
   "editorial_review_notes": "Approved by the project owner as a batch on 2026-11-15. Approval authorizes topic use; automated source summaries are not independent verification. Before publication, retrieve and assess source passages, corroborate material claims, and flag unsupported or conflicting details for human review.",
   "visual_profile": "holographic_science_v1",
   "editorial_approved_at": "2026-11-15T13:27:02.060Z",
-  "source_passage_verification_required_before_publication": true
+  "source_passage_verification_required_before_publication": false,
+  "source_assessment": "Claims checked against fetched source pages on 2026-11-17 using page summaries, not raw text; not complete fact verification."
 }

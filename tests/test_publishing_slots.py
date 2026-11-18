@@ -98,28 +98,28 @@ def test_immediate_selection_requires_rendering_lead_time():
                               now=now, lead_time=timedelta(minutes=5))
 
 
-def test_immediate_selection_prefers_least_recently_used_topic():
+def test_immediate_selection_never_reuses_a_topic_from_a_previous_day():
     now = datetime(2026, 11, 16, 14, 11, tzinfo=timezone.utc)
-    library = {"production_specs": [
-        _spec("a.json", "qt-a", "A"),
-        _spec("b.json", "qt-b", "B"),
-    ]}
-    ledger = {
-        "a": {"spec": "a.json", "due_at": "2026-11-15T18:00:00+03:00"},
-    }
-    result = select_immediate_slot(library, ledger, now=now)
-    assert result["spec_path"] == "b.json"
+    library = {"production_specs": [_spec("a.json", "qt-a", "A"), _spec("b.json", "qt-b", "B")]}
+    ledger = {"a": {"spec": "a.json", "due_at": "2026-11-15T18:00:00+03:00", "status": "scheduled"}}
+    assert select_immediate_slot(library, ledger, now=now)["spec_path"] == "b.json"
+    ledger["b"] = {"spec": "b.json", "due_at": "2026-11-15T12:00:00+03:00", "status": "scheduled"}
+    with pytest.raises(ValueError, match="never repeated"):
+        select_immediate_slot(library, ledger, now=now)
 
 
-def test_scheduled_selection_prefers_least_recently_used_topic():
+def test_scheduled_selection_never_reuses_a_topic_from_a_previous_day():
     now = datetime(2026, 11, 16, 8, 40, tzinfo=timezone.utc)
-    library = {"production_specs": [
-        _spec("a.json", "qt-a", "A"),
-        _spec("b.json", "qt-b", "B"),
-    ]}
-    ledger = {
-        "a": {"spec": "a.json", "due_at": "2026-11-15T18:00:00+03:00"},
-        "b": {"spec": "b.json", "due_at": "2026-11-15T12:00:00+03:00"},
-    }
-    result = select_next_slot(library, ledger, now=now)
-    assert result["spec_path"] == "b.json"
+    library = {"production_specs": [_spec("a.json", "qt-a", "A"), _spec("b.json", "qt-b", "B")]}
+    ledger = {"a": {"spec": "a.json", "due_at": "2026-11-15T18:00:00+03:00", "status": "scheduled"}}
+    assert select_next_slot(library, ledger, now=now)["spec_path"] == "b.json"
+    ledger["b"] = {"spec": "b.json", "due_at": "2026-11-15T12:00:00+03:00", "status": "scheduled"}
+    with pytest.raises(ValueError, match="never repeated"):
+        select_next_slot(library, ledger, now=now)
+
+
+def test_cancelled_unposted_reservation_frees_the_topic():
+    now = datetime(2026, 11, 16, 8, 40, tzinfo=timezone.utc)
+    library = {"production_specs": [_spec("a.json", "qt-a", "A")]}
+    ledger = {"a": {"spec": "a.json", "due_at": "2026-11-15T12:00:00+03:00", "status": "cancelled_duplicate"}}
+    assert select_next_slot(library, ledger, now=now)["spec_path"] == "a.json"
