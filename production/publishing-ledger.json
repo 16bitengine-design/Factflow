@@ -103,7 +103,7 @@
     "scheduled_at": "2026-11-18T09:13:17.284762+00:00"
   },
   "qt-earth-shape-20261118-1800": {
-    "status": "reserved",
+    "status": "scheduled",
     "spec": "production/specs/earth-shape.json",
     "due_at": "2026-11-18T18:00:00+03:00",
     "reserved_at": "2026-11-18T12:57:37+00:00",
@@ -127,6 +127,7 @@
           "status": "awaiting_confirmation"
         }
       }
-    }
+    },
+    "scheduled_at": "2026-11-18T12:59:13.703023+00:00"
   }
 }
