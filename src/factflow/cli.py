@@ -95,6 +95,20 @@ def build_parser() -> argparse.ArgumentParser:
     register_parser.add_argument("spec_file", help="Reviewed production specification JSON.")
     register_parser.add_argument("--library", default="production/topic-library.json", help="Persistent topic library JSON.")
 
+    author_parser = subparsers.add_parser(
+        "author-topics", help="Automatically write and gate new topics with the free LLM provider chain.")
+    author_parser.add_argument("--count", type=int, default=3, help="Maximum topics to accept this run.")
+    author_parser.add_argument("--library", default="production/topic-library.json", help="Persistent topic library JSON.")
+    author_parser.add_argument("--specs-dir", default="production/specs", help="Directory for new specs.")
+    author_parser.add_argument("--registry", default=None, help="Optional publisher registry JSON.")
+    author_parser.add_argument("--output", default="build/topic-authoring.json", help="JSON report path.")
+
+    stock_parser = subparsers.add_parser("topic-stock", help="Report never-used publishable topics.")
+    stock_parser.add_argument("--library", default="production/topic-library.json")
+    stock_parser.add_argument("--ledger", default="production/publishing-ledger.json")
+    stock_parser.add_argument("--minimum", type=int, default=4)
+    stock_parser.add_argument("--output", default="build/topic-stock.json")
+
     status_parser = subparsers.add_parser(
         "library-status", help="Report approved topic reserve health without approving candidates."
     )
@@ -140,6 +154,41 @@ def main() -> int:
         print(f"Added {result['added']} leads; skipped {result['duplicates']} duplicates.")
         print(f"Library totals: {summary}")
         print("All discovered leads remain unreviewed and blocked from production.")
+        return 0
+
+    if args.command == "author-topics":
+        from factflow.llm_providers import ProviderChain
+        from factflow.topic_authoring import author_topics
+        try:
+            library = load_library(args.library)
+            registry = load_source_registry(args.registry) if args.registry else load_source_registry()
+            report = author_topics(ProviderChain(), library, registry, Path(args.specs_dir), count=args.count)
+            save_library(library, args.library)
+        except (OSError, json.JSONDecodeError, ValueError) as exc:
+            print(f"TOPIC AUTHORING ERROR: {exc}", file=sys.stderr)
+            return 1
+        out = Path(args.output)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        print(f"Accepted {len(report['accepted'])}, rejected {len(report['rejected'])}; providers used: {report['provider_usage']}")
+        for item in report["rejected"]:
+            print(f"  rejected: {item['question'][:70]} -> {item['reason'][:160]}")
+        if report.get("error"):
+            print(f"TOPIC AUTHORING ERROR: {report['error']}", file=sys.stderr)
+            return 1
+        return 0
+
+    if args.command == "topic-stock":
+        from factflow.publishing_slots import unused_topic_count
+        library = load_library(args.library)
+        ledger_path = Path(args.ledger)
+        ledger = json.loads(ledger_path.read_text(encoding="utf-8")) if ledger_path.exists() else {}
+        unused = unused_topic_count(library, ledger)
+        result = {"unused_publishable_topics": unused, "minimum": args.minimum, "low": unused < args.minimum}
+        out = Path(args.output)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+        print(f"Unused publishable topics: {unused} (minimum {args.minimum})")
         return 0
 
     if args.command == "library-status":

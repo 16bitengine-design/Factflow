@@ -1,0 +1,125 @@
+import json
+
+from factflow.llm_providers import ProviderChain
+from factflow.research import load_source_registry
+from factflow.topic_authoring import (author_topics, check_grounding, check_originality, check_shape, slugify)
+
+P1 = ["Clouds form when water vapor in rising air cools and condenses onto tiny particles in the sky.",
+      "These tiny particles are called cloud condensation nuclei and include dust and sea salt grains."]
+P2 = ["Air that rises expands and cools until it becomes saturated with 100 percent relative humidity.",
+      "A cloud is a large collection of water droplets or ice crystals that float in the atmosphere."]
+
+
+def _page(paragraphs):
+    return "<html><title>T</title><main>" + "".join(f"<p>{p}</p>" for p in paragraphs) + "</main></html>"
+
+
+def fetcher(url, publisher):
+    return {"final_url": url, "html": _page(P1 if "nasa" in url else P2), "content_type": "text/html"}
+
+
+NARRATION = ("Why do clouds exist at all? Rising air cools and its invisible vapour starts turning into liquid. "
+             "That change needs microscopic specks such as dust or salt to gather on. "
+             "When the air is fully saturated at 100 percent humidity, droplets build up around the specks. "
+             "Millions of these droplets together make the white shape you see overhead, so a cloud is really a crowd of tiny drops "
+             "or ice crystals floating in the atmosphere, not a puff of pure gas.")
+CLAIMS = [
+    {"sentence": "Rising air cools and its invisible vapour starts turning into liquid.",
+     "quote": "water vapor in rising air cools and condenses onto tiny particles", "source": 0},
+    {"sentence": "That change needs microscopic specks such as dust or salt to gather on.",
+     "quote": "include dust and sea salt grains", "source": 0},
+    {"sentence": "When the air is fully saturated at 100 percent humidity, droplets build up around the specks.",
+     "quote": "saturated with 100 percent relative humidity", "source": 1},
+    {"sentence": "Millions of these droplets together make the white shape you see overhead, so a cloud is really a crowd of tiny drops or ice crystals floating in the atmosphere, not a puff of pure gas.",
+     "quote": "collection of water droplets or ice crystals that float in the atmosphere", "source": 1},
+]
+DRAFT = {"title": "Why Clouds Need Dust to Exist", "narration": NARRATION, "description": "A cloud starts with a speck.",
+         "category": "weather", "claims": CLAIMS,
+         "scenes": [{"narration_segment": "a", "visual_description": "vapour rises", "visual_style": "hybrid"}] * 3}
+PROPOSAL = {"topics": [{"question": "How do clouds form?", "category": "weather",
+                        "source_urls": ["https://science.nasa.gov/x", "https://www.noaa.gov/y"]}]}
+OK = {"results": [{"i": i, "supported": True} for i in range(4)], "conflicts": []}
+
+
+class FakeChain(ProviderChain):
+    def __init__(self, replies):
+        super().__init__([])
+        self.replies = list(replies)
+
+    def complete_json(self, system, user, **kw):
+        self.usage["fake"] = self.usage.get("fake", 0) + 1
+        return self.replies.pop(0)
+
+
+def _run(tmp_path, draft=DRAFT, entail=OK, proposal=PROPOSAL, fetch=fetcher):
+    lib = {"production_specs": [], "discovery_leads": []}
+    report = author_topics(FakeChain([proposal, draft, entail]), lib, load_source_registry(), tmp_path / "specs",
+                           count=1, fetcher=fetch, today="2026-11-18")
+    return lib, report
+
+
+def test_accepts_topic_and_writes_spec_with_title_description_and_sources(tmp_path):
+    lib, report = _run(tmp_path)
+    assert len(report["accepted"]) == 1, report
+    spec = json.loads((tmp_path / "specs" / "clouds-need-dust.json").read_text())
+    assert spec["post_title"] == "Why Clouds Need Dust to Exist | QuantaTale"
+    assert spec["post_description"].startswith("A cloud starts with a speck.") and "https://" in spec["post_description"]
+    assert spec["source_passage_verification_required_before_publication"] is False
+    assert len(spec["sources"]) == 2 and all(s["supports"] for s in spec["sources"])
+    assert lib["production_specs"][0]["content_id_prefix"] == spec["content_id_prefix"]
+
+
+def test_rejects_when_only_one_publisher_loads(tmp_path):
+    def one(url, publisher):
+        if "noaa" in url:
+            raise OSError("down")
+        return fetcher(url, publisher)
+    lib, report = _run(tmp_path, fetch=one)
+    assert not report["accepted"] and "independent" in report["rejected"][0]["reason"] and not lib["production_specs"]
+
+
+def test_rejects_quote_not_in_source():
+    bad = [dict(CLAIMS[0], quote="clouds are made of cotton candy")] + CLAIMS[1:]
+    srcs = [{"paragraphs": P1}, {"paragraphs": P2}]
+    assert any("not found verbatim" in p for p in check_grounding(NARRATION, bad, srcs))
+
+
+def test_rejects_number_not_in_quote():
+    srcs = [{"paragraphs": P1}, {"paragraphs": P2}]
+    changed = NARRATION.replace("100 percent", "90 percent")
+    claims = [dict(c, sentence=c["sentence"].replace("100 percent", "90 percent")) for c in CLAIMS]
+    assert any("number" in p for p in check_grounding(changed, claims, srcs))
+
+
+def test_uncited_sentence_rejected_but_one_opening_question_allowed():
+    srcs = [{"paragraphs": P1}, {"paragraphs": P2}]
+    assert check_grounding(NARRATION, CLAIMS, srcs) == []
+    assert check_grounding(NARRATION + " Extra claim here.", CLAIMS, srcs)
+
+
+def test_copied_text_is_rejected():
+    copied = "Clouds form when water vapor in rising air cools and condenses onto tiny particles in the sky."
+    assert check_originality(copied, [{"paragraphs": P1}])
+    assert not check_originality(NARRATION, [{"paragraphs": P1}, {"paragraphs": P2}])
+
+
+def test_entailment_failure_blocks_topic(tmp_path):
+    lib, report = _run(tmp_path, entail={"results": [{"i": 0, "supported": False}], "conflicts": []})
+    assert not report["accepted"] and "not supported" in report["rejected"][0]["reason"]
+
+
+def test_reported_conflict_blocks_topic(tmp_path):
+    lib, report = _run(tmp_path, entail={**OK, "conflicts": ["sources disagree on 100 percent"]})
+    assert not report["accepted"] and "conflict" in report["rejected"][0]["reason"]
+
+
+def test_shape_requires_title_description_length_and_unique_title():
+    assert check_shape(DRAFT, set()) == []
+    assert check_shape({**DRAFT, "title": "Short"}, set())
+    assert check_shape({**DRAFT, "description": " "}, set())
+    assert check_shape({**DRAFT, "narration": "Too short."}, set())
+    assert check_shape(DRAFT, {"why clouds need dust to exist"})
+
+
+def test_slugify_is_short_and_safe():
+    assert slugify("Why Clouds Need Dust to Exist") == "clouds-need-dust"

@@ -1,0 +1,282 @@
+"""Author new evidence-gated topics automatically (no human approval step).
+
+A language model proposes evergreen questions and candidate pages on registered
+publisher domains. Pages are fetched and must load. The model then writes a short
+script in its own words using only those passages. A topic is accepted only when
+every automated gate passes:
+
+* every narration sentence is tied to a verbatim quote from a fetched page,
+* every number in a sentence appears in its quote,
+* the script copies no long word sequence from the sources,
+* a second model pass confirms each sentence is supported and nothing conflicts,
+* there is a clickable title, a description, and at least two independent publishers.
+
+These gates are automated checks, not complete fact verification, and each spec
+records that. A topic that fails any gate is discarded and never published.
+"""
+from __future__ import annotations
+
+import json
+import re
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Callable
+from urllib.parse import urlparse
+
+from factflow.fact_research import _ArticleParser, _publisher_for_url, fetch_article
+from factflow.llm_providers import AllProvidersFailed, ProviderChain
+from factflow.topic_library import register_production_spec
+
+MIN_WORDS, MAX_WORDS = 60, 170
+MIN_TITLE, MAX_TITLE = 20, 70
+COPY_RUN_WORDS = 8
+MAX_UNCITED_QUESTIONS = 1
+VISUAL_STYLES = {"hybrid", "3d", "procedural_2d_holographic"}
+Fetcher = Callable[[str, dict[str, Any]], dict[str, Any]]
+
+
+def _norm(text: str) -> str:
+    text = text.replace("’", "'").replace("‘", "'").replace("“", '"').replace("”", '"')
+    return " ".join(re.sub(r"[^a-z0-9%.' ]+", " ", text.lower()).split())
+
+
+def _words(text: str) -> list[str]:
+    return _norm(text).split()
+
+
+def _numbers(text: str) -> list[str]:
+    return [n.rstrip(".") for n in re.findall(r"\d[\d,]*(?:\.\d+)?", text.replace(",", ""))]
+
+
+def split_sentences(text: str) -> list[str]:
+    return [s.strip() for s in re.split(r"(?<=[.!?])\s+", text.strip()) if s.strip()]
+
+
+def slugify(title: str, limit: int = 22) -> str:
+    base = re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-")
+    parts = [p for p in base.split("-") if p not in {"a", "an", "the", "why", "how", "does", "do", "is", "are", "of"}]
+    slug = "-".join(parts[:3]) or base
+    return slug[:limit].strip("-") or "topic"
+
+
+def default_fetcher(url: str, publisher: dict[str, Any]) -> dict[str, Any]:
+    return fetch_article(url, publisher)
+
+
+def fetch_passages(url: str, registry: dict[str, Any], fetcher: Fetcher = default_fetcher) -> dict[str, Any] | None:
+    """Fetch one registered-publisher page; None if it is unregistered or fails."""
+    publisher = _publisher_for_url(url, registry)
+    if publisher is None:
+        return None
+    try:
+        page = fetcher(url, publisher)
+    except Exception:  # network, redirect, size or type problems all mean "unusable source"
+        return None
+    parser = _ArticleParser()
+    parser.feed(page["html"])
+    title, paragraphs = parser.result()
+    paragraphs = [p for p in paragraphs if len(p.split()) >= 8][:40]
+    if len(paragraphs) < 2:
+        return None
+    return {"url": page.get("final_url") or url, "title": title, "paragraphs": paragraphs,
+            "publisher": publisher.get("name") or publisher.get("id"),
+            "publisher_id": publisher.get("id"),
+            "group": publisher.get("independence_group") or publisher.get("id")}
+
+
+# ---------------------------------------------------------------- gates
+
+def check_grounding(narration: str, claims: list[dict[str, Any]], sources: list[dict[str, Any]]) -> list[str]:
+    """Every sentence needs a verbatim quote from a page; numbers must match."""
+    problems: list[str] = []
+    corpus = [_norm(" ".join(s["paragraphs"])) for s in sources]
+    by_sentence = {_norm(str(c.get("sentence", ""))): c for c in claims if isinstance(c, dict)}
+    uncited_questions = 0
+    for sentence in split_sentences(narration):
+        claim = by_sentence.get(_norm(sentence))
+        if claim is None:
+            if sentence.endswith("?") and uncited_questions < MAX_UNCITED_QUESTIONS:
+                uncited_questions += 1
+                continue
+            problems.append(f"sentence has no cited quote: {sentence[:80]!r}")
+            continue
+        quote, index = _norm(str(claim.get("quote", ""))), claim.get("source")
+        if not isinstance(index, int) or not 0 <= index < len(sources):
+            problems.append(f"bad source index for: {sentence[:60]!r}")
+        elif len(quote.split()) < 4 or quote not in corpus[index]:
+            problems.append(f"quote not found verbatim in source {index}: {sentence[:60]!r}")
+        else:
+            missing = [n for n in _numbers(sentence) if n not in _numbers(str(claim.get("quote", "")))]
+            if missing:
+                problems.append(f"number(s) {missing} not in the cited quote: {sentence[:60]!r}")
+    return problems
+
+
+def check_originality(narration: str, sources: list[dict[str, Any]], run: int = COPY_RUN_WORDS) -> list[str]:
+    """Reject a script that copies a long word run from any source."""
+    words = _words(narration)
+    grams = {" ".join(words[i:i + run]) for i in range(max(0, len(words) - run + 1))}
+    for number, source in enumerate(sources):
+        text = " " + _norm(" ".join(source["paragraphs"])) + " "
+        for gram in grams:
+            if f" {gram} " in text:
+                return [f"copies {run}+ consecutive words from source {number}: {gram!r}"]
+    return []
+
+
+def check_shape(draft: dict[str, Any], existing_titles: set[str]) -> list[str]:
+    problems: list[str] = []
+    title = str(draft.get("title", "")).strip()
+    if not MIN_TITLE <= len(title) <= MAX_TITLE:
+        problems.append(f"title must be {MIN_TITLE}-{MAX_TITLE} characters")
+    if _norm(title) in existing_titles:
+        problems.append("title duplicates an existing topic")
+    count = len(str(draft.get("narration", "")).split())
+    if not MIN_WORDS <= count <= MAX_WORDS:
+        problems.append(f"narration must be {MIN_WORDS}-{MAX_WORDS} words, got {count}")
+    if not str(draft.get("description", "")).strip():
+        problems.append("description is empty")
+    scenes = draft.get("scenes")
+    if not isinstance(scenes, list) or not 3 <= len(scenes) <= 5 or not all(
+            isinstance(s, dict) and s.get("visual_description") for s in scenes):
+        problems.append("need 3-5 scenes with visual descriptions")
+    return problems
+
+
+ENTAIL_SYSTEM = ("You are a strict fact checker. Use ONLY the source passages. Reply with JSON only: "
+                 '{"results":[{"i":0,"supported":true}],"conflicts":["..."]}. '
+                 "supported is true only if the quoted passage clearly states or directly implies the sentence.")
+
+
+def check_entailment(chain: ProviderChain, claims: list[dict[str, Any]], sources: list[dict[str, Any]]) -> list[str]:
+    items = "\n".join(f"{i}. SENTENCE: {c['sentence']}\n   QUOTE: {c['quote']}" for i, c in enumerate(claims))
+    passages = "\n\n".join(f"[Source {i}] " + " ".join(s["paragraphs"])[:3500] for i, s in enumerate(sources))
+    reply = chain.complete_json(ENTAIL_SYSTEM, f"{passages}\n\nCheck each sentence:\n{items}\n"
+                                "Also list any sentence that any passage contradicts under conflicts.", max_tokens=1200, temperature=0)
+    results = {r.get("i"): r.get("supported") for r in reply.get("results", []) if isinstance(r, dict)}
+    problems = [f"not supported: {claims[i]['sentence'][:70]!r}" for i in range(len(claims)) if results.get(i) is not True]
+    problems += [f"conflict reported: {str(c)[:100]}" for c in reply.get("conflicts", []) if c]
+    return problems
+
+
+# ---------------------------------------------------------------- model steps
+
+PROPOSE_SYSTEM = ("You propose evergreen educational science questions for 40-second videos. Reply with JSON only: "
+                  '{"topics":[{"question":"...","category":"...","source_urls":["https://..."]}]}. '
+                  "Give 2-3 real page URLs per topic from DIFFERENT official publishers (e.g. nasa.gov, noaa.gov, usgs.gov, "
+                  "esa.int, nps.gov, nist.gov, who.int, universities). Only URLs you are confident exist.")
+
+WRITE_SYSTEM = ("You write a short educational video script in your OWN WORDS using ONLY the supplied source passages. "
+                "Never copy phrases; never add facts that are not in the passages. Reply with JSON only: "
+                '{"title":"clickable curiosity title, 25-65 characters","narration":"70-150 words, plain sentences",'
+                '"description":"1-2 sentence hook for the post","category":"...",'
+                '"claims":[{"sentence":"exact narration sentence","quote":"verbatim 6+ word excerpt from a passage","source":0}],'
+                '"scenes":[{"narration_segment":"...","visual_description":"...","visual_style":"hybrid"}]}. '
+                "Every narration sentence must have a claim whose quote is copied exactly from the passage with that source index. "
+                "Keep numbers exactly as in the quote. visual_style is one of hybrid, 3d, procedural_2d_holographic. 3-4 scenes.")
+
+
+def propose_topics(chain: ProviderChain, existing_titles: list[str], count: int) -> list[dict[str, Any]]:
+    avoid = "; ".join(existing_titles[-60:])
+    reply = chain.complete_json(PROPOSE_SYSTEM, f"Propose {count} NEW topics. Do not repeat these: {avoid}", max_tokens=1500, temperature=0.8)
+    topics = reply.get("topics", [])
+    return [t for t in topics if isinstance(t, dict) and t.get("question") and isinstance(t.get("source_urls"), list)]
+
+
+def write_draft(chain: ProviderChain, question: str, sources: list[dict[str, Any]]) -> dict[str, Any]:
+    passages = "\n\n".join(f"[Source {i}] ({s['publisher']}) " + " ".join(s["paragraphs"])[:3500] for i, s in enumerate(sources))
+    return chain.complete_json(WRITE_SYSTEM, f"Question: {question}\n\n{passages}", max_tokens=1800, temperature=0.4)
+
+
+# ---------------------------------------------------------------- orchestration
+
+def build_spec(draft: dict[str, Any], sources: list[dict[str, Any]], today: str) -> dict[str, Any]:
+    title = draft["title"].strip()
+    urls = " and ".join(f"{s['publisher']} {s['url']}" for s in sources[:2])
+    claims = draft["claims"]
+    supports: dict[int, list[str]] = {}
+    for claim in claims:
+        if isinstance(claim.get("source"), int):
+            supports.setdefault(claim["source"], []).append(str(claim["quote"]))
+    return {
+        "title": title, "category": str(draft.get("category") or "science"), "voice": "af_heart",
+        "production_label": "QUANTATALE ORIGINAL", "post_title": f"{title} | QuantaTale",
+        "post_description": f"{draft['description'].strip()} Sources: {urls} #Science #ScienceFacts #QuantaTale",
+        "content_id_prefix": f"qt-{slugify(title)}", "publish_timezone": "Africa/Kampala",
+        "editorial_approved": True, "editorial_status": "automated_gate_passed",
+        "editorial_review_required": False, "narration": draft["narration"].strip(),
+        "sources": [{
+            "publisher": s["publisher"], "title": s["title"], "url": s["url"],
+            "supports": " | ".join(supports.get(i, []))[:600],
+            "review_status": "passage_checked_supports_claim",
+            "review_method": "automated_quote_grounding_and_model_entailment", "reviewed_at": today,
+        } for i, s in enumerate(sources)],
+        "scenes": [{"narration_segment": str(s.get("narration_segment", "")),
+                    "visual_description": str(s["visual_description"]),
+                    "visual_style": s.get("visual_style") if s.get("visual_style") in VISUAL_STYLES else "hybrid"}
+                   for s in draft["scenes"]],
+        "visual_profile": "holographic_science_v1",
+        "source_passage_verification_required_before_publication": False,
+        "source_assessment": ("Automated gates passed on " + today + ": each sentence tied to a verbatim source quote, numbers matched, "
+                              "no copied word runs, model entailment check passed, independent publishers. "
+                              "Not complete fact verification."),
+        "authored_by": "automated_topic_authoring",
+    }
+
+
+def author_topics(chain: ProviderChain, library: dict[str, Any], registry: dict[str, Any], specs_dir: Path, *,
+                  count: int = 3, fetcher: Fetcher = default_fetcher, today: str | None = None,
+                  max_attempts: int | None = None) -> dict[str, Any]:
+    """Create up to ``count`` gated specs; returns a report of accepted and rejected topics."""
+    today = today or datetime.now(timezone.utc).date().isoformat()
+    specs_dir.mkdir(parents=True, exist_ok=True)
+    existing = {_norm(str(i.get("title", "")).replace("| QuantaTale", "")) for i in library.get("production_specs", [])}
+    existing_prefixes = {str(i.get("content_id_prefix", "")) for i in library.get("production_specs", [])}
+    report: dict[str, Any] = {"accepted": [], "rejected": [], "provider_usage": {}}
+    budget = max_attempts or count * 3
+    try:
+        proposals = propose_topics(chain, sorted(existing), budget)
+    except AllProvidersFailed as exc:
+        report["error"] = str(exc)
+        return report
+    for proposal in proposals[:budget]:
+        if len(report["accepted"]) >= count:
+            break
+        question = str(proposal["question"])
+        sources, groups = [], set()
+        for url in proposal["source_urls"][:4]:
+            page = fetch_passages(str(url), registry, fetcher)
+            if page and page["url"] not in {s["url"] for s in sources}:
+                sources.append(page)
+                groups.add(page["group"])
+        if len(groups) < 2:
+            report["rejected"].append({"question": question, "reason": "fewer than two independent publisher pages loaded"})
+            continue
+        try:
+            draft = write_draft(chain, question, sources)
+            problems = check_shape(draft, existing)
+            claims = draft.get("claims") if isinstance(draft.get("claims"), list) else []
+            if not problems:
+                problems += check_grounding(str(draft.get("narration", "")), claims, sources)
+                problems += check_originality(str(draft.get("narration", "")), sources)
+            if not problems:
+                problems += check_entailment(chain, claims, sources)
+        except AllProvidersFailed as exc:
+            report["error"] = str(exc)
+            break
+        except (KeyError, TypeError, ValueError) as exc:
+            problems = [f"malformed draft: {exc}"]
+        if problems:
+            report["rejected"].append({"question": question, "reason": "; ".join(problems)[:400]})
+            continue
+        spec = build_spec(draft, sources, today)
+        if spec["content_id_prefix"] in existing_prefixes:
+            spec["content_id_prefix"] += "-2"
+        path = specs_dir / f"{spec['content_id_prefix'][3:]}.json"
+        path.write_text(json.dumps(spec, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        register_production_spec(library, str(path.as_posix()), spec)
+        existing.add(_norm(spec["title"]))
+        existing_prefixes.add(spec["content_id_prefix"])
+        report["accepted"].append({"title": spec["title"], "spec_path": str(path.as_posix())})
+    report["provider_usage"] = dict(chain.usage)
+    return report
