@@ -1,0 +1,82 @@
+name: QuantaTale automated topic authoring
+on:
+  schedule:
+    # Daily, after the lead replenishment at 01:00 UTC.
+    - cron: "30 1 * * *"
+  workflow_dispatch:
+    inputs:
+      count:
+        description: "Maximum new topics to accept in this run."
+        required: false
+        default: "4"
+permissions:
+  contents: write
+  issues: write
+concurrency:
+  group: quantatale-production-publishing
+  cancel-in-progress: false
+jobs:
+  author:
+    name: Write and gate new topics with free LLM providers
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install QuantaTale
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+      - name: Author topics (Groq, then OVHcloud, then Cloudflare)
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          COUNT: ${{ github.event.inputs.count || '4' }}
+        run: quantatale author-topics --count "$COUNT" --output build/topic-authoring.json
+      - name: Run test suite on the new library state
+        id: tests
+        if: always()
+        run: python -m pytest -q
+      - name: Commit newly authored topics (only if tests pass)
+        if: always() && steps.tests.outcome == 'success'
+        run: |
+          git add production/specs production/topic-library.json
+          if git diff --cached --quiet; then
+            echo "No new topics to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Add automatically authored topics that passed the evidence gates"
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - name: Check topic stock and alert when low
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          quantatale topic-stock --minimum 4 --output build/topic-stock.json
+          if python -c "import json,sys; sys.exit(0 if json.load(open('build/topic-stock.json'))['low'] else 1)"; then
+            title="QuantaTale topic stock is low"
+            if ! gh issue list --state open --json title --jq '.[].title' | grep -qxF "$title"; then
+              gh issue create --title "$title" --body "Fewer than 4 never-used publishable topics remain. Topics are never repeated, so publishing will fail once none are left. Check the latest 'automated topic authoring' run: provider keys (GROQ_API_KEY, CLOUDFLARE_*) may be missing, rate limited, or every drafted topic failed the evidence gates."
+            fi
+          fi
+      - name: Upload authoring report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: topic-authoring-${{ github.run_id }}
+          path: |
+            build/topic-authoring.json
+            build/topic-stock.json
+          if-no-files-found: warn
+          retention-days: 7

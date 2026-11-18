@@ -44,6 +44,13 @@ def _ever_used_specs(ledger: dict[str, Any]) -> set[str]:
     return used
 
 
+def unused_topic_count(library: dict[str, Any], ledger: dict[str, Any]) -> int:
+    """Number of publishable topics that have never been used."""
+    used = _ever_used_specs(ledger)
+    return sum(1 for item in library.get("production_specs", [])
+               if isinstance(item, dict) and is_publishable_spec(item) and str(item.get("spec_path", "")) not in used)
+
+
 def _last_used_by_spec(ledger: dict[str, Any]) -> dict[str, datetime]:
     """Return the most recent recorded use of each spec, normalized to UTC."""
     last_used: dict[str, datetime] = {}

@@ -123,3 +123,13 @@ def test_cancelled_unposted_reservation_frees_the_topic():
     library = {"production_specs": [_spec("a.json", "qt-a", "A")]}
     ledger = {"a": {"spec": "a.json", "due_at": "2026-11-15T12:00:00+03:00", "status": "cancelled_duplicate"}}
     assert select_next_slot(library, ledger, now=now)["spec_path"] == "a.json"
+
+
+def test_unused_topic_count_excludes_used_and_blocked():
+    from factflow.publishing_slots import unused_topic_count
+    library = {"production_specs": [
+        _spec("a.json", "qt-a", "A"), _spec("b.json", "qt-b", "B"),
+        {**_spec("c.json", "qt-c", "C"), "source_passage_verification_required_before_publication": True},
+    ]}
+    ledger = {"a": {"spec": "a.json", "due_at": "2026-11-15T12:00:00+03:00", "status": "scheduled"}}
+    assert unused_topic_count(library, ledger) == 1
