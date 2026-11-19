@@ -174,5 +174,14 @@
       }
     },
     "scheduled_at": "2026-11-18T16:25:39.344591+00:00"
+  },
+  "qt-lightning-air-20261119-0803": {
+    "status": "reserved",
+    "spec": "production/specs/lightning-hot-air.json",
+    "due_at": "2026-11-19T08:03:38+03:00",
+    "reserved_at": "2026-11-19T04:43:38+00:00",
+    "workflow_run_id": "44460266373",
+    "slot_local": "2026-11-19 08:03",
+    "publish_timezone": "Africa/Kampala"
   }
 }
