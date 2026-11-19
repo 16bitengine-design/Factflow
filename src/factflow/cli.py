@@ -184,7 +184,10 @@ def main() -> int:
         for failure in report["provider_failures"]:
             print(f"  provider skipped: {failure}")
         for item in report["rejected"] + report["deferred"]:
-            print(f"  not accepted: {item}")
+            print(f"  not accepted: { {k: v for k, v in item.items() if k != 'source_text'} }")
+            for url, paragraphs in item.get("source_text", {}).items():
+                for number, paragraph in enumerate(paragraphs):
+                    print(f"    page text {url} [{number}]: {paragraph}")
         print(f"Ingested {len(report['accepted'])}, rejected {len(report['rejected'])}, deferred {len(report['deferred'])}")
         return 0
 
