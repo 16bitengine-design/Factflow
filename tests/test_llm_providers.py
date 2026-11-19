@@ -97,3 +97,11 @@ def test_malformed_json_is_retried_once_on_the_same_provider():
     chain = ProviderChain([Provider("a", "http://x", "m", "k")], opener=opener)
     assert chain.complete_json("s", "u") == {"ok": 1}
     assert len(chain.failures) == 1
+
+
+def test_groq_default_uses_low_reasoning_and_room_to_answer():
+    from factflow.llm_providers import default_providers
+
+    groq = default_providers({"GROQ_API_KEY": "k"})[0]
+    assert groq.model == "openai/gpt-oss-120b"
+    assert groq.extra_payload == {"reasoning_effort": "low"} and groq.min_tokens >= 4000
