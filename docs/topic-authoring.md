@@ -33,3 +33,11 @@ Each scene may carry a `motif` naming a small procedural animation in `src/factf
 motif for the scene being narrated so the picture shows what the words say. Authored topics pick a motif
 from that list; an unknown or missing motif (`none`) falls back to the generic description card.
 Add a new motif by writing a draw function and registering it in `MOTIFS`; tests check every spec uses a valid one.
+
+## Drafts written from an assistant session
+
+Topics can also be added by committing a draft JSON (same fields as a model draft plus `source_urls`) to
+`production/drafts/`. The workflow fetches the pages, requires a verbatim quote per sentence, no copied runs,
+two independent publishers and a passing independent model check; then it turns the draft into a spec.
+Rejected drafts move to `production/drafts/rejected/` with their reasons. If no provider can run the check,
+the draft stays for the next run.

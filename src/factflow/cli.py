@@ -103,6 +103,14 @@ def build_parser() -> argparse.ArgumentParser:
     author_parser.add_argument("--registry", default=None, help="Optional publisher registry JSON.")
     author_parser.add_argument("--output", default="build/topic-authoring.json", help="JSON report path.")
 
+    ingest_parser = subparsers.add_parser(
+        "ingest-drafts", help="Gate assistant-written topic drafts and add the accepted ones to the library.")
+    ingest_parser.add_argument("--drafts-dir", default="production/drafts", help="Directory of draft JSON files.")
+    ingest_parser.add_argument("--library", default="production/topic-library.json")
+    ingest_parser.add_argument("--specs-dir", default="production/specs")
+    ingest_parser.add_argument("--registry", default=None)
+    ingest_parser.add_argument("--output", default="build/draft-ingest.json")
+
     stock_parser = subparsers.add_parser("topic-stock", help="Report never-used publishable topics.")
     stock_parser.add_argument("--library", default="production/topic-library.json")
     stock_parser.add_argument("--ledger", default="production/publishing-ledger.json")
@@ -154,6 +162,30 @@ def main() -> int:
         print(f"Added {result['added']} leads; skipped {result['duplicates']} duplicates.")
         print(f"Library totals: {summary}")
         print("All discovered leads remain unreviewed and blocked from production.")
+        return 0
+
+    if args.command == "ingest-drafts":
+        from factflow.llm_providers import ProviderChain
+        from factflow.topic_authoring import ingest_drafts
+        try:
+            library = load_library(args.library)
+            registry = load_source_registry(args.registry) if args.registry else load_source_registry()
+            chain = ProviderChain()
+            report = ingest_drafts(chain, library, registry, Path(args.specs_dir), Path(args.drafts_dir))
+            report["provider_failures"] = chain.failures[:40]
+            if report["accepted"]:
+                save_library(library, args.library)
+        except (OSError, json.JSONDecodeError, ValueError) as exc:
+            print(f"DRAFT INGEST ERROR: {exc}", file=sys.stderr)
+            return 1
+        out = Path(args.output)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        for failure in report["provider_failures"]:
+            print(f"  provider skipped: {failure}")
+        for item in report["rejected"] + report["deferred"]:
+            print(f"  not accepted: {item}")
+        print(f"Ingested {len(report['accepted'])}, rejected {len(report['rejected'])}, deferred {len(report['deferred'])}")
         return 0
 
     if args.command == "author-topics":
