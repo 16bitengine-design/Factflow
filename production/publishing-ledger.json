@@ -261,9 +261,11 @@
         "buffer_status": "scheduled",
         "due_at": "2026-11-19T16:50:16.000Z",
         "verification": {
-          "status": "awaiting_confirmation",
-          "buffer_status": "scheduled",
-          "checked_at": "2026-11-19T16:32:49+00:00"
+          "status": "published",
+          "buffer_status": "sent",
+          "checked_at": "2026-11-19T17:20:12+00:00",
+          "published_at": "2026-11-19T16:50:31.410Z",
+          "external_link": "https://www.youtube.com/shorts/DOA7cPHsTXQ"
         }
       },
       "tiktok": {
@@ -271,9 +273,11 @@
         "buffer_status": "scheduled",
         "due_at": "2026-11-19T16:50:16.000Z",
         "verification": {
-          "status": "awaiting_confirmation",
-          "buffer_status": "scheduled",
-          "checked_at": "2026-11-19T16:32:49+00:00"
+          "status": "published",
+          "buffer_status": "sent",
+          "checked_at": "2026-11-19T17:20:12+00:00",
+          "published_at": "2026-11-19T16:52:12.703Z",
+          "external_link": "https://tiktok.com/@craftmaths/video/7709926009587387649"
         }
       }
     },
