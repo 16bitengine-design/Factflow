@@ -339,7 +339,7 @@ def ingest_drafts(chain: ProviderChain, library: dict[str, Any], registry: dict[
             path.unlink()
             # The paragraphs the gates actually saw, so a rewrite can quote the page exactly.
             report["rejected"].append({"draft": path.name, "reason": "; ".join(problems)[:400],
-                                       "source_text": {s["url"]: [q[:400] for q in s["paragraphs"][:25]] for s in sources}})
+                                       "source_text": {s["url"]: [q[:900] for q in s["paragraphs"][:25]] for s in sources}})
             continue
         spec = build_spec(draft, sources, today)
         spec["authored_by"] = "assistant_session_draft_then_automated_gates"

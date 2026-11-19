@@ -437,8 +437,8 @@ def tsunami_deep(draw, p, t, fonts, color):
     pts = [(80 + 560 * i / 120, 700 - 18 * math.sin((i / 120) * 2 * math.pi * 1.4 - p * 16)) for i in range(121)]
     draw.line(pts, fill=WHITE, width=5)
     _glow(draw, 80 + 560 * ((p * 3) % 1.0), 640, 12, YELLOW)
-    _label(draw, (CX, 470), "IN DEEP WATER: AS FAST AS A JET", fonts, YELLOW, "mm")
-    _label(draw, (CX, 510), "slowing only in shallow water", fonts, WHITE, "mm")
+    _label(draw, (CX, 470), "OUT AT SEA: LOW, FAST WAVES", fonts, YELLOW, "mm")
+    _label(draw, (CX, 510), "they do not grow dramatically in height", fonts, WHITE, "mm")
 
 
 def tsunami_shore(draw, p, t, fonts, color):

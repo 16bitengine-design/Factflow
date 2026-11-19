@@ -6,16 +6,16 @@
     "https://oceanservice.noaa.gov/facts/tides.html",
     "https://science.nasa.gov/moon/tides/"
   ],
-  "narration": "Why does the sea rise and fall twice a day? Tides are caused by the pull of the Moon and the Sun. High tides do not line up exactly with where the Moon is. Most shorelines see two high tides and two low tides each day. Spring tides happen when the Moon is full or new. Tides are very long-period waves moving through the ocean. The gap in height between high and low tide is called the tidal range.",
+  "narration": "Why does the sea rise and fall twice a day? The Moon has the biggest influence on Earth's tides because it is so close. The distant Sun adds a bit under half the Moon's tide-making pull. Most shorelines see two high tides and two low tides each day. The bulges sit slightly ahead of the Moon instead of right under it. Spring tides happen when the Moon is full or new. Tides are very long-period waves moving through the ocean. The gap in height between high and low tide is called the tidal range.",
   "claims": [
     {
-      "sentence": "Tides are caused by the pull of the Moon and the Sun.",
-      "quote": "Tides are caused by gravitational pull of the moon and the sun.",
-      "source": 0
+      "sentence": "The Moon has the biggest influence on Earth's tides because it is so close.",
+      "quote": "the Moon is the biggest influence on Earth’s tides because of its proximity",
+      "source": 1
     },
     {
-      "sentence": "High tides do not line up exactly with where the Moon is.",
-      "quote": "but high tides don't line up exactly with the Moon's position.",
+      "sentence": "The distant Sun adds a bit under half the Moon's tide-making pull.",
+      "quote": "which gives it a little less than half of the Moon’s tide-generating force.",
       "source": 1
     },
     {
@@ -24,8 +24,13 @@
       "source": 1
     },
     {
+      "sentence": "The bulges sit slightly ahead of the Moon instead of right under it.",
+      "quote": "the high tide bulges are never directly lined up with the Moon, but a little ahead of it.",
+      "source": 1
+    },
+    {
       "sentence": "Spring tides happen when the Moon is full or new.",
-      "quote": "Spring tides always happen when the Moon is at the full or new phase,",
+      "quote": "Spring tides always happen when the Moon is at the full or new phase",
       "source": 1
     },
     {
@@ -58,8 +63,5 @@
       "visual_style": "hybrid",
       "motif": "tide_gauge"
     }
-  ],
-  "rejection_reasons": [
-    "quote not found verbatim in source 0: 'Tides are caused by the pull of the Moon and the Sun.'"
   ]
 }
