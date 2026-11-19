@@ -26,6 +26,7 @@ from urllib.parse import urlparse
 from factflow.fact_research import _ArticleParser, _publisher_for_url, fetch_article
 from factflow.llm_providers import AllProvidersFailed, ProviderChain
 from factflow.topic_library import register_production_spec
+from factflow.visual_motifs import MOTIFS
 
 MIN_WORDS, MAX_WORDS = 60, 170
 MIN_TITLE, MAX_TITLE = 20, 70
@@ -171,9 +172,9 @@ WRITE_SYSTEM = ("You write a short educational video script in your OWN WORDS us
                 '{"title":"clickable curiosity title, 25-65 characters","narration":"70-150 words, plain sentences",'
                 '"description":"1-2 sentence hook for the post","category":"...",'
                 '"claims":[{"sentence":"exact narration sentence","quote":"verbatim 6+ word excerpt from a passage","source":0}],'
-                '"scenes":[{"narration_segment":"...","visual_description":"...","visual_style":"hybrid"}]}. '
+                '"scenes":[{"narration_segment":"...","visual_description":"...","visual_style":"hybrid","motif":"<name or none>"}]}. '
                 "Every narration sentence must have a claim whose quote is copied exactly from the passage with that source index. "
-                "Keep numbers exactly as in the quote. visual_style is one of hybrid, 3d, procedural_2d_holographic. 3-4 scenes.")
+                "Keep numbers exactly as in the quote. visual_style is one of hybrid, 3d, procedural_2d_holographic. 3-4 scenes. motif must be one of: " + ", ".join(sorted(MOTIFS)) + ", or none; choose the animation that literally shows what that part of the narration says.")
 
 
 def propose_topics(chain: ProviderChain, existing_titles: list[str], count: int) -> list[dict[str, Any]]:
@@ -213,7 +214,8 @@ def build_spec(draft: dict[str, Any], sources: list[dict[str, Any]], today: str)
         } for i, s in enumerate(sources)],
         "scenes": [{"narration_segment": str(s.get("narration_segment", "")),
                     "visual_description": str(s["visual_description"]),
-                    "visual_style": s.get("visual_style") if s.get("visual_style") in VISUAL_STYLES else "hybrid"}
+                    "visual_style": s.get("visual_style") if s.get("visual_style") in VISUAL_STYLES else "hybrid",
+                    "motif": s.get("motif") if s.get("motif") in MOTIFS else "none"}
                    for s in draft["scenes"]],
         "visual_profile": "holographic_science_v1",
         "source_passage_verification_required_before_publication": False,

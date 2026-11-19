@@ -35,17 +35,20 @@
     {
       "narration_segment": "Opening hook",
       "visual_description": "Earth's crust appears as interlocking tectonic plates on a globe.",
-      "visual_style": "hybrid"
+      "visual_style": "hybrid",
+      "motif": "plates_globe"
     },
     {
       "narration_segment": "Core explanation",
       "visual_description": "A plate boundary moves a few centimetres along a ruler beside a growing fingernail.",
-      "visual_style": "3d"
+      "visual_style": "3d",
+      "motif": "plates_boundary"
     },
     {
       "narration_segment": "Memorable conclusion",
       "visual_description": "A time-lapse compresses millions of years of plate movement into mountain building and ocean-floor spreading.",
-      "visual_style": "hybrid"
+      "visual_style": "hybrid",
+      "motif": "plates_timelapse"
     }
   ],
   "editorial_review_notes": "Approved by the project owner as a batch on 2026-11-15. Approval authorizes topic use; automated source summaries are not independent verification. Before publication, retrieve and assess source passages, corroborate material claims, and flag unsupported or conflicting details for human review.",

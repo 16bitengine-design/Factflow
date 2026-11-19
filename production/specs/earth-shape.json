@@ -35,17 +35,20 @@
     {
       "narration_segment": "Opening hook",
       "visual_description": "Earth appears as a perfect sphere, then subtly widens at the equator.",
-      "visual_style": "hybrid"
+      "visual_style": "hybrid",
+      "motif": "globe_bulge"
     },
     {
       "narration_segment": "Core explanation",
       "visual_description": "A rotating globe shows the equatorial bulge and polar flattening.",
-      "visual_style": "3d"
+      "visual_style": "3d",
+      "motif": "globe_bulge"
     },
     {
       "narration_segment": "Memorable conclusion",
       "visual_description": "A topographic and gravity-field surface reveals why the real Earth is irregular.",
-      "visual_style": "hybrid"
+      "visual_style": "hybrid",
+      "motif": "gravity_surface"
     }
   ],
   "editorial_review_notes": "Approved by the project owner as a batch on 2026-11-15. Approval authorizes topic use; automated source summaries are not independent verification. Before publication, retrieve and assess source passages, corroborate material claims, and flag unsupported or conflicting details for human review.",

@@ -35,17 +35,20 @@
     {
       "narration_segment": "Opening hook",
       "visual_description": "A lake evaporates into invisible water-vapour particles rising upward.",
-      "visual_style": "hybrid"
+      "visual_style": "hybrid",
+      "motif": "evaporation"
     },
     {
       "narration_segment": "Core explanation",
       "visual_description": "An air parcel rises, expands and cools as a temperature gauge drops.",
-      "visual_style": "3d"
+      "visual_style": "3d",
+      "motif": "rising_cooling"
     },
     {
       "narration_segment": "Memorable conclusion",
       "visual_description": "Microscopic dust and salt nuclei collect droplets, building a cloud from the inside.",
-      "visual_style": "hybrid"
+      "visual_style": "hybrid",
+      "motif": "condensation"
     }
   ],
   "editorial_review_notes": "Approved by the project owner as a batch on 2026-11-15. Approval authorizes topic use; automated source summaries are not independent verification. Before publication, retrieve and assess source passages, corroborate material claims, and flag unsupported or conflicting details for human review.",
