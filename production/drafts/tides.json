@@ -1,0 +1,62 @@
+{
+  "title": "The Moon and Sun Pull the Sea Up and Down",
+  "description": "Why the ocean rises and falls twice a day, explained with NOAA and NASA.",
+  "category": "science",
+  "source_urls": [
+    "https://oceanservice.noaa.gov/facts/tides.html",
+    "https://science.nasa.gov/moon/tides/"
+  ],
+  "narration": "Why does the sea rise and fall twice a day? Tides are caused by the pull of the Moon and the Sun. High tides do not line up exactly with where the Moon is. Most shorelines see two high tides and two low tides each day. Spring tides happen when the Moon is full or new. Tides are very long-period waves moving through the ocean. The gap in height between high and low tide is called the tidal range.",
+  "claims": [
+    {
+      "sentence": "Tides are caused by the pull of the Moon and the Sun.",
+      "quote": "Tides are caused by gravitational pull of the moon and the sun.",
+      "source": 0
+    },
+    {
+      "sentence": "High tides do not line up exactly with where the Moon is.",
+      "quote": "but high tides don't line up exactly with the Moon's position.",
+      "source": 1
+    },
+    {
+      "sentence": "Most shorelines see two high tides and two low tides each day.",
+      "quote": "Most shorelines experience two high and low tides per day.",
+      "source": 1
+    },
+    {
+      "sentence": "Spring tides happen when the Moon is full or new.",
+      "quote": "Spring tides always happen when the Moon is at the full or new phase,",
+      "source": 1
+    },
+    {
+      "sentence": "Tides are very long-period waves moving through the ocean.",
+      "quote": "Tides are very long-period waves that move through the ocean in response to the forces exerted by the moon and sun.",
+      "source": 0
+    },
+    {
+      "sentence": "The gap in height between high and low tide is called the tidal range.",
+      "quote": "The difference in height between the high tide and the low tide is called the tidal range.",
+      "source": 0
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "The Moon and Sun pull on the sea.",
+      "visual_description": "Earth with an ocean bulge as the Moon orbits and the Sun pulls.",
+      "visual_style": "hybrid",
+      "motif": "tidal_pull"
+    },
+    {
+      "narration_segment": "Spring tides come at full or new Moon.",
+      "visual_description": "Sun, Earth and Moon in a line with a larger ocean bulge.",
+      "visual_style": "hybrid",
+      "motif": "tide_alignment"
+    },
+    {
+      "narration_segment": "About two high tides and two low tides a day.",
+      "visual_description": "Tide gauge and curve showing two highs per day and the tidal range.",
+      "visual_style": "hybrid",
+      "motif": "tide_gauge"
+    }
+  ]
+}
