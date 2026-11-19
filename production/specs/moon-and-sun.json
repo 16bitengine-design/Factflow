@@ -1,0 +1,58 @@
+{
+  "title": "The Moon and Sun Pull the Sea Up and Down",
+  "category": "science",
+  "voice": "af_heart",
+  "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "The Moon and Sun Pull the Sea Up and Down | QuantaTale",
+  "post_description": "Why the ocean rises and falls twice a day, explained with NOAA and NASA. Sources: National Oceanic and Atmospheric Administration https://oceanservice.noaa.gov/facts/tides.html and National Aeronautics and Space Administration https://science.nasa.gov/moon/tides/ #Science #ScienceFacts #QuantaTale",
+  "content_id_prefix": "qt-moon-and-sun",
+  "publish_timezone": "Africa/Kampala",
+  "editorial_approved": true,
+  "editorial_status": "automated_gate_passed",
+  "editorial_review_required": false,
+  "narration": "Why does the sea rise and fall twice a day? The Moon has the biggest influence on Earth's tides because it is so close. The distant Sun adds a bit under half the Moon's tide-making pull. Most shorelines see two high tides and two low tides each day. The bulges sit slightly ahead of the Moon instead of right under it. Spring tides happen when the Moon is full or new. Tides are very long-period waves moving through the ocean. The gap in height between high and low tide is called the tidal range.",
+  "sources": [
+    {
+      "publisher": "National Oceanic and Atmospheric Administration",
+      "title": "What are tides?",
+      "url": "https://oceanservice.noaa.gov/facts/tides.html",
+      "supports": "Tides are very long-period waves that move through the ocean in response to the forces exerted by the moon and sun. | The difference in height between the high tide and the low tide is called the tidal range.",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-19"
+    },
+    {
+      "publisher": "National Aeronautics and Space Administration",
+      "title": "Tides - NASA Science",
+      "url": "https://science.nasa.gov/moon/tides/",
+      "supports": "the Moon is the biggest influence on Earth’s tides because of its proximity | which gives it a little less than half of the Moon’s tide-generating force. | Most shorelines experience two high and low tides per day. | the high tide bulges are never directly lined up with the Moon, but a little ahead of it. | Spring tides always happen when the Moon is at the full or new phase",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-19"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "The Moon and Sun pull on the sea.",
+      "visual_description": "Earth with an ocean bulge as the Moon orbits and the Sun pulls.",
+      "visual_style": "hybrid",
+      "motif": "tidal_pull"
+    },
+    {
+      "narration_segment": "Spring tides come at full or new Moon.",
+      "visual_description": "Sun, Earth and Moon in a line with a larger ocean bulge.",
+      "visual_style": "hybrid",
+      "motif": "tide_alignment"
+    },
+    {
+      "narration_segment": "About two high tides and two low tides a day.",
+      "visual_description": "Tide gauge and curve showing two highs per day and the tidal range.",
+      "visual_style": "hybrid",
+      "motif": "tide_gauge"
+    }
+  ],
+  "visual_profile": "holographic_science_v1",
+  "source_passage_verification_required_before_publication": false,
+  "source_assessment": "Automated gates passed on 2026-11-19: each sentence tied to a verbatim source quote, numbers matched, no copied word runs, model entailment check passed, independent publishers. Not complete fact verification.",
+  "authored_by": "assistant_session_draft_then_automated_gates"
+}

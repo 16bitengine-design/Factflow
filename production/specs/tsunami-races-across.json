@@ -1,0 +1,58 @@
+{
+  "title": "How a Tsunami Races Across the Ocean",
+  "category": "science",
+  "voice": "af_heart",
+  "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "How a Tsunami Races Across the Ocean | QuantaTale",
+  "post_description": "What sets off a tsunami, how it travels and how it behaves near shore, from NOAA and USGS. Sources: National Oceanic and Atmospheric Administration https://oceanservice.noaa.gov/facts/tsunami.html and United States Geological Survey https://www.usgs.gov/faqs/what-are-tsunamis #Science #ScienceFacts #QuantaTale",
+  "content_id_prefix": "qt-tsunami-races-across",
+  "publish_timezone": "Africa/Kampala",
+  "editorial_approved": true,
+  "editorial_status": "automated_gate_passed",
+  "editorial_review_required": false,
+  "narration": "What turns an underwater shake into a giant wave? Tsunamis are waves set off by undersea earthquakes or volcanic eruptions. Volcanoes, landslides and even atmospheric disturbances can also trigger them. Out in the deep ocean, the waves do not grow dramatically in height. The speed of a tsunami depends on ocean depth, not on distance from the source. As the ocean gets shallower toward land, they build up to greater and greater heights. Near shore, it behaves like an extremely fast tide that pushes much farther inland. And it usually arrives as several waves, not just one.",
+  "sources": [
+    {
+      "publisher": "National Oceanic and Atmospheric Administration",
+      "title": "What is a tsunami?",
+      "url": "https://oceanservice.noaa.gov/facts/tsunami.html",
+      "supports": "Tsunamis are giant waves caused by earthquakes or volcanic eruptions under the sea. | Out in the depths of the ocean, tsunami waves do not dramatically increase in height. | The speed of tsunami waves depends on ocean depth rather than the distance from the source of the wave. | But as the waves travel inland, they build up to higher and higher heights as the depth of the ocean decreases.",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-19"
+    },
+    {
+      "publisher": "United States Geological Survey",
+      "title": "What are tsunamis? | U.S. Geological Survey",
+      "url": "https://www.usgs.gov/faqs/what-are-tsunamis",
+      "supports": "Tsunamis can be caused by volcanoes, landslides, and even atmospheric disturbances | When tsunamis approach shore, they behave like a very fast moving tide that extends much farther inland than normal water. | Tsunamis typically consist of multiple waves that rush ashore like a fast-rising tide with powerful currents.",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-19"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Undersea quakes, eruptions or landslides push the water.",
+      "visual_description": "Seabed shift pushing the water surface upward.",
+      "visual_style": "hybrid",
+      "motif": "seafloor_quake"
+    },
+    {
+      "narration_segment": "Out at sea the waves stay low and travel fast.",
+      "visual_description": "Long low wave crossing deep water.",
+      "visual_style": "hybrid",
+      "motif": "tsunami_deep"
+    },
+    {
+      "narration_segment": "Near shore it acts like a very fast tide, reaching farther inland.",
+      "visual_description": "Wave rising as it meets a sloping seabed.",
+      "visual_style": "hybrid",
+      "motif": "tsunami_shore"
+    }
+  ],
+  "visual_profile": "holographic_science_v1",
+  "source_passage_verification_required_before_publication": false,
+  "source_assessment": "Automated gates passed on 2026-11-19: each sentence tied to a verbatim source quote, numbers matched, no copied word runs, model entailment check passed, independent publishers. Not complete fact verification.",
+  "authored_by": "assistant_session_draft_then_automated_gates"
+}
