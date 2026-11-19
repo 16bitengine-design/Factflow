@@ -1,0 +1,67 @@
+{
+  "title": "Why Earth Has a Magnetic Shield",
+  "description": "Where Earth's magnetic field comes from and what it does, from NASA and USGS.",
+  "category": "science",
+  "source_urls": [
+    "https://science.nasa.gov/science-research/earth-science/earths-magnetosphere-protecting-our-planet-from-harmful-space-energy/",
+    "https://www.usgs.gov/programs/geomagnetism/introduction-geomagnetism"
+  ],
+  "narration": "What invisible shield protects Earth from the solar wind? Almost all of Earth's magnetic field starts in its fluid outer core. Churning molten metal there generates electrical currents hundreds of miles wide. Scientists call this mechanism the geodynamo. The field has two poles, like a bar magnet. Unlike Mercury, Venus and Mars, Earth wears a huge magnetic field called the magnetosphere. It shields us from solar wind that would erode the atmosphere. Over time the poles drift, and they flip about every 300,000 years.",
+  "claims": [
+    {
+      "sentence": "Almost all of Earth's magnetic field starts in its fluid outer core.",
+      "quote": "Nearly all of Earth’s geomagnetic field originates in the fluid outer core.",
+      "source": 0
+    },
+    {
+      "sentence": "Churning molten metal there generates electrical currents hundreds of miles wide.",
+      "quote": "As this roiling mass of metal moves around, it generates electrical currents hundreds of miles wide and flowing at thousands of miles per hour as Earth rotates.",
+      "source": 0
+    },
+    {
+      "sentence": "Scientists call this mechanism the geodynamo.",
+      "quote": "This mechanism, which is responsible for maintaining Earth’s magnetic field, is known as the geodynamo.",
+      "source": 0
+    },
+    {
+      "sentence": "The field has two poles, like a bar magnet.",
+      "quote": "At Earth’s surface, the magnetic field forms two poles (a dipole). The north and south magnetic poles have opposite positive and negative polarities, like a bar magnet.",
+      "source": 0
+    },
+    {
+      "sentence": "Unlike Mercury, Venus and Mars, Earth wears a huge magnetic field called the magnetosphere.",
+      "quote": "Unlike Mercury, Venus, and Mars, Earth is surrounded by an immense magnetic field called the magnetosphere.",
+      "source": 0
+    },
+    {
+      "sentence": "It shields us from solar wind that would erode the atmosphere.",
+      "quote": "our magnetosphere shields us from erosion of our atmosphere by the solar wind (charged particles our Sun continually spews at us)",
+      "source": 0
+    },
+    {
+      "sentence": "Over time the poles drift, and they flip about every 300,000 years.",
+      "quote": "This causes the location of Earth’s magnetic north and south poles to gradually shift and to completely flip locations about every 300,000 years or so.",
+      "source": 0
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Churning molten metal in the outer core makes the field.",
+      "visual_description": "Fluid core with swirling currents and field lines.",
+      "visual_style": "hybrid",
+      "motif": "geodynamo"
+    },
+    {
+      "narration_segment": "The magnetosphere shields us from the solar wind.",
+      "visual_description": "Field lines deflecting solar wind particles.",
+      "visual_style": "hybrid",
+      "motif": "magnetosphere"
+    },
+    {
+      "narration_segment": "The poles drift and flip about every 300,000 years.",
+      "visual_description": "A bar magnet whose poles swap.",
+      "visual_style": "hybrid",
+      "motif": "pole_flip"
+    }
+  ]
+}

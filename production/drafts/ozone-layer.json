@@ -1,0 +1,67 @@
+{
+  "title": "How the Ozone Layer Shields Life From UV",
+  "description": "What the ozone layer does, how CFCs damaged it and what the Antarctic ozone hole is, from NASA and NOAA.",
+  "category": "science",
+  "source_urls": [
+    "https://science.nasa.gov/earth/explore/nasa-knows-the-ozone-hole/",
+    "https://gml.noaa.gov/ozwv/faq_cat-2.html"
+  ],
+  "narration": "What shields life on Earth from the Sun's most harmful ultraviolet rays? A thin layer of ozone acts as a sunscreen for the whole planet. Its job is absorbing UV-B, the most harmful ultraviolet radiation reaching the surface. It sits in the stratosphere, roughly 11 to 50 kilometres above the surface. In the 1970s, scientists found that man-made CFC chemicals were destroying it. A single chlorine atom can destroy ozone repeatedly, as many as 100,000 times. The so-called hole is really a thin patch of depleted ozone over Antarctica. Because CFCs linger in the air, they will keep affecting the ozone layer well into this century.",
+  "claims": [
+    {
+      "sentence": "A thin layer of ozone acts as a sunscreen for the whole planet.",
+      "quote": "Ozone controls the UV level, acting as a sunscreen for our planet.",
+      "source": 0
+    },
+    {
+      "sentence": "Its job is absorbing UV-B, the most harmful ultraviolet radiation reaching the surface.",
+      "quote": "It absorbs UV-B—the most harmful form of UV radiation that reaches Earth’s surface—which can damage DNA in plants and animals.",
+      "source": 0
+    },
+    {
+      "sentence": "It sits in the stratosphere, roughly 11 to 50 kilometres above the surface.",
+      "quote": "The ozone layer forms in the stratosphere 7-31 miles (11-50 km) above Earth",
+      "source": 0
+    },
+    {
+      "sentence": "In the 1970s, scientists found that man-made CFC chemicals were destroying it.",
+      "quote": "In the 1970s it was discovered that man-made chemicals called chlorofluorocarbons (CFCs) were destroying the ozone in the ozone layer.",
+      "source": 1
+    },
+    {
+      "sentence": "A single chlorine atom can destroy ozone repeatedly, as many as 100,000 times.",
+      "quote": "Once the chlorine has broken up one ozone molecule, it is freed to repeat the process again and again, up to 100,000 times.",
+      "source": 1
+    },
+    {
+      "sentence": "The so-called hole is really a thin patch of depleted ozone over Antarctica.",
+      "quote": "The ozone “hole” is not a hole, but rather a thin patch of depleted ozone in the stratosphere over Antarctica.",
+      "source": 0
+    },
+    {
+      "sentence": "Because CFCs linger in the air, they will keep affecting the ozone layer well into this century.",
+      "quote": "because CFCs remain in the air for a long time, they will continue to affect the ozone layer well into the 21st century.",
+      "source": 1
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Ozone absorbs harmful UV-B like a sunscreen.",
+      "visual_description": "UV rays stopped by a layer above the planet.",
+      "visual_style": "hybrid",
+      "motif": "ozone_shield"
+    },
+    {
+      "narration_segment": "One chlorine atom from CFCs destroys many ozone molecules.",
+      "visual_description": "A chlorine atom consuming ozone molecules one after another.",
+      "visual_style": "hybrid",
+      "motif": "cfc_cycle"
+    },
+    {
+      "narration_segment": "The ozone hole is a thin patch over Antarctica.",
+      "visual_description": "Globe with a depleted patch at the south pole.",
+      "visual_style": "hybrid",
+      "motif": "ozone_hole_patch"
+    }
+  ]
+}
