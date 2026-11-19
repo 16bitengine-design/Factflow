@@ -20,7 +20,7 @@ def _setup(tmp_path, monkeypatch, narration_ok=True):
 
     page = lambda url, group: {"url": url, "title": "t", "group": group, "publisher": group, "publisher_id": group,
                                "paragraphs": ["Water vapour rises from warm oceans and cools into clouds high in the sky today."] * 3}
-    monkeypatch.setattr(ta, "fetch_passages", lambda url, reg, f=None: page(url, "g1" if "a." in url else "g2"))
+    monkeypatch.setattr(ta, "fetch_passages", lambda url, reg, f=None, why=None: page(url, "g1" if "a." in url else "g2"))
     draft = {"title": "Why clouds look white from above", "description": "d", "category": "science",
              "source_urls": ["https://a.example/1", "https://b.example/2"],
              "narration": " ".join(["Warm oceans send up vapour."] + ["Air cools high above."] * 12 + ["Clouds then form."] * 6),

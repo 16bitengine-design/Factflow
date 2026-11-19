@@ -64,20 +64,27 @@ def default_fetcher(url: str, publisher: dict[str, Any]) -> dict[str, Any]:
     return fetch_article(url, publisher)
 
 
-def fetch_passages(url: str, registry: dict[str, Any], fetcher: Fetcher = default_fetcher) -> dict[str, Any] | None:
+def fetch_passages(url: str, registry: dict[str, Any], fetcher: Fetcher = default_fetcher,
+                   why: list[str] | None = None) -> dict[str, Any] | None:
     """Fetch one registered-publisher page; None if it is unregistered or fails."""
     publisher = _publisher_for_url(url, registry)
     if publisher is None:
+        if why is not None:
+            why.append(f"{url}: publisher not in the registry")
         return None
     try:
         page = fetcher(url, publisher)
-    except Exception:  # network, redirect, size or type problems all mean "unusable source"
+    except Exception as exc:  # network, redirect, size or type problems all mean "unusable source"
+        if why is not None:
+            why.append(f"{url}: {type(exc).__name__}: {str(exc)[:120]}")
         return None
     parser = _ArticleParser()
     parser.feed(page["html"])
     title, paragraphs = parser.result()
     paragraphs = [p for p in paragraphs if len(p.split()) >= 8][:40]
     if len(paragraphs) < 2:
+        if why is not None:
+            why.append(f"{url}: only {len(paragraphs)} usable paragraph(s) found in {len(page['html'])} bytes of HTML")
         return None
     return {"url": page.get("final_url") or url, "title": title, "paragraphs": paragraphs,
             "publisher": publisher.get("name") or publisher.get("id"),
@@ -301,15 +308,15 @@ def ingest_drafts(chain: ProviderChain, library: dict[str, Any], registry: dict[
     prefixes = {str(i.get("content_id_prefix", "")) for i in library.get("production_specs", [])}
     for path in sorted(drafts_dir.glob("*.json")):
         draft = json.loads(path.read_text(encoding="utf-8"))
-        sources, groups = [], set()
+        sources, groups, why = [], set(), []
         for url in draft.get("source_urls", [])[:4]:
-            page = fetch_passages(str(url), registry, fetcher)
+            page = fetch_passages(str(url), registry, fetcher, why)
             if page and page["url"] not in {s["url"] for s in sources}:
                 sources.append(page)
                 groups.add(page["group"])
         problems: list[str] = []
         if len(groups) < 2:
-            problems.append("fewer than two independent publisher pages loaded")
+            problems.append("fewer than two independent publisher pages loaded: " + " | ".join(why))
         try:
             claims = draft.get("claims") if isinstance(draft.get("claims"), list) else []
             if not problems:
