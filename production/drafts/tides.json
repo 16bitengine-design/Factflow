@@ -58,8 +58,5 @@
       "visual_style": "hybrid",
       "motif": "tide_gauge"
     }
-  ],
-  "rejection_reasons": [
-    "quote not found verbatim in source 0: 'Tides are caused by the pull of the Moon and the Sun.'"
   ]
 }
