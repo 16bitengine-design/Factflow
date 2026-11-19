@@ -212,7 +212,7 @@
     "scheduled_at": "2026-11-19T04:45:49.432560+00:00"
   },
   "qt-mercury-day-20261119-1800": {
-    "status": "reserved",
+    "status": "scheduled",
     "spec": "production/specs/mercury-day.json",
     "due_at": "2026-11-19T18:00:00+03:00",
     "reserved_at": "2026-11-19T12:54:07+00:00",
@@ -236,6 +236,7 @@
           "status": "awaiting_confirmation"
         }
       }
-    }
+    },
+    "scheduled_at": "2026-11-19T12:56:03.997088+00:00"
   }
 }
