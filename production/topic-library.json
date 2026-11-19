@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-19T03:46:30.618645+00:00",
+  "updated_at": "2026-11-19T08:26:45.249870+00:00",
   "production_specs": [
     {
       "spec_path": "examples/videos/why-the-sky-is-blue-production.json",
@@ -1556,6 +1556,116 @@
       "published": "Tue, 17 Nov 2026 11:09:29 EST",
       "description": "On November 12, 2026, a 55-foot (16.8-meter) fin whale stranded on Main Beach in Santa Cruz, directly in view of a USGS CoastCam.",
       "discovered_at": "2026-11-18T08:15:27.173407+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000125",
+      "title": "APOD: 2026 November 19 – The Horsehead and Flame Nebulas",
+      "url": "https://science.nasa.gov/image-article/apod-2026-november-19-the-horsehead-and-flame-nebulas/",
+      "publisher_id": "NASA",
+      "published": "Thu, 19 Nov 2026 05:05:00 +0000",
+      "description": "APOD Science APOD APOD: 2026 November 19 – The… Today’s APOD Archive Submissions Index Search Calendar RSS Education About Discuss APOD Astronomy Picture of the Day Discover the cosmos! Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer. OriginalAnnotated The […]",
+      "discovered_at": "2026-11-19T08:26:45.249149+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000126",
+      "title": "El Niño Rains Paint the Atacama",
+      "url": "https://science.nasa.gov/earth/earth-observatory/el-nino-rains-paint-the-atacama/",
+      "publisher_id": "NASA",
+      "published": "Thu, 19 Nov 2026 05:00:00 +0000",
+      "description": "Winter precipitation helped wake dormant seeds in northern Chile, carpeting the desert with what may be the region’s most extensive flowering of the satellite era.",
+      "discovered_at": "2026-11-19T08:26:45.249217+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000127",
+      "title": "Empire State Building Goes Gold for Voyager",
+      "url": "https://www.nasa.gov/image-article/empire-state-building-goes-gold-for-voyager/",
+      "publisher_id": "NASA",
+      "published": "Wed, 18 Nov 2026 17:50:26 +0000",
+      "description": "The Empire State Building is seen illuminated in gold to celebrate NASA’s Voyager 1 spacecraft as it was about to pass one light-day away from Earth, a distance reached by no other human-made object, Nov. 17, 2026. The color gold represents the gold-plated copper phonograph record that is flying on Voyager; the Golden Record contains […]",
+      "discovered_at": "2026-11-19T08:26:45.249227+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000128",
+      "title": "MAF EAP – Holidays – How to manage the BAH HUMBUG that tries to sneak in",
+      "url": "https://www.nasa.gov/centers-and-facilities/michoud/maf-eap/maf-eap-holidays-how-to-manage-the-bah-humbug-that-tries-to-sneak-in/",
+      "publisher_id": "NASA",
+      "published": "Wed, 18 Nov 2026 18:58:27 +0000",
+      "description": "Holidays are often a fun break during a busy year – a long weekend here and there is an event many of us can get behind. However, when a short holiday break turns into a full holiday season, we know that this is a different “ball game”. Everyone has stress about something – some people […]",
+      "discovered_at": "2026-11-19T08:26:45.249236+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000129",
+      "title": "NASA Announces Mid-Power Electric Rocket Challenge for US Companies",
+      "url": "https://www.nasa.gov/directorates/stmd/prizes-challenges-crowdsourcing-program/nasa-announces-mid-power-electric-rocket-challenge-for-us-companies/",
+      "publisher_id": "NASA",
+      "published": "Wed, 18 Nov 2026 18:12:32 +0000",
+      "description": "NASA launched a new competition inviting U.S. companies to produce prototypes of mid-power Hall effect thrusters – a type of electric propulsion system considered crucial for future space operations and exploration. Hall effect thrusters use an electric field to accelerate a propellant gas, producing efficient thrust for long-duration missions. Used for propelling satellites and deep […]",
+      "discovered_at": "2026-11-19T08:26:45.249244+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000130",
+      "title": "NASA Data Clinches First-of-Its-Kind Stellar Merger",
+      "url": "https://science.nasa.gov/missions/webb/nasa-data-clinches-first-of-its-kind-stellar-merger/",
+      "publisher_id": "NASA",
+      "published": "Wed, 18 Nov 2026 16:00:00 +0000",
+      "description": "Researchers recently identified a first of its kind: A star slightly less massive than the Sun spiraled into and merged with a puffy supergiant star at the outskirts of our neighboring Andromeda galaxy. They nicknamed the newly single, potentially “rejuvenated” star Bao. Their NASA-funded discovery was then bolstered by quick-turn observations from NASA’s James Webb […]",
+      "discovered_at": "2026-11-19T08:26:45.249252+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000131",
+      "title": "NASA Sets Coverage for Northrop Grumman CRS-25 Launch, Prelaunch",
+      "url": "https://www.nasa.gov/news-release/nasa-sets-coverage-for-northrop-grumman-crs-25-launch-prelaunch/",
+      "publisher_id": "NASA",
+      "published": "Wed, 18 Nov 2026 22:19:17 +0000",
+      "description": "NASA, Northrop Grumman, and SpaceX are targeting no earlier than 10:47 a.m. EST, Sunday, Nov. 29, for the next launch delivering science investigations, supplies, and equipment to the International Space Station. The agency also will hold a prelaunch media teleconference on Monday, Nov. 23. Filled with approximately 11,000 pounds of cargo, the Northrop Grumman Cygnus […]",
+      "discovered_at": "2026-11-19T08:26:45.249272+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000132",
+      "title": "Thank You for Doing NASA Science!",
+      "url": "https://science.nasa.gov/get-involved/citizen-science/thank-you-for-doing-nasa-science/",
+      "publisher_id": "NASA",
+      "published": "Wed, 18 Nov 2026 17:32:52 +0000",
+      "description": "It’s Thanksgiving time, and we’re giving thanks to you for doing NASA Science with us! You and NASA’s other volunteers have enabled an incredible banquet of discoveries—by taking data, analyzing data, writing code, writing papers, and even inventing your own science projects. Whether you’re an expert participant or someone who’s just started your science journey, […]",
+      "discovered_at": "2026-11-19T08:26:45.249278+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000133",
+      "title": "What Is the Moon Base?",
+      "url": "https://www.nasa.gov/learning-resources/for-kids-and-students/what-is-the-moon-base/",
+      "publisher_id": "NASA",
+      "published": "Wed, 18 Nov 2026 17:36:03 +0000",
+      "description": "This article is for students. NASA is returning astronauts to the Moon – and this time they will spend more time on the lunar surface. The Moon Base is humanity’s first lunar outpost. It will be a place where astronauts live, work, and explore. ______________________________________________________________________ Words to Know outpost: a station or base located in […]",
+      "discovered_at": "2026-11-19T08:26:45.249283+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000134",
+      "title": "Photo & Video Chronology — Kīlauea summit overflight",
+      "url": "https://www.usgs.gov/observatories/hvo/news/photo-video-chronology-kilauea-summit-overflight-0?utm_source=comms&amp;utm_medium=rss&amp;utm_campaign=news",
+      "publisher_id": "USGS",
+      "published": "Wed, 18 Nov 2026 20:43:18 EST",
+      "description": "USGS Hawaiian Volcano Observatory scientists conducted a monitoring and mapping overflight of Kīlauea's summit region on November 18, 2026.",
+      "discovered_at": "2026-11-19T08:26:45.249400+00:00",
       "status": "candidate_unreviewed",
       "editorial_review_required": false
     }
