@@ -162,14 +162,19 @@ def main() -> int:
         try:
             library = load_library(args.library)
             registry = load_source_registry(args.registry) if args.registry else load_source_registry()
-            report = author_topics(ProviderChain(), library, registry, Path(args.specs_dir), count=args.count)
-            save_library(library, args.library)
+            chain = ProviderChain()
+            report = author_topics(chain, library, registry, Path(args.specs_dir), count=args.count)
+            report["provider_failures"] = chain.failures[:40]
+            if report["accepted"]:
+                save_library(library, args.library)
         except (OSError, json.JSONDecodeError, ValueError) as exc:
             print(f"TOPIC AUTHORING ERROR: {exc}", file=sys.stderr)
             return 1
         out = Path(args.output)
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        for failure in report.get("provider_failures", []):
+            print(f"  provider skipped: {failure}")
         print(f"Accepted {len(report['accepted'])}, rejected {len(report['rejected'])}; providers used: {report['provider_usage']}")
         for item in report["rejected"]:
             print(f"  rejected: {item['question'][:70]} -> {item['reason'][:160]}")
