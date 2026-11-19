@@ -1,0 +1,58 @@
+{
+  "title": "How Your Body Cools Itself in Extreme Heat",
+  "category": "science",
+  "voice": "af_heart",
+  "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "How Your Body Cools Itself in Extreme Heat | QuantaTale",
+  "post_description": "How sweating cools you, who is most at risk and why heat stroke is an emergency, from NIH and CDC. Sources: National Institutes of Health https://newsinhealth.nih.gov/2013/07/stay-cool and Centers for Disease Control and Prevention https://www.cdc.gov/niosh/heat-stress/about/illnesses.html #Science #ScienceFacts #QuantaTale",
+  "content_id_prefix": "qt-your-body-cools",
+  "publish_timezone": "Africa/Kampala",
+  "editorial_approved": true,
+  "editorial_status": "automated_gate_passed",
+  "editorial_review_required": false,
+  "narration": "How does your body stay cool on a hot day? Your body has a built-in cooling system, and sweating is the key. As sweat dries, it carries heat away from the skin. If sweating is not enough, you risk hyperthermia, a heat-related illness. Older people, young children and people who are ill are especially at risk. In heat stroke, the sweating mechanism fails and the body temperature rises rapidly. It is a medical emergency. Air conditioning is the best protection against hyperthermia.",
+  "sources": [
+    {
+      "publisher": "National Institutes of Health",
+      "title": "Stay Cool | NIH News in Health",
+      "url": "https://newsinhealth.nih.gov/2013/07/stay-cool",
+      "supports": "Your body has its own natural cooling system. Sweating is key to cooling when hot weather or exercise causes your body temperature to climb. | When sweat dries, it carries heat away from your body’s surface and lowers your temperature. | When sweating isn’t enough to help you cool down, you’re at risk for a heat-related illness called hyperthermia. | Older people, infants and young children, and people who are ill, obese or on certain medications are especially at risk. | Heat stroke is a medical emergency. | Air conditioning is the best way to protect against hyperthermia.",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-19"
+    },
+    {
+      "publisher": "Centers for Disease Control and Prevention",
+      "title": "Heat-related Illnesses | Heat | CDC",
+      "url": "https://www.cdc.gov/niosh/heat-stress/about/illnesses.html",
+      "supports": "the body's temperature rises rapidly, the sweating mechanism fails, and the body is unable to cool down.",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-19"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Sweat dries and carries heat away from the body.",
+      "visual_description": "A body outline with sweat droplets and heat arrows.",
+      "visual_style": "hybrid",
+      "motif": "sweat_cooling"
+    },
+    {
+      "narration_segment": "In heat stroke sweating fails and temperature rises; it is an emergency.",
+      "visual_description": "Thermometer climbing with a failed-sweating warning.",
+      "visual_style": "hybrid",
+      "motif": "heat_stroke_gauge"
+    },
+    {
+      "narration_segment": "Air conditioning is the best protection.",
+      "visual_description": "Cool air flowing down into a room.",
+      "visual_style": "hybrid",
+      "motif": "ac_relief"
+    }
+  ],
+  "visual_profile": "holographic_science_v1",
+  "source_passage_verification_required_before_publication": false,
+  "source_assessment": "Automated gates passed on 2026-11-19: each sentence tied to a verbatim source quote, numbers matched, no copied word runs, model entailment check passed, independent publishers. Not complete fact verification.",
+  "authored_by": "assistant_session_draft_then_automated_gates"
+}

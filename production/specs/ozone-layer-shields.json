@@ -1,0 +1,58 @@
+{
+  "title": "How the Ozone Layer Shields Life From UV",
+  "category": "science",
+  "voice": "af_heart",
+  "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "How the Ozone Layer Shields Life From UV | QuantaTale",
+  "post_description": "What the ozone layer does, how CFCs damaged it and what the Antarctic ozone hole is, from NASA and NOAA. Sources: National Aeronautics and Space Administration https://science.nasa.gov/earth/explore/nasa-knows-the-ozone-hole/ and National Oceanic and Atmospheric Administration https://gml.noaa.gov/ozwv/faq_cat-2.html #Science #ScienceFacts #QuantaTale",
+  "content_id_prefix": "qt-ozone-layer-shields",
+  "publish_timezone": "Africa/Kampala",
+  "editorial_approved": true,
+  "editorial_status": "automated_gate_passed",
+  "editorial_review_required": false,
+  "narration": "What shields life on Earth from the Sun's most harmful ultraviolet rays? A thin layer of ozone acts as a sunscreen for the whole planet. Its job is absorbing UV-B, the most harmful ultraviolet radiation reaching the surface. It sits in the stratosphere, roughly 11 to 50 kilometres above the surface. In the 1970s, scientists found that man-made CFC chemicals were destroying it. A single chlorine atom can destroy ozone repeatedly, as many as 100,000 times. The so-called hole is really a thin patch of depleted ozone over Antarctica. Because CFCs linger in the air, they will keep affecting the ozone layer well into this century.",
+  "sources": [
+    {
+      "publisher": "National Aeronautics and Space Administration",
+      "title": "NASA Knows: The Ozone Hole - NASA Science",
+      "url": "https://science.nasa.gov/earth/explore/nasa-knows-the-ozone-hole/",
+      "supports": "Ozone controls the UV level, acting as a sunscreen for our planet. | It absorbs UV-B—the most harmful form of UV radiation that reaches Earth’s surface—which can damage DNA in plants and animals. | The ozone layer forms in the stratosphere 7-31 miles (11-50 km) above Earth | The ozone “hole” is not a hole, but rather a thin patch of depleted ozone in the stratosphere over Antarctica.",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-19"
+    },
+    {
+      "publisher": "National Oceanic and Atmospheric Administration",
+      "title": "Ozone and Water Vapor - NOAA Global Monitoring Laboratory",
+      "url": "https://gml.noaa.gov/ozwv/faq_cat-2.html",
+      "supports": "In the 1970s it was discovered that man-made chemicals called chlorofluorocarbons (CFCs) were destroying the ozone in the ozone layer. | Once the chlorine has broken up one ozone molecule, it is freed to repeat the process again and again, up to 100,000 times. | because CFCs remain in the air for a long time, they will continue to affect the ozone layer well into the 21st century.",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-19"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Ozone absorbs harmful UV-B like a sunscreen.",
+      "visual_description": "UV rays stopped by a layer above the planet.",
+      "visual_style": "hybrid",
+      "motif": "ozone_shield"
+    },
+    {
+      "narration_segment": "One chlorine atom from CFCs destroys many ozone molecules.",
+      "visual_description": "A chlorine atom consuming ozone molecules one after another.",
+      "visual_style": "hybrid",
+      "motif": "cfc_cycle"
+    },
+    {
+      "narration_segment": "The ozone hole is a thin patch over Antarctica.",
+      "visual_description": "Globe with a depleted patch at the south pole.",
+      "visual_style": "hybrid",
+      "motif": "ozone_hole_patch"
+    }
+  ],
+  "visual_profile": "holographic_science_v1",
+  "source_passage_verification_required_before_publication": false,
+  "source_assessment": "Automated gates passed on 2026-11-19: each sentence tied to a verbatim source quote, numbers matched, no copied word runs, model entailment check passed, independent publishers. Not complete fact verification.",
+  "authored_by": "assistant_session_draft_then_automated_gates"
+}

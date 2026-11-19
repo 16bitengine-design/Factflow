@@ -1,0 +1,58 @@
+{
+  "title": "How a Solar Flare Reaches Earth in Eight Minutes",
+  "category": "science",
+  "voice": "af_heart",
+  "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "How a Solar Flare Reaches Earth in Eight Minutes | QuantaTale",
+  "post_description": "What a solar flare is, how fast it arrives and what shields us, from NASA and NOAA. Sources: National Aeronautics and Space Administration https://science.nasa.gov/sun/solar-storms-and-flares/ and National Oceanic and Atmospheric Administration https://www.ncei.noaa.gov/news/what-is-space-weather #Science #ScienceFacts #QuantaTale",
+  "content_id_prefix": "qt-solar-flare-reaches",
+  "publish_timezone": "Africa/Kampala",
+  "editorial_approved": true,
+  "editorial_status": "automated_gate_passed",
+  "editorial_review_required": false,
+  "narration": "What happens when the Sun suddenly blasts out a burst of energy? A solar flare is a sudden, intense burst of radiation from the Sun. No other explosion in the solar system is more powerful. The largest have the energy of about a billion hydrogen bombs. They start when twisted magnetic fields on the Sun snap and reconnect. Its energy travels at light speed and reaches Earth in about 8 minutes. Earth's atmosphere and magnetic field shield us on the ground. Strong flares can still disrupt radio signals and affect satellites.",
+  "sources": [
+    {
+      "publisher": "National Aeronautics and Space Administration",
+      "title": "Solar Storms and Flares - NASA Science",
+      "url": "https://science.nasa.gov/sun/solar-storms-and-flares/",
+      "supports": "A solar flare is an intense burst of radiation, or light, on the Sun. | Solar flares are the most powerful explosions in the solar system | the biggest ones can have as much energy as a billion hydrogen bombs. | Solar storms typically begin when these twisted magnetic fields on the Sun get contorted and stretched so much that they snap and reconnect | The energy from a flare travels at the speed of light, which means it reaches Earth about 8 minutes after a flare happens. | harmful radiation from a flare does not physically affect us on the ground, as we’re shielded by Earth’s atmosphere and m",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-19"
+    },
+    {
+      "publisher": "National Oceanic and Atmospheric Administration",
+      "title": "What Is Space Weather? | News | National Centers for Environmental Information (NCEI)",
+      "url": "https://www.ncei.noaa.gov/news/what-is-space-weather",
+      "supports": "",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-19"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Twisted magnetic fields snap and a flare erupts.",
+      "visual_description": "Sun with magnetic loops and a burst of rays.",
+      "visual_style": "hybrid",
+      "motif": "flare_burst"
+    },
+    {
+      "narration_segment": "The flare's light reaches Earth in about 8 minutes.",
+      "visual_description": "A pulse crossing from Sun to Earth with a minute counter.",
+      "visual_style": "hybrid",
+      "motif": "flare_travel"
+    },
+    {
+      "narration_segment": "Earth's magnetic field and atmosphere shield us.",
+      "visual_description": "Field lines deflecting charged particles.",
+      "visual_style": "hybrid",
+      "motif": "magnetosphere"
+    }
+  ],
+  "visual_profile": "holographic_science_v1",
+  "source_passage_verification_required_before_publication": false,
+  "source_assessment": "Automated gates passed on 2026-11-19: each sentence tied to a verbatim source quote, numbers matched, no copied word runs, model entailment check passed, independent publishers. Not complete fact verification.",
+  "authored_by": "assistant_session_draft_then_automated_gates"
+}
