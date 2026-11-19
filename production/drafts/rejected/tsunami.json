@@ -63,5 +63,8 @@
       "visual_style": "hybrid",
       "motif": "tsunami_shore"
     }
+  ],
+  "rejection_reasons": [
+    "fewer than two independent publisher pages loaded"
   ]
 }
