@@ -1,0 +1,26 @@
+name: QuantaTale source page probe
+on:
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: "Space-separated page URLs on registered publishers."
+        required: true
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e .
+      - name: Print the text the evidence gates would see
+        env:
+          URLS: ${{ github.event.inputs.urls }}
+        run: quantatale source-text $URLS

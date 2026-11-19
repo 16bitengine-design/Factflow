@@ -111,6 +111,11 @@ def build_parser() -> argparse.ArgumentParser:
     ingest_parser.add_argument("--registry", default=None)
     ingest_parser.add_argument("--output", default="build/draft-ingest.json")
 
+    probe_parser = subparsers.add_parser("source-text", help="Print the paragraphs the evidence gates would see for page URLs.")
+    probe_parser.add_argument("urls", nargs="+")
+    probe_parser.add_argument("--registry", default=None)
+    probe_parser.add_argument("--max-paragraphs", type=int, default=16)
+
     stock_parser = subparsers.add_parser("topic-stock", help="Report never-used publishable topics.")
     stock_parser.add_argument("--library", default="production/topic-library.json")
     stock_parser.add_argument("--ledger", default="production/publishing-ledger.json")
@@ -162,6 +167,20 @@ def main() -> int:
         print(f"Added {result['added']} leads; skipped {result['duplicates']} duplicates.")
         print(f"Library totals: {summary}")
         print("All discovered leads remain unreviewed and blocked from production.")
+        return 0
+
+    if args.command == "source-text":
+        from factflow.topic_authoring import fetch_passages
+        registry = load_source_registry(args.registry) if args.registry else load_source_registry()
+        for url in args.urls:
+            why: list[str] = []
+            page = fetch_passages(url, registry, why=why)
+            if page is None:
+                print(f"=== FAILED {url}: {' | '.join(why)}")
+                continue
+            print(f"=== OK {url} (publisher {page['publisher']}, group {page['group']})")
+            for number, paragraph in enumerate(page["paragraphs"][:args.max_paragraphs]):
+                print(f"[{number}] {paragraph[:700]}")
         return 0
 
     if args.command == "ingest-drafts":
