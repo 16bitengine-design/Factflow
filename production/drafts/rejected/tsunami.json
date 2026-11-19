@@ -63,5 +63,8 @@
       "visual_style": "hybrid",
       "motif": "tsunami_shore"
     }
+  ],
+  "rejection_reasons": [
+    "quote not found verbatim in source 1: 'Coastal landslides that dump huge amounts of debris into the'"
   ]
 }
