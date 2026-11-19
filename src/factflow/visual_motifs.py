@@ -453,6 +453,166 @@ def tsunami_shore(draw, p, t, fonts, color):
     _label(draw, (CX, 510), "reaching farther inland than usual", fonts, WHITE, "mm")
 
 
+def salt_sources(draw, p, t, fonts, color):
+    draw.polygon([(60, 760), (60, 560), (260, 640), (330, 760)], fill=(110, 95, 75, 235))  # land
+    draw.rectangle((60, 760, 660, 920), fill=_c(WATER, 120))
+    for k in range(6):
+        y = 470 + ((t * 120 + k * 45) % 150)
+        draw.line((110 + k * 26, y, 104 + k * 26, y + 16), fill=_c(CYAN, 200), width=3)  # rain on the rocks
+    draw.line((250, 640, 330, 760), fill=_c(BLUE, 220), width=5)  # river to the sea
+    for k in range(4):
+        draw.line((470 + k * 40, 920, 470 + k * 40, 870 - 20 * math.sin(t * 3 + k)), fill=_c(ORANGE, 200), width=5)  # seafloor vents
+    for k in range(int(70 * p)):
+        _dot(draw, 340 + (k * 53) % 300, 780 + (k * 37) % 120, 4, _c(WHITE, 220))
+    _label(draw, (CX, 420), "SALT ARRIVES FROM TWO SOURCES", fonts, CYAN, "mm")
+    _label(draw, (180, 520), "rocks + rivers", fonts, WHITE, "mm")
+    _label(draw, (545, 840), "seafloor vents", fonts, ORANGE, "mm")
+
+
+def salt_share(draw, p, t, fonts, color):
+    draw.rectangle((80, 560, 640, 640), outline=GREY, width=3)
+    width = 560 * 0.035 * min(1.0, p * 1.5)
+    draw.rectangle((80, 560, 80 + max(4, width), 640), fill=WHITE)
+    _label(draw, (CX, 520), "ABOUT 3.5% OF SEAWATER'S WEIGHT IS SALT", fonts, CYAN, "mm")
+    draw.rectangle((80, 740, 640, 800), outline=GREY, width=3)
+    draw.rectangle((80, 740, 80 + 560 * 0.85 * min(1.0, p * 1.5), 800), fill=_c(YELLOW, 200))
+    _label(draw, (CX, 700), "SODIUM + CHLORIDE: ABOUT 85% OF DISSOLVED IONS", fonts, YELLOW, "mm")
+
+
+def dense_float(draw, p, t, fonts, color):
+    draw.rectangle((60, 700, 660, 940), fill=_c(WATER, 140))
+    bob = 6 * math.sin(t * 2)
+    draw.rounded_rectangle((250, 665 + bob, 470, 705 + bob), radius=18, fill=_c(ORANGE, 230))
+    _dot(draw, 480, 668 + bob, 22, _c(ORANGE, 230))
+    for k in range(40):
+        _dot(draw, 80 + (k * 71) % 560, 720 + (k * 43) % 200, 3, _c(WHITE, 150))
+    _label(draw, (CX, 520), "THE EXTREMELY SALTY DEAD SEA", fonts, CYAN, "mm")
+    _label(draw, (CX, 560), "dense water holds you up like a mattress", fonts, WHITE, "mm")
+
+
+def enso_winds(draw, p, t, fonts, color):
+    draw.rectangle((60, 700, 660, 880), fill=_c(WATER, 110))
+    shift = max(0.0, min(1.0, (p - 0.45) * 2.2))
+    bx = 190 + 340 * shift
+    for extra, alpha in ((120, 60), (85, 110), (55, 170)):
+        draw.ellipse((bx - extra, 760 - extra * 0.5, bx + extra, 760 + extra * 0.5), fill=_c(ORANGE, alpha))
+    strength = 1 - shift
+    for k in range(4):
+        x = 150 + k * 130
+        if shift < 0.5:
+            _arrow(draw, x + 90, 620, x, 620, _c(WHITE, 230), 3 + int(2 * strength))
+        else:
+            _arrow(draw, x, 620, x + 40, 620, _c(WHITE, 110), 2)
+    _label(draw, (110, 930), "INDONESIA", fonts, WHITE, "mm")
+    _label(draw, (610, 930), "S. AMERICA", fonts, WHITE, "mm")
+    _label(draw, (CX, 470), "NORMAL: WINDS PUSH WARM WATER WEST" if shift < 0.5 else "EL NIÑO: WINDS WEAKEN", fonts, CYAN, "mm")
+    if shift >= 0.5:
+        _label(draw, (CX, 510), "warm water piles up near South America", fonts, WHITE, "mm")
+
+
+def jet_stream_shift(draw, p, t, fonts, color):
+    y0 = 560 + 150 * min(1.0, p * 1.4)
+    pts = [(60 + 600 * i / 80, y0 + 28 * math.sin(i / 7 + t * 2)) for i in range(81)]
+    draw.line(pts, fill=_c(CYAN, 230), width=6)
+    draw.ellipse((330, 820, 650, 900), fill=_c(ORANGE, 150))
+    for k in range(5):
+        _dot(draw, 440 + k * 38, 780 - 8 * (k % 2), 26, _c(GREY, 210))
+    for k in range(6):
+        y = 790 + ((t * 110 + k * 40) % 90)
+        draw.line((430 + k * 36, y, 426 + k * 36, y + 14), fill=_c(BLUE, 210), width=3)
+    _label(draw, (CX, 450), "WARMER WATER: JET STREAM SHIFTS SOUTH", fonts, CYAN, "mm")
+    _label(draw, (CX, 490), "much more rain in some places, drought in others", fonts, WHITE, "mm")
+
+
+def upwelling(draw, p, t, fonts, color):
+    draw.rectangle((100, 560, 620, 920), fill=_c(WATER, 110))
+    strength = 1 - min(1.0, p * 1.3)
+    for k in range(5):
+        x = 170 + k * 95
+        rise = 200 * strength
+        if rise > 6:
+            _arrow(draw, x, 900, x, 900 - rise, _c(CYAN, int(60 + 170 * strength)), 4)
+    for k in range(int(12 * strength)):
+        _dot(draw, 130 + (k * 83) % 460, 640 + (k * 47) % 180, 4, _c(GREEN, 220))
+    _label(draw, (CX, 500), "COLD, NUTRIENT-RICH WATER RISES", fonts, CYAN, "mm")
+    _label(draw, (CX, 960), "in El Niño, upwelling weakens or stops", fonts, WHITE, "mm")
+
+
+def hurricane_engine(draw, p, t, fonts, color):
+    draw.rectangle((60, 800, 660, 940), fill=_c(WATER, 140))
+    for k in range(10):
+        a = (t * 0.5 + k / 10) % 1.0
+        x = 150 + 420 * ((k * 0.37) % 1.0)
+        y = 800 - 240 * a
+        _arrow(draw, x, y + 40, x, y, _c(RED, 210), 3)
+    for k in range(int(6 * p) + 1):
+        _dot(draw, 200 + k * 60, 575 - 12 * (k % 2), 40, _c(WHITE, 190))
+    _label(draw, (CX, 430), "WARM, MOIST AIR IS THE FUEL", fonts, CYAN, "mm")
+    _label(draw, (CX, 470), "rising air cools and forms clouds", fonts, WHITE, "mm")
+
+
+def hurricane_spin(draw, p, t, fonts, color):
+    for arm in range(4):
+        pts = []
+        for i in range(60):
+            r = 30 + i * 4.2
+            a = -t * 1.2 + arm * math.pi / 2 - i * 0.09
+            pts.append((CX + r * math.cos(a), CY + r * 0.9 * math.sin(a)))
+        draw.line(pts, fill=_c(WHITE, 200), width=9)
+    _glow(draw, CX, CY, 24, _c(CYAN, 120))
+    _label(draw, (CX, CY), "EYE", fonts, WHITE, "mm")
+    _label(draw, (CX, 450), "NORTH OF THE EQUATOR: COUNTERCLOCKWISE", fonts, CYAN, "mm")
+    _label(draw, (CX, 930), "south of it: clockwise · calm, clear eye", fonts, WHITE, "mm")
+
+
+def hurricane_landfall(draw, p, t, fonts, color):
+    draw.rectangle((60, 760, 380, 920), fill=_c(WATER, 140))
+    draw.rectangle((380, 760, 660, 920), fill=(110, 95, 75, 235))
+    x = 150 + 400 * p
+    size = 120 if x < 380 else max(30, 120 - (x - 380) * 0.6)
+    alpha = 220 if x < 380 else int(max(60, 220 - (x - 380) * 0.8))
+    for arm in range(3):
+        pts = [(x + (size * i / 40) * math.cos(-t * 1.5 + arm * 2.1 - i * 0.18), 640 + (size * i / 40) * 0.8 * math.sin(-t * 1.5 + arm * 2.1 - i * 0.18)) for i in range(40)]
+        draw.line(pts, fill=_c(WHITE, alpha), width=7)
+    _gauge(draw, 90, 450, 700, 0.9 if x < 380 else max(0.1, 0.9 - (x - 380) / 300), RED)
+    _label(draw, (CX + 30, 450), "74 MPH WINDS = HURRICANE", fonts, CYAN, "mm")
+    _label(draw, (CX + 30, 500), "over land it loses its ocean fuel", fonts, WHITE, "mm")
+
+
+def sleep_vitals(draw, p, t, fonts, color):
+    for row, (name, col, base) in enumerate((("HEART RATE", RED, 560), ("BLOOD PRESSURE", ORANGE, 760))):
+        pts = [(100 + 520 * i / 60, base - 60 + 50 * min(1.0, i / 60 * 1.4) + 8 * math.sin(i / 3 + t * 3 + row)) for i in range(int(61 * min(1.0, p * 1.3 + 0.05)))]
+        if len(pts) > 1:
+            draw.line(pts, fill=_c(col, 230), width=5)
+        _label(draw, (110, base - 90), name, fonts, col, "la")
+    _label(draw, (CX, 450), "IN NON-REM SLEEP BOTH FALL", fonts, CYAN, "mm")
+
+
+def sleep_memory(draw, p, t, fonts, color):
+    nodes = [(CX + 190 * math.cos(k * 0.9), CY + 150 * math.sin(k * 1.3)) for k in range(12)]
+    lit = int(12 * min(1.0, p * 1.3))
+    for i in range(lit):
+        for j in range(i):
+            if (i + j) % 3 == 0:
+                draw.line((*nodes[i], *nodes[j]), fill=_c(CYAN, 110), width=2)
+    for i, (x, y) in enumerate(nodes):
+        _glow(draw, x, y, 10, YELLOW if i < lit else _c(GREY, 120))
+    _label(draw, (CX, 450), "SLEEP HELPS FORM LONG-TERM MEMORIES", fonts, CYAN, "mm")
+    _label(draw, (CX, 930), "and supports learning", fonts, WHITE, "mm")
+
+
+def sleep_ages(draw, p, t, fonts, color):
+    draw.line((100, 820, 620, 820), fill=GREY, width=3)
+    for k in range(7):
+        h = 260 - 22 * k
+        draw.rectangle((130 + k * 70, 820 - h, 170 + k * 70, 820), fill=_c(BLUE, 120))
+    i = min(6, int(p * 7))
+    h = 260 - 22 * i
+    draw.rectangle((130 + i * 70, 820 - h, 170 + i * 70, 820), fill=_c(YELLOW, 230))
+    _label(draw, (CX, 860), "AGE  →", fonts, WHITE, "mm")
+    _label(draw, (CX, 450), "THE HOURS YOU NEED CHANGE AS YOU AGE", fonts, CYAN, "mm")
+
+
 MOTIFS: dict[str, Callable[..., None]] = {
     name: fn for name, fn in {
         "evaporation": evaporation, "rising_cooling": rising_cooling, "condensation": condensation,
@@ -466,6 +626,8 @@ MOTIFS: dict[str, Callable[..., None]] = {
         "orbit_year": orbit_year, "orbit_rotation": orbit_rotation,
         "tidal_pull": tidal_pull, "tide_alignment": tide_alignment, "tide_gauge": tide_gauge,
         "seafloor_quake": seafloor_quake, "tsunami_deep": tsunami_deep, "tsunami_shore": tsunami_shore,
+        
+        "salt_sources": salt_sources, "salt_share": salt_share, "dense_float": dense_float, "enso_winds": enso_winds, "jet_stream_shift": jet_stream_shift, "upwelling": upwelling, "hurricane_engine": hurricane_engine, "hurricane_spin": hurricane_spin, "hurricane_landfall": hurricane_landfall, "sleep_vitals": sleep_vitals, "sleep_memory": sleep_memory, "sleep_ages": sleep_ages,
         "geyser_eruption": geyser_eruption, "interval_timeline": interval_timeline, "geyser_cutaway": geyser_cutaway,
     }.items()
 }

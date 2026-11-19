@@ -1,0 +1,67 @@
+{
+  "title": "Where the Ocean's Salt Really Comes From",
+  "description": "The two sources of ocean salt and how much of seawater is salt, from NOAA and USGS.",
+  "category": "science",
+  "source_urls": [
+    "https://oceanservice.noaa.gov/facts/whysalty.html",
+    "https://www.usgs.gov/water-science-school/science/saline-water-and-salinity"
+  ],
+  "narration": "Where does all the ocean's salt come from? It comes from two places: runoff from land and openings in the seafloor. Slightly acidic rainwater erodes rocks on land. That frees ions, which rivers carry to the sea. Hydrothermal fluids from vents in the seafloor add more. Sodium and chloride account for roughly 85 percent of the ocean's dissolved ions. Roughly 3.5 percent of seawater's weight is dissolved salt. In the extremely salty Dead Sea, the dense water holds you up like a mattress.",
+  "claims": [
+    {
+      "sentence": "It comes from two places: runoff from land and openings in the seafloor.",
+      "quote": "Salt in the ocean comes from two sources: runoff from the land and openings in the seafloor.",
+      "source": 0
+    },
+    {
+      "sentence": "Slightly acidic rainwater erodes rocks on land.",
+      "quote": "Rainwater that falls on land is slightly acidic, so it erodes rocks.",
+      "source": 0
+    },
+    {
+      "sentence": "That frees ions, which rivers carry to the sea.",
+      "quote": "This releases ions that are carried away to streams and rivers that eventually feed into the ocean.",
+      "source": 0
+    },
+    {
+      "sentence": "Hydrothermal fluids from vents in the seafloor add more.",
+      "quote": "Another source of salts in the ocean is hydrothermal fluids, which come from vents in the seafloor",
+      "source": 0
+    },
+    {
+      "sentence": "Sodium and chloride account for roughly 85 percent of the ocean's dissolved ions.",
+      "quote": "Two of the most prevalent ions in seawater are chloride and sodium. Together, they make up around 85 percent of all dissolved ions in the ocean.",
+      "source": 0
+    },
+    {
+      "sentence": "Roughly 3.5 percent of seawater's weight is dissolved salt.",
+      "quote": "about 3.5 percent of the weight of seawater comes from the dissolved salts.",
+      "source": 0
+    },
+    {
+      "sentence": "In the extremely salty Dead Sea, the dense water holds you up like a mattress.",
+      "quote": "you could have experienced the unique sensation of floating in the extremely salty, and therefore dense, water that apparently holds you up like a mattress.",
+      "source": 1
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Salt arrives from rocks, rivers and seafloor vents.",
+      "visual_description": "Rain erodes rocks, a river carries ions to the sea, seafloor vents add more.",
+      "visual_style": "hybrid",
+      "motif": "salt_sources"
+    },
+    {
+      "narration_segment": "Sodium and chloride dominate; about 3.5 percent of seawater is salt.",
+      "visual_description": "Bars showing the share of salt in seawater and of sodium and chloride in the salt.",
+      "visual_style": "hybrid",
+      "motif": "salt_share"
+    },
+    {
+      "narration_segment": "The Dead Sea is so salty and dense it holds you up.",
+      "visual_description": "A floating figure on very salty water.",
+      "visual_style": "hybrid",
+      "motif": "dense_float"
+    }
+  ]
+}
