@@ -41,3 +41,9 @@ Topics can also be added by committing a draft JSON (same fields as a model draf
 two independent publishers and a passing independent model check; then it turns the draft into a spec.
 Rejected drafts move to `production/drafts/rejected/` with their reasons. If no provider can run the check,
 the draft stays for the next run.
+
+## Reading the exact page text
+
+Run the "source page probe" workflow with space-separated page URLs. It prints, per page, the paragraphs the
+evidence gates would see, or why the page could not be fetched (for example Britannica answers HTTP 403).
+Quotes in drafts must be copied from that text.
