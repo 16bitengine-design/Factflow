@@ -35,17 +35,20 @@
     {
       "narration_segment": "Opening hook",
       "visual_description": "A lightning channel appears as a bright electrical path through a storm cloud.",
-      "visual_style": "hybrid"
+      "visual_style": "hybrid",
+      "motif": "lightning_bolt"
     },
     {
       "narration_segment": "Core explanation",
       "visual_description": "A thermal halo around the channel rises to a labelled 54,000°F; label specifies surrounding air.",
-      "visual_style": "3d"
+      "visual_style": "3d",
+      "motif": "heat_halo"
     },
     {
       "narration_segment": "Memorable conclusion",
       "visual_description": "Rapid air expansion generates a circular pressure wave, transitioning into a thunder waveform.",
-      "visual_style": "hybrid"
+      "visual_style": "hybrid",
+      "motif": "pressure_wave"
     }
   ],
   "editorial_review_notes": "Approved by the project owner as a batch on 2026-11-15. Approval authorizes topic use; automated source summaries are not independent verification. Before publication, retrieve and assess source passages, corroborate material claims, and flag unsupported or conflicting details for human review.",

@@ -35,17 +35,20 @@
     {
       "narration_segment": "Opening hook",
       "visual_description": "Old Faithful erupts; an overlaid clock shows varying intervals instead of exact hours.",
-      "visual_style": "hybrid"
+      "visual_style": "hybrid",
+      "motif": "geyser_eruption"
     },
     {
       "narration_segment": "Core explanation",
       "visual_description": "A timeline compares short and longer previous eruptions with different estimated waits.",
-      "visual_style": "3d"
+      "visual_style": "3d",
+      "motif": "interval_timeline"
     },
     {
       "narration_segment": "Memorable conclusion",
       "visual_description": "A cutaway reveals a simplified underground geyser plumbing system with heated water and steam.",
-      "visual_style": "hybrid"
+      "visual_style": "hybrid",
+      "motif": "geyser_cutaway"
     }
   ],
   "editorial_review_notes": "Approved by the project owner as a batch on 2026-11-15. Approval authorizes topic use; automated source summaries are not independent verification. Before publication, retrieve and assess source passages, corroborate material claims, and flag unsupported or conflicting details for human review.",

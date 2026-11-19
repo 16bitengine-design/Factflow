@@ -25,3 +25,11 @@ A provider that is missing credentials, rate limited, down or returns unusable o
 
 ## Stock alert
 After each run `quantatale topic-stock` counts never-used publishable topics. Fewer than 4 opens (once) the GitHub issue "QuantaTale topic stock is low". The authoring job fails visibly when every provider fails.
+
+## Scene motifs
+
+Each scene may carry a `motif` naming a small procedural animation in `src/factflow/visual_motifs.py`
+(for example `evaporation`, `rising_cooling`, `moon_phases`, `plates_timelapse`). The renderer draws the
+motif for the scene being narrated so the picture shows what the words say. Authored topics pick a motif
+from that list; an unknown or missing motif (`none`) falls back to the generic description card.
+Add a new motif by writing a draw function and registering it in `MOTIFS`; tests check every spec uses a valid one.

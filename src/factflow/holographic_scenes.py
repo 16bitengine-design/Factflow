@@ -314,8 +314,12 @@ def draw_generic_science_scene(draw: Any, scene: int, progress: float, seconds: 
     over an animated holographic core. Per-topic bespoke animation is not
     implied; the description and captions carry the explanation.
     """
+    from .visual_motifs import MOTIFS, draw_motif
+
     count = max(1, len(scenes))
-    position = min(count - 1, scene * count // 4)
+    overall = min(0.9999, (scene + min(1.0, max(0.0, progress))) / 4)
+    position = min(count - 1, int(overall * count))
+    local_progress = overall * count - position
     description = str(scenes[position].get("visual_description", "")).strip() if scenes else ""
     palette = [CYAN, VIOLET, BLUE, CYAN]
     color = palette[position % 4]
@@ -330,6 +334,17 @@ def draw_generic_science_scene(draw: Any, scene: int, progress: float, seconds: 
                            outline=(*color[:3], 170), width=2)
     for i, line in enumerate(lines):
         draw.text((80, 230 + i * 34), line, font=fonts["label"], fill=WHITE)
+
+    motif = str(scenes[position].get("motif", "")) if scenes else ""
+    if motif in MOTIFS:
+        draw_motif(motif, draw, local_progress, seconds, fonts, color)
+        if position == 0:
+            headline = "THE QUESTION"
+        elif position == count - 1:
+            headline = "THE TAKEAWAY"
+        else:
+            headline = "HOW IT WORKS"
+        return headline, f"Scene {position + 1} of {count}"
 
     # Pulsing holographic core with orbiting nodes; node count grows with the scene.
     for k in range(4):
