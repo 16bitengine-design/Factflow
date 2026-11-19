@@ -58,8 +58,5 @@
       "visual_style": "hybrid",
       "motif": "tide_gauge"
     }
-  ],
-  "rejection_reasons": [
-    "fewer than two independent publisher pages loaded"
   ]
 }
