@@ -1,0 +1,67 @@
+{
+  "title": "How a Tsunami Races Across the Ocean",
+  "description": "What sets off a tsunami, how fast it travels and how it behaves near shore, from NOAA and USGS.",
+  "category": "science",
+  "source_urls": [
+    "https://oceanservice.noaa.gov/facts/tsunami.html",
+    "https://www.usgs.gov/faqs/what-are-tsunamis"
+  ],
+  "narration": "What turns an underwater shake into a giant wave? Tsunamis are waves set off by undersea earthquakes or volcanic eruptions. Coastal landslides that dump huge amounts of debris into the water can set them off as well. NOAA says they may match the speed of jet planes. The speed of a tsunami depends on ocean depth, not on distance from the source. They slow down only when they reach shallow water. Near shore, it behaves like an extremely fast tide that pushes much farther inland. And it usually arrives as several waves, not just one.",
+  "claims": [
+    {
+      "sentence": "Tsunamis are waves set off by undersea earthquakes or volcanic eruptions.",
+      "quote": "Tsunamis are giant waves caused by earthquakes or volcanic eruptions under the sea.",
+      "source": 0
+    },
+    {
+      "sentence": "Coastal landslides that dump huge amounts of debris into the water can set them off as well.",
+      "quote": "Onshore landslides in which large volumes of debris fall into the water",
+      "source": 1
+    },
+    {
+      "sentence": "NOAA says they may match the speed of jet planes.",
+      "quote": "Tsunami waves may travel as fast as jet planes over deep waters",
+      "source": 0
+    },
+    {
+      "sentence": "The speed of a tsunami depends on ocean depth, not on distance from the source.",
+      "quote": "The speed of tsunami waves depends on ocean depth rather than the distance from the source of the wave.",
+      "source": 0
+    },
+    {
+      "sentence": "They slow down only when they reach shallow water.",
+      "quote": "only slowing down when reaching shallow waters.",
+      "source": 0
+    },
+    {
+      "sentence": "Near shore, it behaves like an extremely fast tide that pushes much farther inland.",
+      "quote": "When tsunamis approach shore, they behave like a very fast moving tide that extends much farther inland than normal water.",
+      "source": 1
+    },
+    {
+      "sentence": "And it usually arrives as several waves, not just one.",
+      "quote": "Tsunamis typically consist of multiple waves that rush ashore like a fast-rising tide with powerful currents.",
+      "source": 1
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Undersea quakes, eruptions or landslides push the water.",
+      "visual_description": "Seabed shift pushing the water surface upward.",
+      "visual_style": "hybrid",
+      "motif": "seafloor_quake"
+    },
+    {
+      "narration_segment": "In deep water the waves race like a jet.",
+      "visual_description": "Long low wave crossing deep water at jet speed.",
+      "visual_style": "hybrid",
+      "motif": "tsunami_deep"
+    },
+    {
+      "narration_segment": "Near shore it acts like a very fast tide, reaching farther inland.",
+      "visual_description": "Wave rising as it meets a sloping seabed.",
+      "visual_style": "hybrid",
+      "motif": "tsunami_shore"
+    }
+  ]
+}

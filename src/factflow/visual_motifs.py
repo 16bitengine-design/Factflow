@@ -400,8 +400,8 @@ def tide_alignment(draw, p, t, fonts, color):
     draw.ellipse((CX - 60 - 40 * k, CY - 60, CX + 60 + 40 * k, CY + 60), fill=_c(WATER, 120))
     _dot(draw, 600, CY - 100 * (1 - min(1.0, p * 1.6)), 26, GREY)
     draw.line((120, CY, 580, CY), fill=_c(WHITE, 60), width=2)
-    _label(draw, (CX, 850), "SUN, MOON AND EARTH IN A LINE", fonts, CYAN, "mm")
-    _label(draw, (CX, 890), "higher and lower tides than usual", fonts, WHITE, "mm")
+    _label(draw, (CX, 850), "FULL OR NEW MOON: SPRING TIDES", fonts, CYAN, "mm")
+    _label(draw, (CX, 890), "Sun, Moon and Earth in a line", fonts, WHITE, "mm")
 
 
 def tide_gauge(draw, p, t, fonts, color):
@@ -428,8 +428,8 @@ def seafloor_quake(draw, p, t, fonts, color):
         draw.arc((360 - rr, 820 - rr, 360 + rr, 820 + rr), 200, 340, fill=_c(YELLOW, int(220 * (1 - rr / 120))), width=4)
     lift = 34 * min(1.0, p * 2)
     draw.arc((160, 590 - lift, 560, 630 + lift), 190, 350, fill=WHITE, width=5)
-    _label(draw, (CX, 430), "EARTHQUAKE OR ERUPTION UNDER THE SEA", fonts, CYAN, "mm")
-    _label(draw, (CX, 470), "pushes the water above it", fonts, WHITE, "mm")
+    _label(draw, (CX, 430), "UNDERSEA EARTHQUAKE OR ERUPTION", fonts, CYAN, "mm")
+    _label(draw, (CX, 470), "sets off a giant wave", fonts, WHITE, "mm")
 
 
 def tsunami_deep(draw, p, t, fonts, color):
@@ -437,8 +437,8 @@ def tsunami_deep(draw, p, t, fonts, color):
     pts = [(80 + 560 * i / 120, 700 - 18 * math.sin((i / 120) * 2 * math.pi * 1.4 - p * 16)) for i in range(121)]
     draw.line(pts, fill=WHITE, width=5)
     _glow(draw, 80 + 560 * ((p * 3) % 1.0), 640, 12, YELLOW)
-    _label(draw, (CX, 470), f"UP TO 800 KM/H IN DEEP WATER: {int(800 * min(1.0, p * 2))}", fonts, YELLOW, "mm")
-    _label(draw, (CX, 510), "as fast as a jet plane, barely visible at sea", fonts, WHITE, "mm")
+    _label(draw, (CX, 470), "IN DEEP WATER: AS FAST AS A JET", fonts, YELLOW, "mm")
+    _label(draw, (CX, 510), "slowing only in shallow water", fonts, WHITE, "mm")
 
 
 def tsunami_shore(draw, p, t, fonts, color):
@@ -449,8 +449,8 @@ def tsunami_shore(draw, p, t, fonts, color):
     width = 140 - 70 * p
     pts = [(x - width + 2 * width * i / 40, (760 - 60 * (x - 80) / 560) - height * math.exp(-(((i - 20) / 9) ** 2))) for i in range(41)]
     draw.line(pts, fill=WHITE, width=5)
-    _label(draw, (CX, 470), "NEAR SHORE THE SEABED SLOWS THE WAVE", fonts, CYAN, "mm")
-    _label(draw, (CX, 510), "it bunches up and grows taller", fonts, WHITE, "mm")
+    _label(draw, (CX, 470), "NEAR SHORE: A VERY FAST TIDE", fonts, CYAN, "mm")
+    _label(draw, (CX, 510), "reaching farther inland than usual", fonts, WHITE, "mm")
 
 
 MOTIFS: dict[str, Callable[..., None]] = {
