@@ -1,0 +1,58 @@
+{
+  "title": "Where the Ocean's Salt Really Comes From",
+  "category": "science",
+  "voice": "af_heart",
+  "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "Where the Ocean's Salt Really Comes From | QuantaTale",
+  "post_description": "The two sources of ocean salt and how much of seawater is salt, from NOAA and USGS. Sources: National Oceanic and Atmospheric Administration https://oceanservice.noaa.gov/facts/whysalty.html and United States Geological Survey https://www.usgs.gov/water-science-school/science/saline-water-and-salinity #Science #ScienceFacts #QuantaTale",
+  "content_id_prefix": "qt-where-ocean-s",
+  "publish_timezone": "Africa/Kampala",
+  "editorial_approved": true,
+  "editorial_status": "automated_gate_passed",
+  "editorial_review_required": false,
+  "narration": "Where does all the ocean's salt come from? It comes from two places: runoff from land and openings in the seafloor. Slightly acidic rainwater erodes rocks on land. That frees ions, which rivers carry to the sea. Hydrothermal fluids from vents in the seafloor add more. Sodium and chloride account for roughly 85 percent of the ocean's dissolved ions. Roughly 3.5 percent of seawater's weight is dissolved salt. In the extremely salty Dead Sea, the dense water holds you up like a mattress.",
+  "sources": [
+    {
+      "publisher": "National Oceanic and Atmospheric Administration",
+      "title": "Why is the ocean salty?",
+      "url": "https://oceanservice.noaa.gov/facts/whysalty.html",
+      "supports": "Salt in the ocean comes from two sources: runoff from the land and openings in the seafloor. | Rainwater that falls on land is slightly acidic, so it erodes rocks. | This releases ions that are carried away to streams and rivers that eventually feed into the ocean. | Another source of salts in the ocean is hydrothermal fluids, which come from vents in the seafloor | Two of the most prevalent ions in seawater are chloride and sodium. Together, they make up around 85 percent of all dissolved ions in the ocean. | about 3.5 percent of the weight of seawater comes from the dissolved salts.",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-19"
+    },
+    {
+      "publisher": "United States Geological Survey",
+      "title": "Saline Water and Salinity | U.S. Geological Survey",
+      "url": "https://www.usgs.gov/water-science-school/science/saline-water-and-salinity",
+      "supports": "you could have experienced the unique sensation of floating in the extremely salty, and therefore dense, water that apparently holds you up like a mattress.",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-19"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Salt arrives from rocks, rivers and seafloor vents.",
+      "visual_description": "Rain erodes rocks, a river carries ions to the sea, seafloor vents add more.",
+      "visual_style": "hybrid",
+      "motif": "salt_sources"
+    },
+    {
+      "narration_segment": "Sodium and chloride dominate; about 3.5 percent of seawater is salt.",
+      "visual_description": "Bars showing the share of salt in seawater and of sodium and chloride in the salt.",
+      "visual_style": "hybrid",
+      "motif": "salt_share"
+    },
+    {
+      "narration_segment": "The Dead Sea is so salty and dense it holds you up.",
+      "visual_description": "A floating figure on very salty water.",
+      "visual_style": "hybrid",
+      "motif": "dense_float"
+    }
+  ],
+  "visual_profile": "holographic_science_v1",
+  "source_passage_verification_required_before_publication": false,
+  "source_assessment": "Automated gates passed on 2026-11-19: each sentence tied to a verbatim source quote, numbers matched, no copied word runs, model entailment check passed, independent publishers. Not complete fact verification.",
+  "authored_by": "assistant_session_draft_then_automated_gates"
+}

@@ -1,0 +1,58 @@
+{
+  "title": "How a Hurricane Turns Warm Ocean Into a Storm",
+  "category": "science",
+  "voice": "af_heart",
+  "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "How a Hurricane Turns Warm Ocean Into a Storm | QuantaTale",
+  "post_description": "The engine, spin, eye and wind speed of a hurricane, from NOAA and NASA. Sources: National Oceanic and Atmospheric Administration https://oceanservice.noaa.gov/facts/hurricane.html and National Aeronautics and Space Administration https://spaceplace.nasa.gov/hurricanes/en/ #Science #ScienceFacts #QuantaTale",
+  "content_id_prefix": "qt-hurricane-turns-warm",
+  "publish_timezone": "Africa/Kampala",
+  "editorial_approved": true,
+  "editorial_status": "automated_gate_passed",
+  "editorial_review_required": false,
+  "narration": "What turns warm ocean water into a giant spinning storm? A hurricane works like an engine that runs on warm, moist air. As the warm air rises, it leaves an area of lower pressure below. Rising air cools, and its water vapour forms clouds. North of the equator they spin counterclockwise; south of it, clockwise. At the centre an eye forms, calm and clear. Once its sustained winds reach 74 miles per hour, the storm counts as a hurricane. On land they usually weaken, because the warm ocean no longer feeds them.",
+  "sources": [
+    {
+      "publisher": "National Oceanic and Atmospheric Administration",
+      "title": "What is a hurricane?",
+      "url": "https://oceanservice.noaa.gov/facts/hurricane.html",
+      "supports": "When a storm's maximum sustained winds reach 74 mph, it is called a hurricane.",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-19"
+    },
+    {
+      "publisher": "National Aeronautics and Space Administration",
+      "title": "How Do Hurricanes Form? | NASA Space Place – NASA Science for Kids",
+      "url": "https://spaceplace.nasa.gov/hurricanes/en/",
+      "supports": "Tropical cyclones are like giant engines that use warm, moist air as fuel. | the warm air rises, causing an area of lower air pressure below. | As the warmed, moist air rises and cools off, the water in the air forms clouds. | Storms that form north of the equator spin counterclockwise. Storms south of the equator spin clockwise. | an eye forms in the center. It is very calm and clear in the eye, with very low air pressure. | Tropical cyclones usually weaken when they hit land, because they are no longer being fed by the energy from the warm ocean waters.",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-19"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Warm, moist air rises, cools and forms clouds.",
+      "visual_description": "Warm air rising from the sea and clouds forming above.",
+      "visual_style": "hybrid",
+      "motif": "hurricane_engine"
+    },
+    {
+      "narration_segment": "The storm spins and a calm eye forms.",
+      "visual_description": "Spiral cloud bands rotating around a calm eye.",
+      "visual_style": "hybrid",
+      "motif": "hurricane_spin"
+    },
+    {
+      "narration_segment": "At 74 mph it is a hurricane; over land it weakens.",
+      "visual_description": "A storm moving from sea to land losing strength.",
+      "visual_style": "hybrid",
+      "motif": "hurricane_landfall"
+    }
+  ],
+  "visual_profile": "holographic_science_v1",
+  "source_passage_verification_required_before_publication": false,
+  "source_assessment": "Automated gates passed on 2026-11-19: each sentence tied to a verbatim source quote, numbers matched, no copied word runs, model entailment check passed, independent publishers. Not complete fact verification.",
+  "authored_by": "assistant_session_draft_then_automated_gates"
+}

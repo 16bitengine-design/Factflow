@@ -1,0 +1,58 @@
+{
+  "title": "How El Niño Changes Weather Worldwide",
+  "category": "science",
+  "voice": "af_heart",
+  "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "How El Niño Changes Weather Worldwide | QuantaTale",
+  "post_description": "How weakening Pacific winds reshape rain, the jet stream and marine life, from NOAA and NASA. Sources: National Oceanic and Atmospheric Administration https://oceanservice.noaa.gov/facts/ninonina.html and National Aeronautics and Space Administration https://spaceplace.nasa.gov/el-nino/en/ #Science #ScienceFacts #QuantaTale",
+  "content_id_prefix": "qt-el-ni-o",
+  "publish_timezone": "Africa/Kampala",
+  "editorial_approved": true,
+  "editorial_status": "automated_gate_passed",
+  "editorial_review_required": false,
+  "narration": "How can warm water in one ocean change weather worldwide? El Niño is a Pacific Ocean condition so big that it affects weather around the world. Normally, strong equatorial winds push warm surface water west toward Indonesia. In some years those winds weaken, and the warm water piles up along South America. The warmer water pushes the Pacific jet stream south of its usual position. Clouds over the warm water dump much more rain than usual on the Americas, while other regions can face drought. Off the Pacific coast, upwelling of cold, nutrient-rich water weakens or stops.",
+  "sources": [
+    {
+      "publisher": "National Oceanic and Atmospheric Administration",
+      "title": "What are El Nino and La Nina?",
+      "url": "https://oceanservice.noaa.gov/facts/ninonina.html",
+      "supports": "The warmer waters cause the Pacific jet stream to move south of its neutral position. | During normal conditions, upwelling brings water from the depths to the surface; this water is cold and nutrient rich. During El Niño, upwelling weakens or stops altogether.",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-19"
+    },
+    {
+      "publisher": "National Aeronautics and Space Administration",
+      "title": "What Is El Niño? | NASA Space Place – NASA Science for Kids",
+      "url": "https://spaceplace.nasa.gov/el-nino/en/",
+      "supports": "El Niño is a condition that sometimes occurs in the Pacific Ocean, but it is so big that it affects weather all over the world. | Normally, strong winds along the equator push the warm surface water near South America westward toward Indonesia. | However, in the fall and winter of some years, these winds are much weaker than usual. They actually blow the other way (toward South America instead of Indonesia) in October. So the warm surface water along the equator piles up along the coast of South America | These clouds move inland and dump much more rain than usual in South and Central America ",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-19"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Weakening winds let warm water pile up near South America.",
+      "visual_description": "Trade winds push warm water west, then weaken and the warm patch shifts east.",
+      "visual_style": "hybrid",
+      "motif": "enso_winds"
+    },
+    {
+      "narration_segment": "The jet stream shifts south and rain patterns change.",
+      "visual_description": "Jet stream sinking south over a warm patch with rain clouds.",
+      "visual_style": "hybrid",
+      "motif": "jet_stream_shift"
+    },
+    {
+      "narration_segment": "Upwelling of cold nutrient-rich water weakens.",
+      "visual_description": "Upward arrows of cold water fading away.",
+      "visual_style": "hybrid",
+      "motif": "upwelling"
+    }
+  ],
+  "visual_profile": "holographic_science_v1",
+  "source_passage_verification_required_before_publication": false,
+  "source_assessment": "Automated gates passed on 2026-11-19: each sentence tied to a verbatim source quote, numbers matched, no copied word runs, model entailment check passed, independent publishers. Not complete fact verification.",
+  "authored_by": "assistant_session_draft_then_automated_gates"
+}
