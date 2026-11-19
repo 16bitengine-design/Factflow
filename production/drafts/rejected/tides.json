@@ -1,12 +1,12 @@
 {
   "title": "The Moon and Sun Pull the Sea Up and Down",
-  "description": "Why the ocean rises and falls twice a day, explained with NOAA and Britannica.",
+  "description": "Why the ocean rises and falls twice a day, explained with NOAA and NASA.",
   "category": "science",
   "source_urls": [
     "https://oceanservice.noaa.gov/facts/tides.html",
-    "https://www.britannica.com/science/tide"
+    "https://science.nasa.gov/moon/tides/"
   ],
-  "narration": "Why does the sea rise and fall twice a day? Tides are caused by the pull of the Moon and the Sun. The Sun's effect is similar to the Moon's and adds to it. When the Sun, Moon and Earth line up, tides get higher and lower than usual. Tides are very long-period waves moving through the ocean. Most places have about two high tides and two low tides every day. The gap in height between high and low tide is called the tidal range.",
+  "narration": "Why does the sea rise and fall twice a day? Tides are caused by the pull of the Moon and the Sun. High tides do not line up exactly with where the Moon is. Most shorelines see two high tides and two low tides each day. Spring tides happen when the Moon is full or new. Tides are very long-period waves moving through the ocean. The gap in height between high and low tide is called the tidal range.",
   "claims": [
     {
       "sentence": "Tides are caused by the pull of the Moon and the Sun.",
@@ -14,24 +14,24 @@
       "source": 0
     },
     {
-      "sentence": "The Sun's effect is similar to the Moon's and adds to it.",
-      "quote": "The effect of the Sun is similar and additive to that of the Moon.",
+      "sentence": "High tides do not line up exactly with where the Moon is.",
+      "quote": "but high tides don't line up exactly with the Moon's position.",
       "source": 1
     },
     {
-      "sentence": "When the Sun, Moon and Earth line up, tides get higher and lower than usual.",
-      "quote": "When the Sun, Moon, and Earth form a straight line (left), tides higher and lower than usual are generated.",
+      "sentence": "Most shorelines see two high tides and two low tides each day.",
+      "quote": "Most shorelines experience two high and low tides per day.",
+      "source": 1
+    },
+    {
+      "sentence": "Spring tides happen when the Moon is full or new.",
+      "quote": "Spring tides always happen when the Moon is at the full or new phase,",
       "source": 1
     },
     {
       "sentence": "Tides are very long-period waves moving through the ocean.",
       "quote": "Tides are very long-period waves that move through the ocean in response to the forces exerted by the moon and sun.",
       "source": 0
-    },
-    {
-      "sentence": "Most places have about two high tides and two low tides every day.",
-      "quote": "There are approximately two high and two low tides per day at any given place",
-      "source": 1
     },
     {
       "sentence": "The gap in height between high and low tide is called the tidal range.",
@@ -47,7 +47,7 @@
       "motif": "tidal_pull"
     },
     {
-      "narration_segment": "When Sun, Moon and Earth line up, tides get more extreme.",
+      "narration_segment": "Spring tides come at full or new Moon.",
       "visual_description": "Sun, Earth and Moon in a line with a larger ocean bulge.",
       "visual_style": "hybrid",
       "motif": "tide_alignment"
@@ -60,6 +60,6 @@
     }
   ],
   "rejection_reasons": [
-    "fewer than two independent publisher pages loaded: https://www.britannica.com/science/tide: HTTPError: HTTP Error 403: Forbidden"
+    "quote not found verbatim in source 0: 'Tides are caused by the pull of the Moon and the Sun.'"
   ]
 }
