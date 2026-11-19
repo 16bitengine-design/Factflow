@@ -1,0 +1,62 @@
+{
+  "title": "The Moon and Sun Pull the Sea Up and Down",
+  "description": "Why the ocean rises and falls twice a day, explained with NOAA and Britannica.",
+  "category": "science",
+  "source_urls": [
+    "https://oceanservice.noaa.gov/facts/tides.html",
+    "https://www.britannica.com/science/tide"
+  ],
+  "narration": "Why does the sea rise and fall twice a day? Tides are caused by the pull of the Moon and the Sun. The Sun's effect is similar to the Moon's and adds to it. When the Sun, Moon and Earth line up, tides get higher and lower than usual. Tides are very long-period waves moving through the ocean. Most places have about two high tides and two low tides every day. The gap in height between high and low tide is called the tidal range.",
+  "claims": [
+    {
+      "sentence": "Tides are caused by the pull of the Moon and the Sun.",
+      "quote": "Tides are caused by gravitational pull of the moon and the sun.",
+      "source": 0
+    },
+    {
+      "sentence": "The Sun's effect is similar to the Moon's and adds to it.",
+      "quote": "The effect of the Sun is similar and additive to that of the Moon.",
+      "source": 1
+    },
+    {
+      "sentence": "When the Sun, Moon and Earth line up, tides get higher and lower than usual.",
+      "quote": "When the Sun, Moon, and Earth form a straight line (left), tides higher and lower than usual are generated.",
+      "source": 1
+    },
+    {
+      "sentence": "Tides are very long-period waves moving through the ocean.",
+      "quote": "Tides are very long-period waves that move through the ocean in response to the forces exerted by the moon and sun.",
+      "source": 0
+    },
+    {
+      "sentence": "Most places have about two high tides and two low tides every day.",
+      "quote": "There are approximately two high and two low tides per day at any given place",
+      "source": 1
+    },
+    {
+      "sentence": "The gap in height between high and low tide is called the tidal range.",
+      "quote": "The difference in height between the high tide and the low tide is called the tidal range.",
+      "source": 0
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "The Moon and Sun pull on the sea.",
+      "visual_description": "Earth with an ocean bulge as the Moon orbits and the Sun pulls.",
+      "visual_style": "hybrid",
+      "motif": "tidal_pull"
+    },
+    {
+      "narration_segment": "When Sun, Moon and Earth line up, tides get more extreme.",
+      "visual_description": "Sun, Earth and Moon in a line with a larger ocean bulge.",
+      "visual_style": "hybrid",
+      "motif": "tide_alignment"
+    },
+    {
+      "narration_segment": "About two high tides and two low tides a day.",
+      "visual_description": "Tide gauge and curve showing two highs per day and the tidal range.",
+      "visual_style": "hybrid",
+      "motif": "tide_gauge"
+    }
+  ]
+}
