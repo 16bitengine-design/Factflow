@@ -58,7 +58,7 @@ def test_all_fail_raises_with_each_reason():
 
 
 def test_json_reply_with_code_fence_and_bad_json_falls_through():
-    replies = iter(["no json here", "```json\n{\"a\": 1}\n```"])
+    replies = iter(["no json here", "still no json", "```json\n{\"a\": 1}\n```"])
     chain = ProviderChain([Provider("a", "http://a", "m", "k"), Provider("b", "http://b", "m", "k")],
                           opener=lambda r, timeout: _ok(next(replies)))
     assert chain.complete_json("s", "u") == {"a": 1}
@@ -78,4 +78,22 @@ def test_chain_records_why_each_provider_was_skipped():
         chain.complete("s", "u")
     except Exception:
         pass
-    assert chain.failures == ["a: no credentials configured", "b (m2): HTTP 429"]
+    assert chain.failures == ["a: no credentials configured", "b (m2) attempt 1: HTTP 429"]
+
+
+def test_malformed_json_is_retried_once_on_the_same_provider():
+    import io, json
+    from factflow.llm_providers import Provider, ProviderChain
+
+    replies = iter(["not json", '{"ok": 1}'])
+
+    class Resp(io.BytesIO):
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+
+    def opener(request, timeout=0):
+        return Resp(json.dumps({"choices": [{"message": {"content": next(replies)}}]}).encode())
+
+    chain = ProviderChain([Provider("a", "http://x", "m", "k")], opener=opener)
+    assert chain.complete_json("s", "u") == {"ok": 1}
+    assert len(chain.failures) == 1

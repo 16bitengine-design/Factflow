@@ -64,7 +64,7 @@ class Provider:
         try:
             text = body["choices"][0]["message"]["content"]
         except (KeyError, IndexError, TypeError) as exc:
-            raise ProviderError("unexpected response shape") from exc
+            raise ProviderError("unexpected response shape: " + json.dumps(body)[:200]) from exc
         if not isinstance(text, str) or not text.strip():
             raise ProviderError("empty reply")
         return text
@@ -74,9 +74,9 @@ def default_providers(env: dict[str, str] | None = None) -> list[Provider]:
     env = dict(os.environ) if env is None else env
     providers = [
         Provider("groq", env.get("GROQ_URL", "https://api.groq.com/openai/v1/chat/completions"),
-                 env.get("GROQ_MODEL", "openai/gpt-oss-120b"), env.get("GROQ_API_KEY")),
+                 env.get("GROQ_MODEL", "llama-3.3-70b-versatile"), env.get("GROQ_API_KEY")),
         Provider("ovhcloud", env.get("OVH_URL", "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1/chat/completions"),
-                 env.get("OVH_MODEL", "gpt-oss-120b"), env.get("OVH_API_KEY"), requires_key=False),
+                 env.get("OVH_MODEL", "Meta-Llama-3_3-70B-Instruct"), env.get("OVH_API_KEY"), requires_key=False),
     ]
     account = env.get("CLOUDFLARE_ACCOUNT_ID")
     if account:
@@ -107,12 +107,20 @@ class ProviderChain:
                 errors[provider.name] = "no credentials configured"
                 self.failures.append(f"{provider.name}: no credentials configured")
                 continue
-            try:
-                text = provider.complete(system, user, max_tokens=max_tokens, temperature=temperature, opener=self.opener)
-                result = validate(text) if validate else text
-            except (ProviderError, ValueError) as exc:
-                errors[provider.name] = str(exc)
-                self.failures.append(f"{provider.name} ({provider.model}): {exc}")
+            result, failed = None, False
+            for attempt in (1, 2):  # a malformed JSON reply is retried once on the same provider
+                try:
+                    text = provider.complete(system, user, max_tokens=max_tokens, temperature=temperature, opener=self.opener)
+                    result = validate(text) if validate else text
+                    failed = False
+                    break
+                except (ProviderError, ValueError) as exc:
+                    failed = True
+                    errors[provider.name] = str(exc)
+                    self.failures.append(f"{provider.name} ({provider.model}) attempt {attempt}: {exc}")
+                    if isinstance(exc, ProviderError):
+                        break
+            if failed:
                 continue
             self.usage[provider.name] = self.usage.get(provider.name, 0) + 1
             return result
