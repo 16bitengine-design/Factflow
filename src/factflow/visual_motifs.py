@@ -380,6 +380,79 @@ def geyser_cutaway(draw, p, t, fonts, color):
     _label(draw, (CX, 420), "HEATED WATER AND STEAM UNDERGROUND", fonts, CYAN, "mm")
 
 
+def tidal_pull(draw, p, t, fonts, color):
+    r = 70
+    draw.ellipse((CX - r - 38, CY - r, CX + r + 38, CY + r), fill=_c(WATER, 120))  # ocean bulged toward and away from the Moon
+    _glow(draw, CX, CY, r - 14, _c(GREEN, 170))
+    angle = math.pi * 2 * p * 0.5
+    mx, my = CX + 250 * math.cos(angle), CY + 250 * 0.35 * math.sin(angle) - 40
+    _dot(draw, mx, my, 28, GREY)
+    _arrow(draw, CX + 80 * math.cos(angle), CY + 80 * 0.35 * math.sin(angle), mx - 40 * math.cos(angle), my + 10, YELLOW)
+    _sun(draw, 80, 450, 34)
+    _label(draw, (CX, 850), "THE MOON'S AND SUN'S PULL", fonts, CYAN, "mm")
+    _label(draw, (CX, 890), "raises the ocean on Earth", fonts, WHITE, "mm")
+
+
+def tide_alignment(draw, p, t, fonts, color):
+    _sun(draw, 90, CY, 40)
+    _glow(draw, CX, CY, 46, _c(BLUE, 220))
+    k = 0.4 + 0.6 * min(1.0, p * 1.6)
+    draw.ellipse((CX - 60 - 40 * k, CY - 60, CX + 60 + 40 * k, CY + 60), fill=_c(WATER, 120))
+    _dot(draw, 600, CY - 100 * (1 - min(1.0, p * 1.6)), 26, GREY)
+    draw.line((120, CY, 580, CY), fill=_c(WHITE, 60), width=2)
+    _label(draw, (CX, 850), "SUN, MOON AND EARTH IN A LINE", fonts, CYAN, "mm")
+    _label(draw, (CX, 890), "higher and lower tides than usual", fonts, WHITE, "mm")
+
+
+def tide_gauge(draw, p, t, fonts, color):
+    days = 2 * p
+    level = 0.5 + 0.5 * math.sin(2 * math.pi * 2 * days)  # about two high tides per day
+    draw.line((140, 780, 600, 780), fill=GREY, width=3)
+    pts = [(140 + 460 * (i / 80), 600 - 90 * math.sin(2 * math.pi * 2 * (2 * i / 80))) for i in range(81)]
+    draw.line(pts, fill=_c(CYAN, 120), width=3)
+    x = 140 + 460 * (days / 2)
+    y = 600 - 90 * math.sin(2 * math.pi * 2 * days)
+    _glow(draw, x, y, 12, YELLOW)
+    _gauge(draw, 90, 480, 720, level, BLUE)
+    _label(draw, (CX + 20, 830), f"HIGH TIDES SO FAR: {int(2 * days * 1.0 + 0.25)}", fonts, YELLOW, "mm")
+    _label(draw, (CX + 20, 870), "tidal range = high minus low", fonts, WHITE, "mm")
+
+
+def seafloor_quake(draw, p, t, fonts, color):
+    draw.rectangle((100, 820, 620, 940), fill=(90, 70, 55, 230))
+    shift = 14 * math.sin(t * 40) * max(0.0, 1 - p) if p < 0.5 else 0
+    draw.polygon([(100, 820), (360 + shift, 820), (360 + shift, 940), (100, 940)], fill=(120, 95, 70, 235))
+    draw.rectangle((100, 600, 620, 820), fill=_c(WATER, 110))
+    for k in range(4):
+        rr = 30 + 90 * ((p * 2 + k * 0.25) % 1.0)
+        draw.arc((360 - rr, 820 - rr, 360 + rr, 820 + rr), 200, 340, fill=_c(YELLOW, int(220 * (1 - rr / 120))), width=4)
+    lift = 34 * min(1.0, p * 2)
+    draw.arc((160, 590 - lift, 560, 630 + lift), 190, 350, fill=WHITE, width=5)
+    _label(draw, (CX, 430), "EARTHQUAKE OR ERUPTION UNDER THE SEA", fonts, CYAN, "mm")
+    _label(draw, (CX, 470), "pushes the water above it", fonts, WHITE, "mm")
+
+
+def tsunami_deep(draw, p, t, fonts, color):
+    draw.rectangle((80, 700, 640, 900), fill=_c(WATER, 90))
+    pts = [(80 + 560 * i / 120, 700 - 18 * math.sin((i / 120) * 2 * math.pi * 1.4 - p * 16)) for i in range(121)]
+    draw.line(pts, fill=WHITE, width=5)
+    _glow(draw, 80 + 560 * ((p * 3) % 1.0), 640, 12, YELLOW)
+    _label(draw, (CX, 470), f"UP TO 800 KM/H IN DEEP WATER: {int(800 * min(1.0, p * 2))}", fonts, YELLOW, "mm")
+    _label(draw, (CX, 510), "as fast as a jet plane, barely visible at sea", fonts, WHITE, "mm")
+
+
+def tsunami_shore(draw, p, t, fonts, color):
+    draw.polygon([(80, 900), (640, 700 - 0), (640, 900)], fill=(120, 95, 70, 235))
+    draw.polygon([(80, 760), (640, 700), (640, 900), (80, 900)], fill=_c(WATER, 70))
+    x = 120 + 420 * p
+    height = 18 + 90 * p
+    width = 140 - 70 * p
+    pts = [(x - width + 2 * width * i / 40, (760 - 60 * (x - 80) / 560) - height * math.exp(-(((i - 20) / 9) ** 2))) for i in range(41)]
+    draw.line(pts, fill=WHITE, width=5)
+    _label(draw, (CX, 470), "NEAR SHORE THE SEABED SLOWS THE WAVE", fonts, CYAN, "mm")
+    _label(draw, (CX, 510), "it bunches up and grows taller", fonts, WHITE, "mm")
+
+
 MOTIFS: dict[str, Callable[..., None]] = {
     name: fn for name, fn in {
         "evaporation": evaporation, "rising_cooling": rising_cooling, "condensation": condensation,
@@ -391,6 +464,8 @@ MOTIFS: dict[str, Callable[..., None]] = {
         "globe_bulge": globe_bulge, "gravity_surface": gravity_surface,
         "leaf_pigments": leaf_pigments, "daylight_fade": daylight_fade,
         "orbit_year": orbit_year, "orbit_rotation": orbit_rotation,
+        "tidal_pull": tidal_pull, "tide_alignment": tide_alignment, "tide_gauge": tide_gauge,
+        "seafloor_quake": seafloor_quake, "tsunami_deep": tsunami_deep, "tsunami_shore": tsunami_shore,
         "geyser_eruption": geyser_eruption, "interval_timeline": interval_timeline, "geyser_cutaway": geyser_cutaway,
     }.items()
 }

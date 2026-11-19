@@ -1,0 +1,67 @@
+{
+  "title": "How a Tsunami Races Across the Ocean",
+  "description": "What sets off a tsunami, how fast it travels in deep water and why it grows near shore.",
+  "category": "science",
+  "source_urls": [
+    "https://oceanservice.noaa.gov/facts/tsunami.html",
+    "https://www.britannica.com/science/tsunami"
+  ],
+  "narration": "What turns an underwater shake into a giant wave? Tsunamis are waves set off by undersea earthquakes or volcanic eruptions. Landslides under the water or along the coast can also trigger them. Over deep ocean, the waves can race along at up to 800 kilometres per hour. NOAA says they may match the speed of jet planes. The speed of a tsunami depends on ocean depth, not on distance from the source. Near the shore, friction with the rising seafloor slows the waves down. As they slow, the waves bunch closer together and grow taller.",
+  "claims": [
+    {
+      "sentence": "Tsunamis are waves set off by undersea earthquakes or volcanic eruptions.",
+      "quote": "Tsunamis are giant waves caused by earthquakes or volcanic eruptions under the sea.",
+      "source": 0
+    },
+    {
+      "sentence": "Landslides under the water or along the coast can also trigger them.",
+      "quote": "usually caused by a submarine earthquake, by an underwater or coastal landslide, or by the eruption of a volcano.",
+      "source": 1
+    },
+    {
+      "sentence": "Over deep ocean, the waves can race along at up to 800 kilometres per hour.",
+      "quote": "In deep water a tsunami can travel as fast as 800 km (500 miles) per hour.",
+      "source": 1
+    },
+    {
+      "sentence": "NOAA says they may match the speed of jet planes.",
+      "quote": "Tsunami waves may travel as fast as jet planes over deep waters",
+      "source": 0
+    },
+    {
+      "sentence": "The speed of a tsunami depends on ocean depth, not on distance from the source.",
+      "quote": "The speed of tsunami waves depends on ocean depth rather than the distance from the source of the wave.",
+      "source": 0
+    },
+    {
+      "sentence": "Near the shore, friction with the rising seafloor slows the waves down.",
+      "quote": "friction with the rising sea bottom reduces the velocity of the waves.",
+      "source": 1
+    },
+    {
+      "sentence": "As they slow, the waves bunch closer together and grow taller.",
+      "quote": "As the velocity lessens, the wavelengths become shortened and the wave amplitudes increase.",
+      "source": 1
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Undersea quakes, eruptions or landslides push the water.",
+      "visual_description": "Seabed shift pushing the water surface upward.",
+      "visual_style": "hybrid",
+      "motif": "seafloor_quake"
+    },
+    {
+      "narration_segment": "In deep water the waves race at up to 800 km/h.",
+      "visual_description": "Long low wave crossing deep water at jet speed.",
+      "visual_style": "hybrid",
+      "motif": "tsunami_deep"
+    },
+    {
+      "narration_segment": "Near shore the wave slows, bunches up and grows taller.",
+      "visual_description": "Wave rising as it meets a sloping seabed.",
+      "visual_style": "hybrid",
+      "motif": "tsunami_shore"
+    }
+  ]
+}
