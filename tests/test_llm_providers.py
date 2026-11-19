@@ -78,4 +78,22 @@ def test_chain_records_why_each_provider_was_skipped():
         chain.complete("s", "u")
     except Exception:
         pass
-    assert chain.failures == ["a: no credentials configured", "b (m2): HTTP 429"]
+    assert chain.failures == ["a: no credentials configured", "b (m2) attempt 1: HTTP 429"]
+
+
+def test_malformed_json_is_retried_once_on_the_same_provider():
+    import io, json
+    from factflow.llm_providers import Provider, ProviderChain
+
+    replies = iter(["not json", '{"ok": 1}'])
+
+    class Resp(io.BytesIO):
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+
+    def opener(request, timeout=0):
+        return Resp(json.dumps({"choices": [{"message": {"content": next(replies)}}]}).encode())
+
+    chain = ProviderChain([Provider("a", "http://x", "m", "k")], opener=opener)
+    assert chain.complete_json("s", "u") == {"ok": 1}
+    assert len(chain.failures) == 1
