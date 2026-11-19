@@ -58,7 +58,7 @@ def test_all_fail_raises_with_each_reason():
 
 
 def test_json_reply_with_code_fence_and_bad_json_falls_through():
-    replies = iter(["no json here", "```json\n{\"a\": 1}\n```"])
+    replies = iter(["no json here", "still no json", "```json\n{\"a\": 1}\n```"])
     chain = ProviderChain([Provider("a", "http://a", "m", "k"), Provider("b", "http://b", "m", "k")],
                           opener=lambda r, timeout: _ok(next(replies)))
     assert chain.complete_json("s", "u") == {"a": 1}
