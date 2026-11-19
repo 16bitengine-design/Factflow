@@ -1,12 +1,12 @@
 {
   "title": "How a Tsunami Races Across the Ocean",
-  "description": "What sets off a tsunami, how fast it travels and how it behaves near shore, from NOAA and USGS.",
+  "description": "What sets off a tsunami, how it travels and how it behaves near shore, from NOAA and USGS.",
   "category": "science",
   "source_urls": [
     "https://oceanservice.noaa.gov/facts/tsunami.html",
     "https://www.usgs.gov/faqs/what-are-tsunamis"
   ],
-  "narration": "What turns an underwater shake into a giant wave? Tsunamis are waves set off by undersea earthquakes or volcanic eruptions. Coastal landslides that dump huge amounts of debris into the water can set them off as well. NOAA says they may match the speed of jet planes. The speed of a tsunami depends on ocean depth, not on distance from the source. They slow down only when they reach shallow water. Near shore, it behaves like an extremely fast tide that pushes much farther inland. And it usually arrives as several waves, not just one.",
+  "narration": "What turns an underwater shake into a giant wave? Tsunamis are waves set off by undersea earthquakes or volcanic eruptions. Volcanoes, landslides and even atmospheric disturbances can also trigger them. Out in the deep ocean, the waves do not grow dramatically in height. The speed of a tsunami depends on ocean depth, not on distance from the source. As the ocean gets shallower toward land, they build up to greater and greater heights. Near shore, it behaves like an extremely fast tide that pushes much farther inland. And it usually arrives as several waves, not just one.",
   "claims": [
     {
       "sentence": "Tsunamis are waves set off by undersea earthquakes or volcanic eruptions.",
@@ -14,13 +14,13 @@
       "source": 0
     },
     {
-      "sentence": "Coastal landslides that dump huge amounts of debris into the water can set them off as well.",
-      "quote": "Onshore landslides in which large volumes of debris fall into the water",
+      "sentence": "Volcanoes, landslides and even atmospheric disturbances can also trigger them.",
+      "quote": "Tsunamis can be caused by volcanoes, landslides, and even atmospheric disturbances",
       "source": 1
     },
     {
-      "sentence": "NOAA says they may match the speed of jet planes.",
-      "quote": "Tsunami waves may travel as fast as jet planes over deep waters",
+      "sentence": "Out in the deep ocean, the waves do not grow dramatically in height.",
+      "quote": "Out in the depths of the ocean, tsunami waves do not dramatically increase in height.",
       "source": 0
     },
     {
@@ -29,8 +29,8 @@
       "source": 0
     },
     {
-      "sentence": "They slow down only when they reach shallow water.",
-      "quote": "only slowing down when reaching shallow waters.",
+      "sentence": "As the ocean gets shallower toward land, they build up to greater and greater heights.",
+      "quote": "But as the waves travel inland, they build up to higher and higher heights as the depth of the ocean decreases.",
       "source": 0
     },
     {
@@ -52,8 +52,8 @@
       "motif": "seafloor_quake"
     },
     {
-      "narration_segment": "In deep water the waves race like a jet.",
-      "visual_description": "Long low wave crossing deep water at jet speed.",
+      "narration_segment": "Out at sea the waves stay low and travel fast.",
+      "visual_description": "Long low wave crossing deep water.",
       "visual_style": "hybrid",
       "motif": "tsunami_deep"
     },
@@ -63,8 +63,5 @@
       "visual_style": "hybrid",
       "motif": "tsunami_shore"
     }
-  ],
-  "rejection_reasons": [
-    "quote not found verbatim in source 1: 'Coastal landslides that dump huge amounts of debris into the'"
   ]
 }
