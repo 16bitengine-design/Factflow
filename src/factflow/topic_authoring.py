@@ -282,3 +282,65 @@ def author_topics(chain: ProviderChain, library: dict[str, Any], registry: dict[
         report["accepted"].append({"title": spec["title"], "spec_path": str(path.as_posix())})
     report["provider_usage"] = dict(chain.usage)
     return report
+
+
+# ---------------------------------------------------------------- drafts written outside the automated chain
+
+def ingest_drafts(chain: ProviderChain, library: dict[str, Any], registry: dict[str, Any], specs_dir: Path,
+                  drafts_dir: Path, *, fetcher: Fetcher = default_fetcher, today: str | None = None) -> dict[str, Any]:
+    """Run drafts written by an assistant session through exactly the same gates as model-authored topics.
+
+    A draft is JSON with the fields of a model draft plus ``source_urls``. Pages are fetched fresh, every
+    sentence must be tied to a verbatim quote, and the independent model entailment pass must succeed. Accepted drafts
+    become specs and are removed; rejected ones move to ``rejected/`` with their reasons so they are never retried silently.
+    """
+    today = today or datetime.now(timezone.utc).date().isoformat()
+    report: dict[str, Any] = {"accepted": [], "rejected": [], "deferred": []}
+    specs_dir.mkdir(parents=True, exist_ok=True)
+    existing = {_norm(str(i.get("title", "")).replace("| QuantaTale", "")) for i in library.get("production_specs", [])}
+    prefixes = {str(i.get("content_id_prefix", "")) for i in library.get("production_specs", [])}
+    for path in sorted(drafts_dir.glob("*.json")):
+        draft = json.loads(path.read_text(encoding="utf-8"))
+        sources, groups = [], set()
+        for url in draft.get("source_urls", [])[:4]:
+            page = fetch_passages(str(url), registry, fetcher)
+            if page and page["url"] not in {s["url"] for s in sources}:
+                sources.append(page)
+                groups.add(page["group"])
+        problems: list[str] = []
+        if len(groups) < 2:
+            problems.append("fewer than two independent publisher pages loaded")
+        try:
+            claims = draft.get("claims") if isinstance(draft.get("claims"), list) else []
+            if not problems:
+                problems += check_shape(draft, existing)
+            if not problems:
+                problems += check_grounding(str(draft.get("narration", "")), claims, sources)
+                problems += check_originality(str(draft.get("narration", "")), sources)
+            if not problems:
+                problems += check_entailment(chain, claims, sources)
+        except AllProvidersFailed as exc:
+            report["deferred"].append({"draft": path.name, "reason": str(exc)[:300]})
+            continue  # no independent checker was reachable: keep the draft for the next run
+        except (KeyError, TypeError, ValueError) as exc:
+            problems.append(f"malformed draft: {exc}")
+        if problems:
+            rejected = drafts_dir / "rejected"
+            rejected.mkdir(exist_ok=True)
+            draft["rejection_reasons"] = problems
+            (rejected / path.name).write_text(json.dumps(draft, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+            path.unlink()
+            report["rejected"].append({"draft": path.name, "reason": "; ".join(problems)[:400]})
+            continue
+        spec = build_spec(draft, sources, today)
+        spec["authored_by"] = "assistant_session_draft_then_automated_gates"
+        if spec["content_id_prefix"] in prefixes:
+            spec["content_id_prefix"] += "-2"
+        spec_path = specs_dir / f"{spec['content_id_prefix'][3:]}.json"
+        spec_path.write_text(json.dumps(spec, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        register_production_spec(library, str(spec_path.as_posix()), spec)
+        existing.add(_norm(spec["title"]))
+        prefixes.add(spec["content_id_prefix"])
+        path.unlink()
+        report["accepted"].append({"title": spec["title"], "spec_path": str(spec_path.as_posix())})
+    return report

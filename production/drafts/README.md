@@ -1,0 +1,1 @@
+Drop assistant-written topic drafts (JSON) here. On push to main the topic-authoring workflow fetches the cited pages and runs the evidence gates plus an independent model check; accepted drafts become specs, rejected ones move to rejected/ with reasons.
