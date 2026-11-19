@@ -613,6 +613,164 @@ def sleep_ages(draw, p, t, fonts, color):
     _label(draw, (CX, 450), "THE HOURS YOU NEED CHANGE AS YOU AGE", fonts, CYAN, "mm")
 
 
+def _earth(draw, x, y, r):
+    _glow(draw, x, y, r, _c(BLUE, 230))
+    draw.ellipse((x - r * 0.55, y - r * 0.35, x - r * 0.1, y + r * 0.2), fill=_c(GREEN, 200))
+
+
+def ozone_shield(draw, p, t, fonts, color):
+    draw.arc((-200, 760, 920, 1900), 205, 335, fill=_c(CYAN, 150), width=22)  # the planet's limb
+    draw.arc((-120, 700, 840, 1760), 215, 325, fill=_c(PURPLE if "PURPLE" in globals() else BLUE, 170), width=18)  # ozone layer
+    for k in range(7):
+        x = 110 + k * 82
+        y = 430 + ((t * 160 + k * 60) % 230)
+        blocked = y > 640
+        draw.line((x, y - 40, x, y), fill=_c(YELLOW, 60 if blocked else 230), width=4)
+    _label(draw, (CX, 380), "OZONE ABSORBS HARMFUL UV-B", fonts, CYAN, "mm")
+    _label(draw, (CX, 930), "a sunscreen for the planet", fonts, WHITE, "mm")
+
+
+def cfc_cycle(draw, p, t, fonts, color):
+    n = int(1 + 5 * min(1.0, p * 1.2))
+    for k in range(5):
+        x = 130 + k * 115
+        alive = k >= n
+        _dot(draw, x, 760, 26, _c(BLUE, 230) if alive else _c(GREY, 80))
+        _label(draw, (x, 760), "O3" if alive else "", fonts, WHITE, "mm")
+    cx = 130 + min(4, n - 1) * 115
+    _glow(draw, cx, 640 + 12 * math.sin(t * 6), 18, _c(GREEN, 230))
+    _label(draw, (cx, 590), "Cl", fonts, GREEN, "mm")
+    _label(draw, (CX, 450), "ONE CHLORINE ATOM, MANY OZONE MOLECULES", fonts, CYAN, "mm")
+    _label(draw, (CX, 490), "up to 100,000 times", fonts, WHITE, "mm")
+
+
+def ozone_hole_patch(draw, p, t, fonts, color):
+    _earth(draw, CX, CY, 140)
+    r = 20 + 70 * min(1.0, p * 1.3)
+    draw.ellipse((CX - r * 0.6, CY + 100 - r * 0.35, CX + r * 0.6, CY + 100 + r * 0.35), fill=_c(RED, 150))
+    _label(draw, (CX, CY + 200), "THIN PATCH OVER ANTARCTICA", fonts, RED, "mm")
+    _label(draw, (CX, 450), "THE OZONE \"HOLE\" IS A THINNING", fonts, CYAN, "mm")
+
+
+def flare_burst(draw, p, t, fonts, color):
+    _glow(draw, CX, CY + 100, 150, _c(YELLOW, 230))
+    for k in range(3):
+        a = 0.6 + k * 0.9
+        pts = [(CX + (130 + 40 * math.sin(i / 8 * math.pi)) * math.cos(a + i * 0.02 * (1 + p)), CY + 100 - (130 + 40 * math.sin(i / 8 * math.pi)) * math.sin(a + i * 0.02 * (1 + p))) for i in range(9)]
+        draw.line(pts, fill=_c(RED, 220), width=5)
+    if p > 0.5:
+        for k in range(12):
+            a = 0.2 + k * 0.17
+            L = 220 * (p - 0.5) * 2
+            draw.line((CX + 150 * math.cos(a), CY + 100 - 150 * math.sin(a), CX + (150 + L) * math.cos(a), CY + 100 - (150 + L) * math.sin(a)), fill=_c(WHITE, 220), width=4)
+    _label(draw, (CX, 400), "TWISTED MAGNETIC FIELDS SNAP, THEN A FLARE", fonts, CYAN, "mm")
+
+
+def flare_travel(draw, p, t, fonts, color):
+    _glow(draw, 120, CY + 60, 60, _c(YELLOW, 230))
+    _earth(draw, 600, CY + 60, 34)
+    x = 120 + 480 * p
+    draw.line((180, CY + 60, x, CY + 60), fill=_c(WHITE, 200), width=4)
+    _glow(draw, x, CY + 60, 9, YELLOW)
+    _label(draw, (CX, 470), f"AT LIGHT SPEED: {int(8 * p)} / 8 MINUTES", fonts, YELLOW, "mm")
+    _label(draw, (CX, 510), "the flare's energy reaches Earth", fonts, WHITE, "mm")
+
+
+def geodynamo(draw, p, t, fonts, color):
+    draw.ellipse((CX - 200, CY - 200, CX + 200, CY + 200), fill=_c(BLUE, 90))
+    draw.ellipse((CX - 110, CY - 110, CX + 110, CY + 110), fill=_c(ORANGE, 170))
+    for k in range(8):
+        a = t * 1.3 + k * math.pi / 4
+        _dot(draw, CX + 150 * math.cos(a), CY + 150 * 0.8 * math.sin(a), 8, _c(YELLOW, 230))
+    for k in range(5):
+        x = CX - 90 + k * 45
+        draw.arc((x - 140, CY - 300, x + 140, CY - 100), 200, 340, fill=_c(CYAN, 120), width=3)
+    _label(draw, (CX, 400), "CHURNING METAL IN THE OUTER CORE", fonts, CYAN, "mm")
+    _label(draw, (CX, 940), "the geodynamo makes the field", fonts, WHITE, "mm")
+
+
+def magnetosphere(draw, p, t, fonts, color):
+    _earth(draw, CX + 40, CY, 55)
+    for k, w in enumerate((100, 150, 210, 280)):
+        draw.arc((CX + 40 - w, CY - w * 0.8, CX + 40 + w, CY + w * 0.8), 100, 260, fill=_c(CYAN, 190 - 30 * k), width=3)
+    for k in range(8):
+        y = 360 + k * 85
+        x = 40 + ((t * 120 + k * 50) % 220)
+        deflect = 0 if x < 190 else min(1.0, (x - 190) / 40)
+        _dot(draw, x if deflect == 0 else 200 + 20 * deflect, y - 60 * deflect * (1 if y < CY else -1), 5, _c(YELLOW, 220))
+    _label(draw, (CX, 330), "THE MAGNETOSPHERE DEFLECTS THE SOLAR WIND", fonts, CYAN, "mm")
+
+
+def pole_flip(draw, p, t, fonts, color):
+    flip = p > 0.5
+    draw.rounded_rectangle((CX - 40, 560, CX + 40, 880), radius=10, fill=_c(GREY, 90))
+    top, bottom = (RED, BLUE) if not flip else (BLUE, RED)
+    draw.rectangle((CX - 40, 560, CX + 40, 720), fill=_c(top, 210))
+    draw.rectangle((CX - 40, 720, CX + 40, 880), fill=_c(bottom, 210))
+    _label(draw, (CX, 530), "N" if not flip else "S", fonts, WHITE, "mm")
+    _label(draw, (CX, 910), "S" if not flip else "N", fonts, WHITE, "mm")
+    _label(draw, (CX, 440), "POLES DRIFT, AND FLIP ABOUT EVERY 300,000 YEARS", fonts, CYAN, "mm")
+
+
+def magma_rise(draw, p, t, fonts, color):
+    draw.polygon([(120, 940), (300, 600), (420, 600), (600, 940)], fill=(110, 95, 75, 235))
+    draw.ellipse((260, 800, 460, 900), fill=_c(ORANGE, 200))
+    top = 800 - 200 * min(1.0, p * 1.4)
+    draw.rectangle((350, top, 370, 820), fill=_c(ORANGE, 230))
+    if p > 0.7:
+        for k in range(10):
+            a = (t * 1.5 + k / 10) % 1.0
+            _dot(draw, 360 + (k % 5 - 2) * 14 * a, 600 - 120 * a, 6, _c(ORANGE, int(230 * (1 - a))))
+    _label(draw, (CX, 450), "LIGHTER MAGMA RISES AND ERUPTS", fonts, CYAN, "mm")
+
+
+def gas_pressure(draw, p, t, fonts, color):
+    for side, (cx, name, explosive) in enumerate(((190, "THIN, RUNNY: FLOWS", False), (530, "THICK, STICKY: EXPLODES", True))):
+        draw.rounded_rectangle((cx - 110, 620, cx + 110, 860), radius=20, fill=_c(ORANGE, 150))
+        for k in range(9):
+            a = (t * 0.6 + k / 9) % 1.0
+            if explosive:
+                _dot(draw, cx - 80 + (k * 37) % 160, 840 - 40 * a * min(1.0, p), 6, _c(WHITE, 200))
+            else:
+                _dot(draw, cx - 80 + (k * 37) % 160, 840 - 210 * a, 6, _c(WHITE, int(220 * (1 - a))))
+        if explosive and p > 0.7:
+            for k in range(14):
+                a = (t * 2 + k / 14) % 1.0
+                _dot(draw, cx + (k % 7 - 3) * 28 * a, 620 - 190 * a, 7, _c(GREY, int(230 * (1 - a))))
+        _label(draw, (cx, 560), name, fonts, WHITE, "mm")
+    _label(draw, (CX, 400), "GAS ESCAPES EASILY, OR PRESSURE BUILDS", fonts, CYAN, "mm")
+
+
+def sweat_cooling(draw, p, t, fonts, color):
+    draw.rounded_rectangle((200, 560, 520, 900), radius=60, fill=_c(ORANGE, 120))
+    for k in range(10):
+        a = (t * 0.7 + k / 10) % 1.0
+        x = 230 + (k * 53) % 260
+        _dot(draw, x, 700 + (k * 29) % 160, 7 * (1 - a * 0.8), _c(CYAN, int(230 * (1 - a))))
+        _arrow(draw, x, 690 + (k * 29) % 160, x + 6, 600 - 60 * a, _c(RED, int(200 * (1 - a))), 2)
+    _label(draw, (CX, 450), "SWEAT DRIES, CARRYING HEAT AWAY", fonts, CYAN, "mm")
+    _label(draw, (CX, 940), "your natural cooling system", fonts, WHITE, "mm")
+
+
+def heat_stroke_gauge(draw, p, t, fonts, color):
+    level = 0.35 + 0.6 * min(1.0, p * 1.3)
+    _gauge(draw, 150, 500, 760, level, RED)
+    draw.line((330, 700, 560, 700), fill=_c(GREY, 120), width=3)
+    ok = level < 0.8
+    _label(draw, (440, 640), "SWEATING WORKS" if ok else "SWEATING FAILS", fonts, GREEN if ok else RED, "mm")
+    _label(draw, (CX, 450), "HEAT STROKE: A MEDICAL EMERGENCY", fonts, CYAN, "mm")
+    _label(draw, (440, 760), "body temperature rises rapidly", fonts, WHITE, "mm")
+
+
+def ac_relief(draw, p, t, fonts, color):
+    draw.rounded_rectangle((140, 560, 580, 650), radius=18, fill=_c(CYAN, 150))
+    for k in range(6):
+        a = (t * 0.6 + k / 6) % 1.0
+        _arrow(draw, 180 + k * 70, 670, 180 + k * 70, 670 + 130 * a, _c(CYAN, int(220 * (1 - a))), 3)
+    draw.rectangle((140, 850, 580, 920), fill=_c(BLUE, 90))
+    _label(draw, (CX, 450), "AIR CONDITIONING IS THE BEST PROTECTION", fonts, CYAN, "mm")
+
+
 MOTIFS: dict[str, Callable[..., None]] = {
     name: fn for name, fn in {
         "evaporation": evaporation, "rising_cooling": rising_cooling, "condensation": condensation,
@@ -628,6 +786,8 @@ MOTIFS: dict[str, Callable[..., None]] = {
         "seafloor_quake": seafloor_quake, "tsunami_deep": tsunami_deep, "tsunami_shore": tsunami_shore,
         
         "salt_sources": salt_sources, "salt_share": salt_share, "dense_float": dense_float, "enso_winds": enso_winds, "jet_stream_shift": jet_stream_shift, "upwelling": upwelling, "hurricane_engine": hurricane_engine, "hurricane_spin": hurricane_spin, "hurricane_landfall": hurricane_landfall, "sleep_vitals": sleep_vitals, "sleep_memory": sleep_memory, "sleep_ages": sleep_ages,
+        
+        "ozone_shield": ozone_shield, "cfc_cycle": cfc_cycle, "ozone_hole_patch": ozone_hole_patch, "flare_burst": flare_burst, "flare_travel": flare_travel, "geodynamo": geodynamo, "magnetosphere": magnetosphere, "pole_flip": pole_flip, "magma_rise": magma_rise, "gas_pressure": gas_pressure, "sweat_cooling": sweat_cooling, "heat_stroke_gauge": heat_stroke_gauge, "ac_relief": ac_relief,
         "geyser_eruption": geyser_eruption, "interval_timeline": interval_timeline, "geyser_cutaway": geyser_cutaway,
     }.items()
 }
