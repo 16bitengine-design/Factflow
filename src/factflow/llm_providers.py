@@ -96,6 +96,7 @@ class ProviderChain:
         self.providers = providers if providers is not None else default_providers()
         self.opener = opener
         self.usage: dict[str, int] = {}
+        self.failures: list[str] = []  # every skipped provider and why, for the run log
 
     def complete(self, system: str, user: str, *, max_tokens: int = 1500, temperature: float = 0.3,
                  validate: Callable[[str], Any] | None = None) -> Any:
@@ -104,12 +105,14 @@ class ProviderChain:
         for provider in self.providers:
             if not provider.available():
                 errors[provider.name] = "no credentials configured"
+                self.failures.append(f"{provider.name}: no credentials configured")
                 continue
             try:
                 text = provider.complete(system, user, max_tokens=max_tokens, temperature=temperature, opener=self.opener)
                 result = validate(text) if validate else text
             except (ProviderError, ValueError) as exc:
                 errors[provider.name] = str(exc)
+                self.failures.append(f"{provider.name} ({provider.model}): {exc}")
                 continue
             self.usage[provider.name] = self.usage.get(provider.name, 0) + 1
             return result

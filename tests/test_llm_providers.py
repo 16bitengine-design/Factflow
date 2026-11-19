@@ -63,3 +63,19 @@ def test_json_reply_with_code_fence_and_bad_json_falls_through():
                           opener=lambda r, timeout: _ok(next(replies)))
     assert chain.complete_json("s", "u") == {"a": 1}
     assert chain.usage == {"b": 1}
+
+
+def test_chain_records_why_each_provider_was_skipped():
+    from factflow.llm_providers import Provider, ProviderChain
+
+    class Boom:
+        def __call__(self, *a, **k):
+            import urllib.error
+            raise urllib.error.HTTPError("u", 429, "rate", {}, None)
+
+    chain = ProviderChain([Provider("a", "http://x", "m1", None), Provider("b", "http://x", "m2", "k")], opener=Boom())
+    try:
+        chain.complete("s", "u")
+    except Exception:
+        pass
+    assert chain.failures == ["a: no credentials configured", "b (m2): HTTP 429"]
