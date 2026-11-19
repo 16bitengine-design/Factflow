@@ -38,6 +38,8 @@ class Provider:
     api_key: str | None = None
     requires_key: bool = True
     extra_headers: dict[str, str] = field(default_factory=dict)
+    extra_payload: dict[str, Any] = field(default_factory=dict)  # provider-specific request fields
+    min_tokens: int = 0  # reasoning models need room to think before the visible reply
 
     def available(self) -> bool:
         return bool(self.api_key) or not self.requires_key
@@ -47,8 +49,9 @@ class Provider:
         payload = {
             "model": self.model,
             "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
-            "max_tokens": max_tokens,
+            "max_tokens": max(max_tokens, self.min_tokens),
             "temperature": temperature,
+            **self.extra_payload,
         }
         headers = {"Content-Type": "application/json", "User-Agent": "QuantaTale/0.1", **self.extra_headers}
         if self.api_key:
@@ -74,7 +77,8 @@ def default_providers(env: dict[str, str] | None = None) -> list[Provider]:
     env = dict(os.environ) if env is None else env
     providers = [
         Provider("groq", env.get("GROQ_URL", "https://api.groq.com/openai/v1/chat/completions"),
-                 env.get("GROQ_MODEL", "llama-3.3-70b-versatile"), env.get("GROQ_API_KEY")),
+                 env.get("GROQ_MODEL", "openai/gpt-oss-120b"), env.get("GROQ_API_KEY"),
+                 extra_payload={"reasoning_effort": "low"}, min_tokens=4000),
         Provider("ovhcloud", env.get("OVH_URL", "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1/chat/completions"),
                  env.get("OVH_MODEL", "Meta-Llama-3_3-70B-Instruct"), env.get("OVH_API_KEY"), requires_key=False),
     ]
