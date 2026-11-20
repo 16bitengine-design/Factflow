@@ -1069,3 +1069,8 @@ def draw_motif(name: str | None, draw: Any, progress: float, seconds: float, fon
         return False
     fn(draw, max(0.0, min(1.0, progress)), seconds, fonts, color)
     return True
+
+
+from .visual_motifs_3d import MOTIFS_3D  # noqa: E402  (3D versions replace the flat ones of the same name)
+
+MOTIFS.update(MOTIFS_3D)
