@@ -76,7 +76,6 @@ def evaporation(draw, p, t, fonts, color):
         y = 790 - phase * 360
         _dot(draw, x, y, 5 + 3 * phase, _c(WHITE, int(200 * (1 - phase * 0.6))))
     _label(draw, (CX, 880), "WATER", fonts, WHITE, "mm")
-    _label(draw, (CX, 440), "INVISIBLE WATER VAPOUR RISES", fonts, CYAN, "mm")
 
 
 def rising_cooling(draw, p, t, fonts, color):
@@ -101,7 +100,6 @@ def condensation(draw, p, t, fonts, color):
         radius = 14 + 46 * p
         draw.ellipse((x - radius, y - radius, x + radius, y + radius), outline=_c(CYAN, int(60 + 150 * p)), width=3,
                      fill=_c(WHITE, int(20 + 70 * p)))
-    _label(draw, (CX, 480), "VAPOUR GATHERS ON TINY PARTICLES", fonts, CYAN, "mm")
     _label(draw, (CX, 900), "dust · sea salt · smoke", fonts, GREY, "mm")
 
 
@@ -168,7 +166,6 @@ def sediment_colors(draw, p, t, fonts, color):
     for n in range(30):
         phase = (t * 0.2 + n * 0.07) % 1.0
         _dot(draw, 240 + (n * 37) % 240, 520 + phase * 360, 3 + n % 3, _c(WHITE, 160))
-    _label(draw, (CX, 450), "SEDIMENT · ALGAE · DISSOLVED MATERIAL", fonts, CYAN, "mm")
     _label(draw, (CX, 940), "the colour shifts", fonts, WHITE, "mm")
 
 
@@ -219,7 +216,6 @@ def star_beam(draw, p, t, fonts, color):
     _glow(draw, CX, 420, 18, _c(YELLOW, 240))
     draw.line((CX, 440, CX, 760), fill=_c(YELLOW, 150), width=5)
     draw.ellipse((120, 800, 600, 1150), outline=_c(BLUE, 200), width=4)
-    _label(draw, (CX, 380), "A DISTANT STAR", fonts, CYAN, "mm")
     _label(draw, (CX, 780), "steady light", fonts, WHITE, "mm")
 
 
@@ -268,7 +264,6 @@ def plates_boundary(draw, p, t, fonts, color):
     for i in range(13):
         draw.line((120 + i * 40, 850, 120 + i * 40, 870), fill=GREY, width=2)
     _label(draw, (CX, 900), "a few centimetres per year", fonts, WHITE, "mm")
-    _label(draw, (CX, 470), "SLOW AS A GROWING FINGERNAIL", fonts, CYAN, "mm")
 
 
 def plates_timelapse(draw, p, t, fonts, color):
@@ -278,7 +273,6 @@ def plates_timelapse(draw, p, t, fonts, color):
     peak = 220 * p
     draw.polygon([(250, 700), (360, 700 - peak), (470, 700)], fill=_c(WHITE, int(60 + 140 * p)))
     _label(draw, (CX, 880), f"{int(p * 50)} MILLION YEARS", fonts, YELLOW, "mm")
-    _label(draw, (CX, 470), "COLLISION BUILDS MOUNTAINS", fonts, CYAN, "mm")
 
 
 def globe_bulge(draw, p, t, fonts, color):
@@ -311,7 +305,6 @@ def leaf_pigments(draw, p, t, fonts, color):
         level = (1 - p) if k == 0 else (0.35 + 0.65 * p if k < 3 else p * 0.8)
         draw.rectangle((110 + k * 130, 960 - 70 * level, 190 + k * 130, 960), fill=col)
         _label(draw, (150 + k * 130, 985), name, fonts, WHITE, "mm")
-    _label(draw, (CX, 440), "HIDDEN PIGMENTS BEHIND THE GREEN", fonts, CYAN, "mm")
 
 
 def daylight_fade(draw, p, t, fonts, color):
@@ -367,7 +360,6 @@ def interval_timeline(draw, p, t, fonts, color):
     _arrow(draw, 340, 640, 340 + 210 * max(0.0, min(1, p * 2 - 0.6)), 640, ORANGE)
     _label(draw, (235, 600), "shorter wait", fonts, YELLOW, "mm")
     _label(draw, (445, 600), "longer wait", fonts, ORANGE, "mm")
-    _label(draw, (CX, 470), "THE LAST ERUPTION HELPS PREDICT THE NEXT", fonts, CYAN, "mm")
 
 
 def geyser_cutaway(draw, p, t, fonts, color):
@@ -377,7 +369,6 @@ def geyser_cutaway(draw, p, t, fonts, color):
         a = (t * 0.5 + k * 0.17) % 1.0
         _dot(draw, 330 + (k % 5) * 18, 870 - a * 380 * (0.4 + 0.6 * p), 5, _c(WHITE, 190))
     draw.ellipse((300, 850, 420, 905), fill=_c(RED, int(80 + 120 * p)))
-    _label(draw, (CX, 420), "HEATED WATER AND STEAM UNDERGROUND", fonts, CYAN, "mm")
 
 
 def tidal_pull(draw, p, t, fonts, color):
@@ -428,7 +419,6 @@ def seafloor_quake(draw, p, t, fonts, color):
         draw.arc((360 - rr, 820 - rr, 360 + rr, 820 + rr), 200, 340, fill=_c(YELLOW, int(220 * (1 - rr / 120))), width=4)
     lift = 34 * min(1.0, p * 2)
     draw.arc((160, 590 - lift, 560, 630 + lift), 190, 350, fill=WHITE, width=5)
-    _label(draw, (CX, 430), "UNDERSEA EARTHQUAKE OR ERUPTION", fonts, CYAN, "mm")
     _label(draw, (CX, 470), "sets off a giant wave", fonts, WHITE, "mm")
 
 
@@ -449,7 +439,6 @@ def tsunami_shore(draw, p, t, fonts, color):
     width = 140 - 70 * p
     pts = [(x - width + 2 * width * i / 40, (760 - 60 * (x - 80) / 560) - height * math.exp(-(((i - 20) / 9) ** 2))) for i in range(41)]
     draw.line(pts, fill=WHITE, width=5)
-    _label(draw, (CX, 470), "NEAR SHORE: A VERY FAST TIDE", fonts, CYAN, "mm")
     _label(draw, (CX, 510), "reaching farther inland than usual", fonts, WHITE, "mm")
 
 
@@ -464,7 +453,6 @@ def salt_sources(draw, p, t, fonts, color):
         draw.line((470 + k * 40, 920, 470 + k * 40, 870 - 20 * math.sin(t * 3 + k)), fill=_c(ORANGE, 200), width=5)  # seafloor vents
     for k in range(int(70 * p)):
         _dot(draw, 340 + (k * 53) % 300, 780 + (k * 37) % 120, 4, _c(WHITE, 220))
-    _label(draw, (CX, 420), "SALT ARRIVES FROM TWO SOURCES", fonts, CYAN, "mm")
     _label(draw, (180, 520), "rocks + rivers", fonts, WHITE, "mm")
     _label(draw, (545, 840), "seafloor vents", fonts, ORANGE, "mm")
 
@@ -520,7 +508,6 @@ def jet_stream_shift(draw, p, t, fonts, color):
     for k in range(6):
         y = 790 + ((t * 110 + k * 40) % 90)
         draw.line((430 + k * 36, y, 426 + k * 36, y + 14), fill=_c(BLUE, 210), width=3)
-    _label(draw, (CX, 450), "WARMER WATER: JET STREAM SHIFTS SOUTH", fonts, CYAN, "mm")
     _label(draw, (CX, 490), "much more rain in some places, drought in others", fonts, WHITE, "mm")
 
 
@@ -547,7 +534,6 @@ def hurricane_engine(draw, p, t, fonts, color):
         _arrow(draw, x, y + 40, x, y, _c(RED, 210), 3)
     for k in range(int(6 * p) + 1):
         _dot(draw, 200 + k * 60, 575 - 12 * (k % 2), 40, _c(WHITE, 190))
-    _label(draw, (CX, 430), "WARM, MOIST AIR IS THE FUEL", fonts, CYAN, "mm")
     _label(draw, (CX, 470), "rising air cools and forms clouds", fonts, WHITE, "mm")
 
 
@@ -561,7 +547,6 @@ def hurricane_spin(draw, p, t, fonts, color):
         draw.line(pts, fill=_c(WHITE, 200), width=9)
     _glow(draw, CX, CY, 24, _c(CYAN, 120))
     _label(draw, (CX, CY), "EYE", fonts, WHITE, "mm")
-    _label(draw, (CX, 450), "NORTH OF THE EQUATOR: COUNTERCLOCKWISE", fonts, CYAN, "mm")
     _label(draw, (CX, 930), "south of it: clockwise · calm, clear eye", fonts, WHITE, "mm")
 
 
@@ -585,7 +570,6 @@ def sleep_vitals(draw, p, t, fonts, color):
         if len(pts) > 1:
             draw.line(pts, fill=_c(col, 230), width=5)
         _label(draw, (110, base - 90), name, fonts, col, "la")
-    _label(draw, (CX, 450), "IN NON-REM SLEEP BOTH FALL", fonts, CYAN, "mm")
 
 
 def sleep_memory(draw, p, t, fonts, color):
@@ -597,7 +581,6 @@ def sleep_memory(draw, p, t, fonts, color):
                 draw.line((*nodes[i], *nodes[j]), fill=_c(CYAN, 110), width=2)
     for i, (x, y) in enumerate(nodes):
         _glow(draw, x, y, 10, YELLOW if i < lit else _c(GREY, 120))
-    _label(draw, (CX, 450), "SLEEP HELPS FORM LONG-TERM MEMORIES", fonts, CYAN, "mm")
     _label(draw, (CX, 930), "and supports learning", fonts, WHITE, "mm")
 
 
@@ -610,7 +593,6 @@ def sleep_ages(draw, p, t, fonts, color):
     h = 260 - 22 * i
     draw.rectangle((130 + i * 70, 820 - h, 170 + i * 70, 820), fill=_c(YELLOW, 230))
     _label(draw, (CX, 860), "AGE  →", fonts, WHITE, "mm")
-    _label(draw, (CX, 450), "THE HOURS YOU NEED CHANGE AS YOU AGE", fonts, CYAN, "mm")
 
 
 def _earth(draw, x, y, r):
@@ -632,7 +614,6 @@ def ear_signal(draw, p, t, fonts, color):
     draw.ellipse((520, CY - 80, 660, CY + 80), outline=_c(CYAN, 230), width=4)
     _label(draw, (590, CY), "BRAIN", fonts, WHITE, "mm")
     _label(draw, (180, CY + 120), "sound waves", fonts, CYAN, "mm")
-    _label(draw, (CX, 450), "SOUND WAVES BECOME ELECTRICAL SIGNALS", fonts, CYAN, "mm")
 
 
 def noise_gauge(draw, p, t, fonts, color):
@@ -642,7 +623,6 @@ def noise_gauge(draw, p, t, fonts, color):
     draw.line((120, y, 260, y), fill=_c(RED, 240), width=4)
     _label(draw, (290, y), "85 dBA: HAZARDOUS", fonts, RED, "lm")
     _label(draw, (290, 760), "below: safer", fonts, GREEN, "lm")
-    _label(draw, (CX, 440), "LOUD NOISE CAN DAMAGE HEARING FOR GOOD", fonts, CYAN, "mm")
 
 
 def hearing_protect(draw, p, t, fonts, color):
@@ -651,7 +631,6 @@ def hearing_protect(draw, p, t, fonts, color):
         draw.rounded_rectangle((x - 35, CY - 40, x + 35, CY + 70), 14, fill=_c(CYAN, 210))
     _label(draw, (CX, CY + 140), "NEARLY ALWAYS PREVENTABLE", fonts, GREEN, "mm")
     _label(draw, (CX, CY + 190), "get a hearing test every year if noise is hazardous", fonts, WHITE, "mm")
-    _label(draw, (CX, 450), "PROTECT YOUR EARS", fonts, CYAN, "mm")
 
 
 def heart_pump(draw, p, t, fonts, color):
@@ -666,7 +645,6 @@ def heart_pump(draw, p, t, fonts, color):
         _dot(draw, CX + 240 * math.cos(ang), CY + 20 + 170 * math.sin(ang), 7, _c(ORANGE, 230))
     draw.ellipse((CX - 255, CY - 160, CX + 255, CY + 200), outline=_c(RED, 110), width=3)
     _label(draw, (CX, CY + 250), "valves keep blood flowing one way", fonts, WHITE, "mm")
-    _label(draw, (CX, 450), "A FIST-SIZED PUMP IN THE CIRCULATORY SYSTEM", fonts, CYAN, "mm")
 
 
 def blood_delivery(draw, p, t, fonts, color):
@@ -680,7 +658,6 @@ def blood_delivery(draw, p, t, fonts, color):
         _dot(draw, 460 - 200 * a, CY + 40, 7, _c(GREY, 240))
     _label(draw, (CX, CY - 80), "oxygen + nutrients", fonts, ORANGE, "mm")
     _label(draw, (CX, CY + 90), "carbon dioxide, on its way to the lungs", fonts, GREY, "mm")
-    _label(draw, (CX, 450), "BLOOD DELIVERS AND COLLECTS", fonts, CYAN, "mm")
 
 
 def heart_risks(draw, p, t, fonts, color):
@@ -690,7 +667,6 @@ def heart_risks(draw, p, t, fonts, color):
         draw.rounded_rectangle((120, y, 600, y + 70), 12, outline=_c(RED if on else GREY, 230), width=3)
         _label(draw, (CX, y + 35), name, fonts, WHITE, "mm")
     _label(draw, (CX, 880), "47% OF PEOPLE IN THE US HAVE AT LEAST ONE", fonts, YELLOW, "mm")
-    _label(draw, (CX, 450), "KEY RISK FACTORS FOR HEART DISEASE", fonts, CYAN, "mm")
 
 
 def ozone_shield(draw, p, t, fonts, color):
@@ -701,7 +677,6 @@ def ozone_shield(draw, p, t, fonts, color):
         y = 430 + ((t * 160 + k * 60) % 230)
         blocked = y > 640
         draw.line((x, y - 40, x, y), fill=_c(YELLOW, 60 if blocked else 230), width=4)
-    _label(draw, (CX, 380), "OZONE ABSORBS HARMFUL UV-B", fonts, CYAN, "mm")
     _label(draw, (CX, 930), "a sunscreen for the planet", fonts, WHITE, "mm")
 
 
@@ -715,7 +690,6 @@ def cfc_cycle(draw, p, t, fonts, color):
     cx = 130 + min(4, n - 1) * 115
     _glow(draw, cx, 640 + 12 * math.sin(t * 6), 18, _c(GREEN, 230))
     _label(draw, (cx, 590), "Cl", fonts, GREEN, "mm")
-    _label(draw, (CX, 450), "ONE CHLORINE ATOM, MANY OZONE MOLECULES", fonts, CYAN, "mm")
     _label(draw, (CX, 490), "up to 100,000 times", fonts, WHITE, "mm")
 
 
@@ -738,7 +712,6 @@ def flare_burst(draw, p, t, fonts, color):
             a = 0.2 + k * 0.17
             L = 220 * (p - 0.5) * 2
             draw.line((CX + 150 * math.cos(a), CY + 100 - 150 * math.sin(a), CX + (150 + L) * math.cos(a), CY + 100 - (150 + L) * math.sin(a)), fill=_c(WHITE, 220), width=4)
-    _label(draw, (CX, 400), "TWISTED MAGNETIC FIELDS SNAP, THEN A FLARE", fonts, CYAN, "mm")
 
 
 def flare_travel(draw, p, t, fonts, color):
@@ -760,7 +733,6 @@ def geodynamo(draw, p, t, fonts, color):
     for k in range(5):
         x = CX - 90 + k * 45
         draw.arc((x - 140, CY - 300, x + 140, CY - 100), 200, 340, fill=_c(CYAN, 120), width=3)
-    _label(draw, (CX, 400), "CHURNING METAL IN THE OUTER CORE", fonts, CYAN, "mm")
     _label(draw, (CX, 940), "the geodynamo makes the field", fonts, WHITE, "mm")
 
 
@@ -784,7 +756,6 @@ def pole_flip(draw, p, t, fonts, color):
     draw.rectangle((CX - 40, 720, CX + 40, 880), fill=_c(bottom, 210))
     _label(draw, (CX, 530), "N" if not flip else "S", fonts, WHITE, "mm")
     _label(draw, (CX, 910), "S" if not flip else "N", fonts, WHITE, "mm")
-    _label(draw, (CX, 440), "POLES DRIFT, AND FLIP ABOUT EVERY 300,000 YEARS", fonts, CYAN, "mm")
 
 
 def magma_rise(draw, p, t, fonts, color):
@@ -796,7 +767,6 @@ def magma_rise(draw, p, t, fonts, color):
         for k in range(10):
             a = (t * 1.5 + k / 10) % 1.0
             _dot(draw, 360 + (k % 5 - 2) * 14 * a, 600 - 120 * a, 6, _c(ORANGE, int(230 * (1 - a))))
-    _label(draw, (CX, 450), "LIGHTER MAGMA RISES AND ERUPTS", fonts, CYAN, "mm")
 
 
 def gas_pressure(draw, p, t, fonts, color):
@@ -813,7 +783,6 @@ def gas_pressure(draw, p, t, fonts, color):
                 a = (t * 2 + k / 14) % 1.0
                 _dot(draw, cx + (k % 7 - 3) * 28 * a, 620 - 190 * a, 7, _c(GREY, int(230 * (1 - a))))
         _label(draw, (cx, 560), name, fonts, WHITE, "mm")
-    _label(draw, (CX, 400), "GAS ESCAPES EASILY, OR PRESSURE BUILDS", fonts, CYAN, "mm")
 
 
 def sweat_cooling(draw, p, t, fonts, color):
@@ -823,7 +792,6 @@ def sweat_cooling(draw, p, t, fonts, color):
         x = 230 + (k * 53) % 260
         _dot(draw, x, 700 + (k * 29) % 160, 7 * (1 - a * 0.8), _c(CYAN, int(230 * (1 - a))))
         _arrow(draw, x, 690 + (k * 29) % 160, x + 6, 600 - 60 * a, _c(RED, int(200 * (1 - a))), 2)
-    _label(draw, (CX, 450), "SWEAT DRIES, CARRYING HEAT AWAY", fonts, CYAN, "mm")
     _label(draw, (CX, 940), "your natural cooling system", fonts, WHITE, "mm")
 
 
@@ -833,7 +801,6 @@ def heat_stroke_gauge(draw, p, t, fonts, color):
     draw.line((330, 700, 560, 700), fill=_c(GREY, 120), width=3)
     ok = level < 0.8
     _label(draw, (440, 640), "SWEATING WORKS" if ok else "SWEATING FAILS", fonts, GREEN if ok else RED, "mm")
-    _label(draw, (CX, 450), "HEAT STROKE: A MEDICAL EMERGENCY", fonts, CYAN, "mm")
     _label(draw, (440, 760), "body temperature rises rapidly", fonts, WHITE, "mm")
 
 
@@ -843,7 +810,6 @@ def ac_relief(draw, p, t, fonts, color):
         a = (t * 0.6 + k / 6) % 1.0
         _arrow(draw, 180 + k * 70, 670, 180 + k * 70, 670 + 130 * a, _c(CYAN, int(220 * (1 - a))), 3)
     draw.rectangle((140, 850, 580, 920), fill=_c(BLUE, 90))
-    _label(draw, (CX, 450), "AIR CONDITIONING IS THE BEST PROTECTION", fonts, CYAN, "mm")
 
 
 def water_share_bars(draw, p, t, fonts, color):
@@ -855,7 +821,6 @@ def water_share_bars(draw, p, t, fonts, color):
         draw.rectangle((220, y, 220 + 420 * pct / 100 * grow, y + 40), fill=_c(BLUE, 210))
         _label(draw, (205, y + 20), name, fonts, WHITE, "rm")
         _label(draw, (225 + 420 * pct / 100 * grow, y + 20), f"{int(pct * grow)}%", fonts, YELLOW, "lm")
-    _label(draw, (CX, 450), "HOW MUCH IS WATER?", fonts, CYAN, "mm")
 
 
 def water_carry(draw, p, t, fonts, color):
@@ -866,7 +831,6 @@ def water_carry(draw, p, t, fonts, color):
         _dot(draw, CX + 140 + a * (CX - 190), CY - 80 + (k % 4) * 50, 7, _c(ORANGE, 230))
     _label(draw, (120, CY - 130), "nutrients in", fonts, GREEN, "mm")
     _label(draw, (600, CY - 130), "waste out", fonts, ORANGE, "mm")
-    _label(draw, (CX, 450), "WATER CARRIES NUTRIENTS IN AND WASTE OUT", fonts, CYAN, "mm")
 
 
 def water_balance(draw, p, t, fonts, color):
@@ -877,7 +841,6 @@ def water_balance(draw, p, t, fonts, color):
     for k, name in enumerate(("sweat", "bathroom", "breath")):
         _arrow(draw, 300, 640 + k * 70, 520, 640 + k * 70, _c(ORANGE, 220), 3)
         _label(draw, (560, 640 + k * 70), name, fonts, ORANGE, "lm")
-    _label(draw, (CX, 450), "YOU LOSE WATER, SO DRINK TO REPLACE IT", fonts, CYAN, "mm")
 
 
 def aurora_particles(draw, p, t, fonts, color):
@@ -891,7 +854,6 @@ def aurora_particles(draw, p, t, fonts, color):
     for k in range(10):
         a = (t * 0.8 + k / 10) % 1.0
         _dot(draw, 560 + 10 * math.sin(k), CY - 70 - 100 * a, 4, _c(GREEN, int(230 * (1 - a * 0.3))))
-    _label(draw, (CX, 400), "SOLAR WIND FILLS THE SHIELD, THEN RAINS DOWN", fonts, CYAN, "mm")
 
 
 def aurora_colours(draw, p, t, fonts, color):
@@ -902,7 +864,6 @@ def aurora_colours(draw, p, t, fonts, color):
             draw.line((x, y1, x, y1 - h), fill=_c(col, 130), width=18)
         _label(draw, (CX, (y0 + y1) / 2), label, fonts, WHITE, "mm")
     draw.rectangle((60, 880, 660, 940), fill=_c(GREEN, 40))
-    _label(draw, (CX, 450), "THE GAS HIT AND ITS HEIGHT SET THE COLOUR", fonts, CYAN, "mm")
 
 
 def aurora_twin(draw, p, t, fonts, color):
@@ -911,7 +872,6 @@ def aurora_twin(draw, p, t, fonts, color):
         pts = [(CX - 90 + 180 * i / 30, CY + sign * (150 + 14 * math.sin(i / 3 + t * 2 * -sign))) for i in range(31)]
         draw.line(pts, fill=_c(GREEN, 220), width=8)
         _label(draw, (CX, CY + sign * 215), name, fonts, WHITE, "mm")
-    _label(draw, (CX, 400), "EACH TWIST IN THE NORTH HAS A SOUTHERN COMPANION", fonts, CYAN, "mm")
 
 
 def fault_stick_slip(draw, p, t, fonts, color):
@@ -926,7 +886,6 @@ def fault_stick_slip(draw, p, t, fonts, color):
         for k in range(3):
             r = 40 + 130 * (((p - 0.6) * 2 + k * 0.25) % 1.0)
             draw.arc((360 - r, 740 - r, 360 + r, 740 + r), 0, 360, fill=_c(WHITE, 150), width=3)
-    _label(draw, (CX, 450), "ROUGH EDGES STICK, ENERGY BUILDS, THEN RELEASES", fonts, CYAN, "mm")
 
 
 def seismograph_trace(draw, p, t, fonts, color):
@@ -938,7 +897,6 @@ def seismograph_trace(draw, p, t, fonts, color):
         if i / 120 > p * 1.2:
             break
     draw.line(pts, fill=_c(CYAN, 230), width=3)
-    _label(draw, (CX, 450), "SEISMOGRAPHS RECORD THE SHAKING", fonts, CYAN, "mm")
     _label(draw, (CX, 900), "no one can predict when the next one will happen", fonts, WHITE, "mm")
 
 
@@ -950,7 +908,6 @@ def atom_jump(draw, p, t, fonts, color):
     a = t * 2
     r = 140 if jump else 80
     _dot(draw, CX + r * math.cos(a), CY + 40 + r * math.sin(a), 9, YELLOW)
-    _label(draw, (CX, 450), "CESIUM ATOMS MAKE A QUANTUM JUMP", fonts, CYAN, "mm")
     _label(draw, (CX, 910), "only at exactly the right frequency", fonts, WHITE, "mm")
 
 
@@ -960,7 +917,6 @@ def cycle_counter(draw, p, t, fonts, color):
     count = int(9192631770 * min(1.0, p * 1.1))
     _label(draw, (CX, 780), f"{count:,}", fonts, YELLOW, "mm")
     _label(draw, (CX, 830), "CYCLES = ONE SECOND", fonts, WHITE, "mm")
-    _label(draw, (CX, 450), "CESIUM ATOMS DEFINE THE SECOND", fonts, CYAN, "mm")
 
 
 def clock_drift(draw, p, t, fonts, color):
@@ -969,7 +925,6 @@ def clock_drift(draw, p, t, fonts, color):
         draw.rectangle((100, y, 620, y + 40), outline=GREY, width=2)
         draw.rectangle((100, y, 100 + max(4, width * min(1.0, p * 1.5)), y + 40), fill=_c(col, 220))
         _label(draw, (CX, y - 28), name, fonts, WHITE, "mm")
-    _label(draw, (CX, 450), "HOW FAR EACH CLOCK DRIFTS", fonts, CYAN, "mm")
 
 
 def glacier_form(draw, p, t, fonts, color):
@@ -982,7 +937,6 @@ def glacier_form(draw, p, t, fonts, color):
     for k in range(10):
         a = (t * 0.4 + k / 10) % 1.0
         _dot(draw, 160 + (k * 71) % 400, 430 + a * 160, 4, _c(WHITE, 230))
-    _label(draw, (CX, 390), "SNOW PILES UP AND COMPRESSES INTO ICE", fonts, CYAN, "mm")
 
 
 def glacier_flow(draw, p, t, fonts, color):
@@ -992,7 +946,6 @@ def glacier_flow(draw, p, t, fonts, color):
     for k in range(5):
         _arrow(draw, 150 + k * 100 + shift, 640 + k * 38, 190 + k * 100 + shift, 655 + k * 38, _c(WHITE, 210), 3)
     _dot(draw, 650, 860, 14 + 6 * p, _c(GREY, 220))
-    _label(draw, (CX, 450), "A SLOW RIVER OF ICE THAT GRINDS THE GROUND", fonts, CYAN, "mm")
 
 
 def glacier_share(draw, p, t, fonts, color):
@@ -1001,7 +954,6 @@ def glacier_share(draw, p, t, fonts, color):
         draw.rectangle((100, y, 620, y + 44), outline=GREY, width=2)
         draw.rectangle((100, y, 100 + 520 * pct / 100 * min(1.0, p * 1.5), y + 44), fill=_c(CYAN, 220))
         _label(draw, (CX, y - 28), name, fonts, WHITE, "mm")
-    _label(draw, (CX, 450), "WHAT GLACIERS COVER AND HOLD", fonts, CYAN, "mm")
 
 
 # ---------------------------------------------------------------- 3D layer (pure code, no assets)
@@ -1071,19 +1023,16 @@ def _dipole3d(draw, cx, cy, r, yaw, tilt, color=CYAN):
 
 def globe_spin_3d(draw, p, t, fonts, color):
     _globe3d(draw, CX, CY + 10, 190, t * 0.6)
-    _label(draw, (CX, 400), "A ROTATING 3D MODEL OF EARTH", fonts, CYAN, "mm")
 
 
 def orbit_3d(draw, p, t, fonts, color):
     _globe3d(draw, CX, CY + 10, 130, t * 0.3, 0.5)
     _orbit3d(draw, CX, CY + 10, 130, t * 0.3, 0.5, (t * 0.15) % 1.0)
-    _label(draw, (CX, 400), "A BODY ORBITING IN 3D", fonts, CYAN, "mm")
 
 
 def field_lines_3d(draw, p, t, fonts, color):
     _globe3d(draw, CX, CY + 10, 120, t * 0.4)
     _dipole3d(draw, CX, CY + 10, 120, t * 0.4, 0.35)
-    _label(draw, (CX, 400), "MAGNETIC FIELD LINES AROUND THE PLANET", fonts, CYAN, "mm")
 
 
 MOTIFS: dict[str, Callable[..., None]] = {
