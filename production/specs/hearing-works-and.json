@@ -1,0 +1,58 @@
+{
+  "title": "How Hearing Works and How Noise Damages It",
+  "category": "health",
+  "voice": "af_heart",
+  "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "How Hearing Works and How Noise Damages It | QuantaTale",
+  "post_description": "How the ear turns sound into signals and why loud noise causes lasting damage, from the NIH and CDC. Sources: National Institutes of Health https://www.nidcd.nih.gov/health/how-do-we-hear and Centers for Disease Control and Prevention https://www.cdc.gov/niosh/noise/about/index.html #Science #ScienceFacts #QuantaTale",
+  "content_id_prefix": "qt-hearing-works-and",
+  "publish_timezone": "Africa/Kampala",
+  "editorial_approved": true,
+  "editorial_status": "automated_gate_passed",
+  "editorial_review_required": false,
+  "narration": "How does a wave of air become a sound you hear? Your ears carry out several steps that convert airborne sound waves into electrical signals. The auditory nerve then carries those signals to the brain. Loud noise, especially at work, can damage your hearing. Hearing loss caused by noise at work is permanent. Noise becomes hazardous once it reaches 85 A-weighted decibels. Tinnitus is the annoying sound of buzzing, rushing or ringing that seems to come from your ears or head. The good news is that work-related hearing loss can nearly always be prevented. Anyone exposed to hazardous noise at work should have a hearing test every year.",
+  "sources": [
+    {
+      "publisher": "National Institutes of Health",
+      "title": "How Do We Hear? | NIDCD",
+      "url": "https://www.nidcd.nih.gov/health/how-do-we-hear",
+      "supports": "Hearing depends on a series of complex steps that change sound waves in the air into electrical signals. | Our auditory nerve then carries these signals to the brain.",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-20"
+    },
+    {
+      "publisher": "Centers for Disease Control and Prevention",
+      "title": "About Occupational Hearing Loss | Noise and Hearing Loss | CDC",
+      "url": "https://www.cdc.gov/niosh/noise/about/index.html",
+      "supports": "Exposure to loud noise or certain chemicals while at work can damage your hearing. | Occupational hearing loss is one of the most common work-related illnesses and is permanent . | Hazardous noise: Noise is considered hazardous or loud when it reaches 85 dBA or higher. | Tinnitus: Tinnitus is an annoying buzzing, rushing, or ringing noise in your ears or in your head. | Fortunately, occupational hearing loss can nearly always be prevented . | Workers should have a yearly hearing test if exposed to hazardous noise or ototoxic chemicals.",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-20"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Ears convert sound waves into signals the brain receives.",
+      "visual_description": "Sound waves, an ear, a nerve and a brain.",
+      "visual_style": "hybrid",
+      "motif": "ear_signal"
+    },
+    {
+      "narration_segment": "Noise at 85 decibels or more is hazardous and the damage is permanent.",
+      "visual_description": "A noise meter passing a hazard line.",
+      "visual_style": "hybrid",
+      "motif": "noise_gauge"
+    },
+    {
+      "narration_segment": "Hearing loss is nearly always preventable, and a yearly test helps.",
+      "visual_description": "Ear protection with a reminder.",
+      "visual_style": "hybrid",
+      "motif": "hearing_protect"
+    }
+  ],
+  "visual_profile": "holographic_science_v1",
+  "source_passage_verification_required_before_publication": false,
+  "source_assessment": "Automated gates passed on 2026-11-20: each sentence tied to a verbatim source quote, numbers matched, no copied word runs, model entailment check passed, independent publishers. Not complete fact verification.",
+  "authored_by": "assistant_session_draft_then_automated_gates"
+}
