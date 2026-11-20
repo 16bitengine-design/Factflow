@@ -63,9 +63,5 @@
       "visual_style": "hybrid",
       "motif": "seismograph_trace"
     }
-  ],
-  "rejection_reasons": [
-    "quote not found verbatim in source 1: \"Earth's outer shell is broken into giant puzzle pieces calle\"",
-    "quote not found verbatim in source 0: 'Instruments called seismographs record the shaking.'"
   ]
 }
