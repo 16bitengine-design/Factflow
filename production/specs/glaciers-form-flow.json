@@ -1,0 +1,58 @@
+{
+  "title": "How Glaciers Form, Flow and Hold Our Water",
+  "category": "science",
+  "voice": "af_heart",
+  "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "How Glaciers Form, Flow and Hold Our Water | QuantaTale",
+  "post_description": "How glaciers form from snow, move downhill and store fresh water, from the USGS and NASA. Sources: United States Geological Survey https://www.usgs.gov/water-science-school/science/glaciers-and-icecaps and National Aeronautics and Space Administration https://science.nasa.gov/kids/earth/10-interesting-things-about-glaciers/ #Science #ScienceFacts #QuantaTale",
+  "content_id_prefix": "qt-glaciers-form-flow",
+  "publish_timezone": "Africa/Kampala",
+  "editorial_approved": true,
+  "editorial_status": "automated_gate_passed",
+  "editorial_review_required": false,
+  "narration": "What is a glacier, and how does one begin? A glacier starts life as snowflakes. When far more snow falls than melts each summer, the weight of the pile compresses the old snow into ice. Gravity pulls the ice downhill so slowly that you would not notice it move. On its way, the ice grinds away at the ground like a gigantic bulldozer. Roughly 10 percent of Earth's land area is covered by glaciers. And roughly 69 percent of Earth's fresh water is locked up in glaciers.",
+  "sources": [
+    {
+      "publisher": "United States Geological Survey",
+      "title": "Glaciers and Icecaps | U.S. Geological Survey",
+      "url": "https://www.usgs.gov/water-science-school/science/glaciers-and-icecaps",
+      "supports": "Glaciers begin life as snowflakes. | When the snowfall in an area far exceeds the melting that occurs during summer, glaciers start to form. The weight of the accumulated snow buries and compresses the previously fallen snow into ice. | They slowly grind away at the underlying sediment and can push or drag that sediment as if they were a gigantic bulldozer.",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-20"
+    },
+    {
+      "publisher": "National Aeronautics and Space Administration",
+      "title": "10 Interesting Things About Glaciers - NASA Science",
+      "url": "https://science.nasa.gov/kids/earth/10-interesting-things-about-glaciers/",
+      "supports": "Gravity causes the ice inside glaciers to change shape and move. Glaciers flow from higher ground to lower ground. However, they flow so slowly that if you were standing next to a glacier, you probably wouldn't notice it was moving. | Glaciers cover about 10 percent of the world's total land area | Glaciers hold about 69% of the world's fresh water.",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-20"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Snow piles up and compresses into ice.",
+      "visual_description": "Snow layers packing down into ice.",
+      "visual_style": "hybrid",
+      "motif": "glacier_form"
+    },
+    {
+      "narration_segment": "The ice flows slowly downhill and grinds the ground.",
+      "visual_description": "A river of ice sliding down a slope.",
+      "visual_style": "hybrid",
+      "motif": "glacier_flow"
+    },
+    {
+      "narration_segment": "Glaciers cover about 10 percent of land and hold about 69 percent of fresh water.",
+      "visual_description": "Two bars for land cover and fresh water share.",
+      "visual_style": "hybrid",
+      "motif": "glacier_share"
+    }
+  ],
+  "visual_profile": "holographic_science_v1",
+  "source_passage_verification_required_before_publication": false,
+  "source_assessment": "Automated gates passed on 2026-11-20: each sentence tied to a verbatim source quote, numbers matched, no copied word runs, model entailment check passed, independent publishers. Not complete fact verification.",
+  "authored_by": "assistant_session_draft_then_automated_gates"
+}

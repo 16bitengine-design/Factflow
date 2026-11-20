@@ -1,0 +1,58 @@
+{
+  "title": "How Much of You Is Water, and Why It Matters",
+  "category": "science",
+  "voice": "af_heart",
+  "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "How Much of You Is Water, and Why It Matters | QuantaTale",
+  "post_description": "How much of the human body is water and what that water does, from the USGS and the NIH. Sources: United States Geological Survey https://www.usgs.gov/water-science-school/science/water-you-water-and-human-body and National Institutes of Health https://newsinhealth.nih.gov/2023/05/hydrating-health #Science #ScienceFacts #QuantaTale",
+  "content_id_prefix": "qt-much-you-water",
+  "publish_timezone": "Africa/Kampala",
+  "editorial_approved": true,
+  "editorial_status": "automated_gate_passed",
+  "editorial_review_required": false,
+  "narration": "How much of your body is actually water? For an adult, up to 60 percent of the body is water. Your brain and heart are about 73 percent water, and your lungs about 83 percent. Even your bones are about 31 percent water. Babies are born at about 78 percent. Every one of your cells needs water to work. Water also carries waste material out of the body. Sweating, using the bathroom and even breathing out all cost your body water, so you have to drink to replace it.",
+  "sources": [
+    {
+      "publisher": "United States Geological Survey",
+      "title": "The Water in You: Water and the Human Body | U.S. Geological Survey",
+      "url": "https://www.usgs.gov/water-science-school/science/water-you-water-and-human-body",
+      "supports": "Up to 60% of the human adult body is water. | the brain and heart are composed of 73% water, and the lungs are about 83% water. | and even the bones are watery: 31%. | Babies have the most, being born at about 78%. | No less important is the ability of water to transport waste material out of our bodies.",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-20"
+    },
+    {
+      "publisher": "National Institutes of Health",
+      "title": "Hydrating for Health | NIH News in Health",
+      "url": "https://newsinhealth.nih.gov/2023/05/hydrating-health",
+      "supports": "All your cells need water to work. | Your body loses water when you sweat, go to the bathroom, and even when you just breathe out. So, you need to drink enough water to replace what you lose.",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-20"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Water makes up most of the body, from brain to bones.",
+      "visual_description": "Bars showing the water share of body parts.",
+      "visual_style": "hybrid",
+      "motif": "water_share_bars"
+    },
+    {
+      "narration_segment": "Cells need water, and it carries waste out.",
+      "visual_description": "A cell with nutrients arriving and waste leaving.",
+      "visual_style": "hybrid",
+      "motif": "water_carry"
+    },
+    {
+      "narration_segment": "You lose water by sweating, bathroom visits and breathing, so you drink to replace it.",
+      "visual_description": "A fluid gauge draining through three outlets.",
+      "visual_style": "hybrid",
+      "motif": "water_balance"
+    }
+  ],
+  "visual_profile": "holographic_science_v1",
+  "source_passage_verification_required_before_publication": false,
+  "source_assessment": "Automated gates passed on 2026-11-20: each sentence tied to a verbatim source quote, numbers matched, no copied word runs, model entailment check passed, independent publishers. Not complete fact verification.",
+  "authored_by": "assistant_session_draft_then_automated_gates"
+}

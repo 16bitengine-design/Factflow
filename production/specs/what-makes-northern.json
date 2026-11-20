@@ -1,0 +1,58 @@
+{
+  "title": "What Makes the Northern Lights Glow",
+  "category": "science",
+  "voice": "af_heart",
+  "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "What Makes the Northern Lights Glow | QuantaTale",
+  "post_description": "How the solar wind, Earth's magnetic shield and atmospheric gases create auroras, from NASA and NOAA. Sources: National Aeronautics and Space Administration https://science.nasa.gov/sun/auroras/ and National Oceanic and Atmospheric Administration https://www.ncei.noaa.gov/news/science-beauty-and-mystery-auroras #Science #ScienceFacts #QuantaTale",
+  "content_id_prefix": "qt-what-makes-northern",
+  "publish_timezone": "Africa/Kampala",
+  "editorial_approved": true,
+  "editorial_status": "automated_gate_passed",
+  "editorial_review_required": false,
+  "narration": "What makes the sky glow green near the poles? The Sun constantly sends out charged particles called the solar wind. At Earth, energy builds up in the magnetic shield, and when it is released, much of it rains down on the atmosphere. In the polar regions, electrons collide with oxygen and nitrogen atoms in the upper atmosphere, and those atoms emit light. The most common colour is green, from oxygen about 100 kilometres up. The colour depends on which gas is hit and where it sits: nitrogen glows blue, and oxygen far higher up glows red. Near the poles, auroras show up on about half the nights of the year. Every twist of a northern auroral ribbon is matched by a southern companion, though not in a perfect mirror image.",
+  "sources": [
+    {
+      "publisher": "National Aeronautics and Space Administration",
+      "title": "Auroras - NASA Science",
+      "url": "https://science.nasa.gov/sun/auroras/",
+      "supports": "The Sun continuously produces an outflow of charged particles into the solar system known as the solar wind. | When the solar wind reaches Earth, it can interact with Earth’s magnetic shield, often depositing and accumulating energy there. When this energy is finally released, much of it rains down on our atmosphere, causing auroras. | The most common color is green, which is produced when oxygen is excited by electrons around 60 mi (100 km) above Earth's surface. | The color of an aurora depends on the type of gas that is hit and where that gas is located in the atmosphere. Oxygen excited to ",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-20"
+    },
+    {
+      "publisher": "National Oceanic and Atmospheric Administration",
+      "title": "The Science, Beauty, and Mystery of Auroras | News | National Centers for Environmental Information (NCEI)",
+      "url": "https://www.ncei.noaa.gov/news/science-beauty-and-mystery-auroras",
+      "supports": "Magnetospheric electrons can be accelerated by various processes and hit the atmosphere as they flow along magnetic field lines in the polar regions towards the Earth. There, they collide with oxygen and nitrogen atoms in Earth’s upper atmosphere and emit light in the form of aurora. | At polar regions, the aurora borealis and aurora australis show up about half the nights in a given year. | For each twist and wave of the auroral ribbon in the north, its southern companion will do the same, not quite in mirror image, but clearly in coordinated motions.",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-20"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "The solar wind fills the magnetic shield, then rains energy down.",
+      "visual_description": "Particles streaming from the Sun toward Earth's field.",
+      "visual_style": "hybrid",
+      "motif": "aurora_particles"
+    },
+    {
+      "narration_segment": "Gas type and height set the colour.",
+      "visual_description": "Bands of green, red and blue at different heights.",
+      "visual_style": "hybrid",
+      "motif": "aurora_colours"
+    },
+    {
+      "narration_segment": "Each northern ribbon has a southern companion.",
+      "visual_description": "Earth with matching green ribbons at both poles.",
+      "visual_style": "hybrid",
+      "motif": "aurora_twin"
+    }
+  ],
+  "visual_profile": "holographic_science_v1",
+  "source_passage_verification_required_before_publication": false,
+  "source_assessment": "Automated gates passed on 2026-11-20: each sentence tied to a verbatim source quote, numbers matched, no copied word runs, model entailment check passed, independent publishers. Not complete fact verification.",
+  "authored_by": "assistant_session_draft_then_automated_gates"
+}
