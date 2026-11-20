@@ -929,6 +929,88 @@ def glacier_share(draw, p, t, fonts, color):
     _label(draw, (CX, 450), "WHAT GLACIERS COVER AND HOLD", fonts, CYAN, "mm")
 
 
+# ---------------------------------------------------------------- 3D layer (pure code, no assets)
+
+def _rot(pt, yaw, tilt):
+    """Rotate a 3D point around the vertical axis, then tilt towards the viewer."""
+    x, y, z = pt
+    x, z = x * math.cos(yaw) + z * math.sin(yaw), -x * math.sin(yaw) + z * math.cos(yaw)
+    y, z = y * math.cos(tilt) - z * math.sin(tilt), y * math.sin(tilt) + z * math.cos(tilt)
+    return x, y, z
+
+
+def _proj(pt, cx, cy, r, yaw, tilt):
+    """Orthographic projection with mild perspective; returns (x, y, depth)."""
+    x, y, z = _rot(pt, yaw, tilt)
+    k = 1.0 + 0.12 * z
+    return cx + x * r * k, cy - y * r * k, z
+
+
+def _globe3d(draw, cx, cy, r, yaw, tilt=0.35, color=CYAN, lines=True):
+    """Wireframe sphere with depth shading: far side dim, near side bright."""
+    _glow(draw, cx, cy, r, _c(BLUE, 120))
+    steps = 48
+    rings = [("lat", math.radians(a)) for a in range(-60, 61, 30)] + [("lon", math.radians(a)) for a in range(0, 180, 30)]
+    for kind, a in rings:
+        pts = []
+        for i in range(steps + 1):
+            u = 2 * math.pi * i / steps
+            pt = (math.cos(a) * math.cos(u), math.sin(a), math.cos(a) * math.sin(u)) if kind == "lat" else (math.cos(u) * math.cos(a), math.sin(u), math.cos(u) * math.sin(a))
+            pts.append(_proj(pt, cx, cy, r, yaw, tilt))
+        for (x0, y0, z0), (x1, y1, z1) in zip(pts, pts[1:]):
+            near = (z0 + z1) / 2 > 0
+            draw.line((x0, y0, x1, y1), fill=_c(color, 200 if near else 55), width=2 if near else 1)
+
+
+def _orbit3d(draw, cx, cy, r, yaw, tilt, phase, color=YELLOW, radius=1.7, incl=1.1):
+    """Circular orbit around the globe; returns the body's projected (x, y, depth)."""
+    prev = None
+    for i in range(65):
+        u = 2 * math.pi * i / 64
+        pt = (radius * math.cos(u), radius * math.sin(u) * math.sin(incl), radius * math.sin(u) * math.cos(incl))
+        cur = _proj(pt, cx, cy, r, yaw, tilt)
+        if prev:
+            draw.line((prev[0], prev[1], cur[0], cur[1]), fill=_c(color, 150 if cur[2] > 0 else 45), width=2)
+        prev = cur
+    u = phase * 2 * math.pi
+    body = _proj((radius * math.cos(u), radius * math.sin(u) * math.sin(incl), radius * math.sin(u) * math.cos(incl)), cx, cy, r, yaw, tilt)
+    _dot(draw, body[0], body[1], 9 if body[2] > 0 else 6, _c(color, 255 if body[2] > 0 else 120))
+    return body
+
+
+def _dipole3d(draw, cx, cy, r, yaw, tilt, color=CYAN):
+    """Dipole field lines (r = L cos^2 latitude) in 3D around the globe."""
+    for lon in range(0, 360, 90):
+        for L in (1.8, 2.6):
+            pts = []
+            for i in range(-80, 81):
+                lat = math.radians(i * 0.95)
+                rr = L * math.cos(lat) ** 2
+                if rr < 1.02:
+                    continue
+                lo = math.radians(lon)
+                pts.append(_proj((rr * math.cos(lat) * math.cos(lo), rr * math.sin(lat), rr * math.cos(lat) * math.sin(lo)), cx, cy, r, yaw, tilt))
+            for (x0, y0, z0), (x1, y1, z1) in zip(pts, pts[1:]):
+                draw.line((x0, y0, x1, y1), fill=_c(color, 170 if (z0 + z1) > 0 else 50), width=2)
+
+
+def globe_spin_3d(draw, p, t, fonts, color):
+    _globe3d(draw, CX, CY + 10, 190, t * 0.6)
+    _label(draw, (CX, 400), "A ROTATING 3D MODEL OF EARTH", fonts, CYAN, "mm")
+
+
+def orbit_3d(draw, p, t, fonts, color):
+    _globe3d(draw, CX, CY + 10, 130, t * 0.3, 0.5)
+    _orbit3d(draw, CX, CY + 10, 130, t * 0.3, 0.5, (t * 0.15) % 1.0)
+    _label(draw, (CX, 400), "A BODY ORBITING IN 3D", fonts, CYAN, "mm")
+
+
+def field_lines_3d(draw, p, t, fonts, color):
+    _globe3d(draw, CX, CY + 10, 120, t * 0.4)
+    _dipole3d(draw, CX, CY + 10, 120, t * 0.4, 0.35)
+    _label(draw, (CX, 400), "MAGNETIC FIELD LINES AROUND THE PLANET", fonts, CYAN, "mm")
+
+
 MOTIFS: dict[str, Callable[..., None]] = {
     name: fn for name, fn in {
         "evaporation": evaporation, "rising_cooling": rising_cooling, "condensation": condensation,
@@ -948,6 +1030,7 @@ MOTIFS: dict[str, Callable[..., None]] = {
         "ozone_shield": ozone_shield, "cfc_cycle": cfc_cycle, "ozone_hole_patch": ozone_hole_patch, "flare_burst": flare_burst, "flare_travel": flare_travel, "geodynamo": geodynamo, "magnetosphere": magnetosphere, "pole_flip": pole_flip, "magma_rise": magma_rise, "gas_pressure": gas_pressure, "sweat_cooling": sweat_cooling, "heat_stroke_gauge": heat_stroke_gauge, "ac_relief": ac_relief,
         
         "water_share_bars": water_share_bars, "water_carry": water_carry, "water_balance": water_balance, "aurora_particles": aurora_particles, "aurora_colours": aurora_colours, "aurora_twin": aurora_twin, "fault_stick_slip": fault_stick_slip, "seismograph_trace": seismograph_trace, "atom_jump": atom_jump, "cycle_counter": cycle_counter, "clock_drift": clock_drift, "glacier_form": glacier_form, "glacier_flow": glacier_flow, "glacier_share": glacier_share,
+        "globe_spin_3d": globe_spin_3d, "orbit_3d": orbit_3d, "field_lines_3d": field_lines_3d,
         "geyser_eruption": geyser_eruption, "interval_timeline": interval_timeline, "geyser_cutaway": geyser_cutaway,
     }.items()
 }
