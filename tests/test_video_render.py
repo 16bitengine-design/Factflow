@@ -170,17 +170,57 @@ def test_every_publishable_library_topic_has_a_renderer():
             validate_sample_spec(spec)
 
 
-def test_generic_science_scene_shows_the_topics_own_scene_description():
+def test_generic_science_scene_never_prints_the_scene_notes():
     pytest.importorskip("PIL")
     from factflow.holographic_scenes import draw_generic_science_scene
     from PIL import Image, ImageDraw, ImageFont
 
     image = Image.new("RGBA", (720, 1280))
     draw = ImageDraw.Draw(image)
+    drawn = []
+    real_text = draw.text
+    draw.text = lambda xy, text, *a, **k: (drawn.append(text), real_text(xy, text, *a, **k))[1]
     font = ImageFont.load_default()
     fonts = {name: font for name in ("label", "tiny", "heading", "small")}
-    scenes = [{"visual_description": f"Scene {i}"} for i in range(3)]
+    scenes = [{"visual_description": f"Internal note {i}", "narration_segment": f"segment {i}"} for i in range(3)]
     titles = [draw_generic_science_scene(draw, index, 0.5, 2.0, fonts, scenes) for index in range(4)]
     assert titles[0][0] == "THE QUESTION" and titles[-1][0] == "THE TAKEAWAY"
-    assert {t[1] for t in titles} <= {"Scene 1 of 3", "Scene 2 of 3", "Scene 3 of 3"}
+    assert all(t[1] == "" for t in titles)
+    assert not any("Internal note" in str(text) for text in drawn)
     assert draw_generic_science_scene(draw, 0, 0.5, 2.0, fonts, [])[0] == "THE QUESTION"
+
+
+def test_scenes_follow_the_narrated_sentences_in_order():
+    from factflow.holographic_scenes import scene_position, sentence_scene_map
+
+    narration = ("Why is the sky blue. Sunlight scatters off air molecules. Blue light scatters the most. "
+                 "At sunset the light travels farther. Red light is what remains.")
+    scenes = [{"narration_segment": "Sunlight scatters off air molecules, and blue scatters most"},
+              {"narration_segment": "At sunset red light remains after a longer path"}]
+    shares, assignment = sentence_scene_map(narration, scenes)
+    assert assignment == sorted(assignment) and set(assignment) == {0, 1}
+    assert assignment[-1] == 1 and assignment[1] == 0 and abs(sum(shares) - 1) < 1e-9
+    assert scene_position(narration, scenes, 0.5, 20.0)[0] == 0
+    assert scene_position(narration, scenes, 19.5, 20.0)[0] == 1
+
+
+def test_sources_credit_uses_the_topic_urls():
+    from factflow.video_render import _sources_label
+
+    spec = {"sources": [{"url": "https://oceanservice.noaa.gov/x"}, {"url": "https://science.nasa.gov/y"}, {"url": "https://www.metoffice.gov.uk/z"}]}
+    assert _sources_label(spec) == "Sources: NOAA, NASA, METOFFICE"
+    assert _sources_label({}) == ""
+
+
+def test_captions_are_split_so_no_words_are_dropped():
+    from factflow.video_render import _caption_segments
+
+    narration = ("Clouds over the warm water dump much more rain than usual on the Americas, while other regions can face drought. "
+                 "Short one.")
+    segments = _caption_segments(narration, 20.0)
+    spoken = " ".join(text for _, _, text in segments).replace(".", "").replace(",", "").split()
+    original = narration.replace(".", "").replace(",", "").split()
+    assert spoken == original
+    assert all(len(text) <= 62 for _, _, text in segments)
+    assert segments[0][0] == 0.0 and segments[-1][1] == 20.0
+    assert all(a[1] <= b[0] + 1e-9 for a, b in zip(segments, segments[1:]))

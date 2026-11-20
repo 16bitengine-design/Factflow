@@ -88,6 +88,22 @@ def _timestamp(seconds: float) -> str:
     return f"{hours:02}:{minutes:02}:{whole_seconds:02},{millis:03}"
 
 
+def _split_caption(text: str, max_words: int = 9, max_chars: int = 58) -> list[str]:
+    """Break a sentence into on-screen pieces that fit two caption lines, so no words are cut off."""
+    chunks: list[str] = []
+    current: list[str] = []
+    for word in text.split():
+        trial = " ".join(current + [word])
+        if current and (len(current) >= max_words or len(trial) > max_chars):
+            chunks.append(" ".join(current))
+            current = [word]
+        else:
+            current.append(word)
+    if current:
+        chunks.append(" ".join(current))
+    return chunks or [text]
+
+
 def _caption_segments(narration: str, duration: float) -> list[tuple[float, float, str]]:
     sentences = [part.strip() for part in narration.replace("—", ",").split(".") if part.strip()]
     if not sentences:
@@ -99,7 +115,14 @@ def _caption_segments(narration: str, duration: float) -> list[tuple[float, floa
     for sentence, weight in zip(sentences, weights):
         start = cursor
         cursor += duration * weight / total
-        segments.append((start, cursor, sentence.rstrip(" ,;:") + ( "." if not sentence.endswith((".", "?", "!")) else "")))
+        text = sentence.rstrip(" ,;:") + ("." if not sentence.endswith((".", "?", "!")) else "")
+        chunks = _split_caption(text)
+        words = [max(1, len(c.split())) for c in chunks]
+        chunk_start = start
+        for chunk, count in zip(chunks, words):
+            chunk_end = chunk_start + (cursor - start) * count / sum(words)
+            segments.append((chunk_start, chunk_end, chunk))
+            chunk_start = chunk_end
     if segments:
         segments[-1] = (segments[-1][0], duration, segments[-1][2])
     return segments
@@ -133,6 +156,21 @@ def _fit_font(draw: Any, text: str, font: Any, max_width: int, min_size: int = 1
         fitted = fitted.font_variant(size=max(min_size, size - 1))
     return fitted
 
+def _sources_label(spec: dict[str, Any]) -> str:
+    """Short on-screen credit such as 'Sources: NASA, NOAA', taken from the topic's own source URLs."""
+    from urllib.parse import urlparse
+
+    generic = {"gov", "uk", "co", "com", "org", "edu", "int", "net", "ac"}
+    names: list[str] = []
+    for source in spec.get("sources", []):
+        parts = urlparse(str(source.get("url", ""))).netloc.lower().split(".")
+        core = [x for x in parts if x not in generic]
+        name = (core[-1] if core else (parts[-1] if parts else "")).upper()
+        if name and name not in names:
+            names.append(name)
+    return ("Sources: " + ", ".join(names[:3])) if names else ""
+
+
 def _draw_frame(spec: dict[str, Any], seconds: float, duration: float, caption: str, fonts: dict[str, Any], stars: list[tuple[int, int, int]]) -> Any:
     """Render a narration-led frame using only holographic scientific imagery."""
     from PIL import Image, ImageDraw
@@ -161,7 +199,9 @@ def _draw_frame(spec: dict[str, Any], seconds: float, duration: float, caption: 
     scene_index, scene_progress = _scene_state(seconds, duration)
     profile = spec.get("visual_profile", "sky_blue_v1")
     if profile == "holographic_science_v1":
-        headline, subline = draw_generic_science_scene(draw, scene_index, scene_progress, seconds, fonts, spec.get("scenes") or [])
+        headline, subline = draw_generic_science_scene(draw, scene_index, scene_progress, seconds, fonts, spec.get("scenes") or [],
+                                                       narration=str(spec.get("narration", "")), duration=duration)
+        subline = _sources_label(spec)
     else:
         scene_renderer = draw_sunset_scene if profile == "sunset_red_v1" else draw_holographic_scene
         headline, subline = scene_renderer(draw, scene_index, scene_progress, seconds, fonts)
