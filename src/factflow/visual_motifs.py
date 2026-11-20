@@ -618,6 +618,81 @@ def _earth(draw, x, y, r):
     draw.ellipse((x - r * 0.55, y - r * 0.35, x - r * 0.1, y + r * 0.2), fill=_c(GREEN, 200))
 
 
+def ear_signal(draw, p, t, fonts, color):
+    for k in range(4):
+        x = 70 + ((t * 120 + k * 45) % 180)
+        draw.arc((x - 18, CY - 40, x + 18, CY + 40), -60, 60, fill=_c(CYAN, 220), width=4)
+    draw.arc((250, CY - 90, 340, CY + 90), 90, 270, fill=_c(WHITE, 230), width=8)
+    _label(draw, (295, CY + 120), "EAR", fonts, WHITE, "mm")
+    draw.line((340, CY, 520, CY), fill=_c(GREY, 200), width=4)
+    for k in range(5):
+        a = (t * 0.7 + k / 5) % 1.0
+        _dot(draw, 340 + 180 * a, CY, 6, _c(YELLOW, 240))
+    _label(draw, (430, CY - 40), "auditory nerve", fonts, YELLOW, "mm")
+    draw.ellipse((520, CY - 80, 660, CY + 80), outline=_c(CYAN, 230), width=4)
+    _label(draw, (590, CY), "BRAIN", fonts, WHITE, "mm")
+    _label(draw, (180, CY + 120), "sound waves", fonts, CYAN, "mm")
+    _label(draw, (CX, 450), "SOUND WAVES BECOME ELECTRICAL SIGNALS", fonts, CYAN, "mm")
+
+
+def noise_gauge(draw, p, t, fonts, color):
+    level = 0.25 + 0.65 * min(1.0, p * 1.4)
+    _gauge(draw, 150, 480, 880, level, ORANGE if level > 0.7 else GREEN)
+    y = 880 - (880 - 480) * 0.7
+    draw.line((120, y, 260, y), fill=_c(RED, 240), width=4)
+    _label(draw, (290, y), "85 dBA: HAZARDOUS", fonts, RED, "lm")
+    _label(draw, (290, 760), "below: safer", fonts, GREEN, "lm")
+    _label(draw, (CX, 440), "LOUD NOISE CAN DAMAGE HEARING FOR GOOD", fonts, CYAN, "mm")
+
+
+def hearing_protect(draw, p, t, fonts, color):
+    draw.arc((220, CY - 150, 500, CY + 90), 180, 360, fill=_c(WHITE, 230), width=10)
+    for x in (210, 510):
+        draw.rounded_rectangle((x - 35, CY - 40, x + 35, CY + 70), 14, fill=_c(CYAN, 210))
+    _label(draw, (CX, CY + 140), "NEARLY ALWAYS PREVENTABLE", fonts, GREEN, "mm")
+    _label(draw, (CX, CY + 190), "get a hearing test every year if noise is hazardous", fonts, WHITE, "mm")
+    _label(draw, (CX, 450), "PROTECT YOUR EARS", fonts, CYAN, "mm")
+
+
+def heart_pump(draw, p, t, fonts, color):
+    beat = 1.0 + 0.08 * math.sin(t * 6.0)
+    r = 80 * beat
+    draw.ellipse((CX - r - 20, CY - r, CX + 20, CY + r), fill=_c(RED, 220))
+    draw.ellipse((CX - 20, CY - r, CX + r + 20, CY + r), fill=_c(RED, 220))
+    draw.polygon([(CX - r - 15, CY + 15), (CX + r + 15, CY + 15), (CX, CY + r * 1.9)], fill=_c(RED, 220))
+    for k in range(6):
+        a = (t * 0.5 + k / 6) % 1.0
+        ang = 2 * math.pi * a
+        _dot(draw, CX + 240 * math.cos(ang), CY + 20 + 170 * math.sin(ang), 7, _c(ORANGE, 230))
+    draw.ellipse((CX - 255, CY - 160, CX + 255, CY + 200), outline=_c(RED, 110), width=3)
+    _label(draw, (CX, CY + 250), "valves keep blood flowing one way", fonts, WHITE, "mm")
+    _label(draw, (CX, 450), "A FIST-SIZED PUMP IN THE CIRCULATORY SYSTEM", fonts, CYAN, "mm")
+
+
+def blood_delivery(draw, p, t, fonts, color):
+    draw.ellipse((90, CY - 90, 250, CY + 90), outline=_c(CYAN, 220), width=4)
+    _label(draw, (170, CY), "BLOOD", fonts, WHITE, "mm")
+    draw.ellipse((470, CY - 90, 630, CY + 90), outline=_c(GREEN, 220), width=4)
+    _label(draw, (550, CY), "ORGANS", fonts, WHITE, "mm")
+    for k in range(5):
+        a = (t * 0.5 + k / 5) % 1.0
+        _dot(draw, 260 + 200 * a, CY - 40, 7, _c(ORANGE, 240))
+        _dot(draw, 460 - 200 * a, CY + 40, 7, _c(GREY, 240))
+    _label(draw, (CX, CY - 80), "oxygen + nutrients", fonts, ORANGE, "mm")
+    _label(draw, (CX, CY + 90), "carbon dioxide, on its way to the lungs", fonts, GREY, "mm")
+    _label(draw, (CX, 450), "BLOOD DELIVERS AND COLLECTS", fonts, CYAN, "mm")
+
+
+def heart_risks(draw, p, t, fonts, color):
+    for k, name in enumerate(("HIGH BLOOD PRESSURE", "HIGH BLOOD CHOLESTEROL", "SMOKING")):
+        y = 520 + k * 110
+        on = p * 3 > k
+        draw.rounded_rectangle((120, y, 600, y + 70), 12, outline=_c(RED if on else GREY, 230), width=3)
+        _label(draw, (CX, y + 35), name, fonts, WHITE, "mm")
+    _label(draw, (CX, 880), "47% OF PEOPLE IN THE US HAVE AT LEAST ONE", fonts, YELLOW, "mm")
+    _label(draw, (CX, 450), "KEY RISK FACTORS FOR HEART DISEASE", fonts, CYAN, "mm")
+
+
 def ozone_shield(draw, p, t, fonts, color):
     draw.arc((-200, 760, 920, 1900), 205, 335, fill=_c(CYAN, 150), width=22)  # the planet's limb
     draw.arc((-120, 700, 840, 1760), 215, 325, fill=_c(PURPLE if "PURPLE" in globals() else BLUE, 170), width=18)  # ozone layer
@@ -936,6 +1011,8 @@ MOTIFS: dict[str, Callable[..., None]] = {
         "light_absorption": light_absorption, "scattering_compare": scattering_compare, "sediment_colors": sediment_colors,
         "lightning_bolt": lightning_bolt, "heat_halo": heat_halo, "pressure_wave": pressure_wave,
         "star_beam": star_beam, "star_twinkle": star_twinkle, "twinkle_compare": twinkle_compare,
+        
+        "ear_signal": ear_signal, "noise_gauge": noise_gauge, "hearing_protect": hearing_protect, "heart_pump": heart_pump, "blood_delivery": blood_delivery, "heart_risks": heart_risks,
         "plates_globe": plates_globe, "plates_boundary": plates_boundary, "plates_timelapse": plates_timelapse,
         "globe_bulge": globe_bulge, "gravity_surface": gravity_surface,
         "leaf_pigments": leaf_pigments, "daylight_fade": daylight_fade,

@@ -1,0 +1,67 @@
+{
+  "title": "How Your Heart Keeps Blood Moving",
+  "description": "What the heart does, how blood circulates and the main risk factors for heart disease, from the NIH and CDC.",
+  "category": "health",
+  "source_urls": [
+    "https://www.nhlbi.nih.gov/health/heart",
+    "https://www.cdc.gov/heart-disease/about/index.html"
+  ],
+  "narration": "What keeps your blood moving every second of your life? Your heart is a fist-sized organ that pumps blood through your body. It sits at the center of the circulatory system, a network of arteries, veins and capillaries. The blood delivers oxygen and nutrients that organs need, and carries carbon dioxide to the lungs to be breathed out. Valves inside the heart keep the blood flowing in the right direction. Its electrical system controls how fast and how steadily it beats. In the United States, the most common heart disease is coronary artery disease, which affects blood flow to the heart. High blood pressure, high cholesterol and smoking are key risk factors, and about half of people in the US, 47 percent, have at least one.",
+  "claims": [
+    {
+      "sentence": "Your heart is a fist-sized organ that pumps blood through your body.",
+      "quote": "The heart is an organ about the size of your fist that pumps blood through your body.",
+      "source": 0
+    },
+    {
+      "sentence": "It sits at the center of the circulatory system, a network of arteries, veins and capillaries.",
+      "quote": "Your heart is at the center of your circulatory system. This system is a network of blood vessels, such as arteries, veins, and capillaries, that carries blood to and from all areas of your body.",
+      "source": 0
+    },
+    {
+      "sentence": "The blood delivers oxygen and nutrients that organs need, and carries carbon dioxide to the lungs to be breathed out.",
+      "quote": "Your blood carries the oxygen and nutrients that your organs need to work properly. Blood also carries carbon dioxide to your lungs so you can breathe it out.",
+      "source": 0
+    },
+    {
+      "sentence": "Valves inside the heart keep the blood flowing in the right direction.",
+      "quote": "Inside your heart, valves keep blood flowing in the right direction.",
+      "source": 0
+    },
+    {
+      "sentence": "Its electrical system controls how fast and how steadily it beats.",
+      "quote": "Your heart’s electrical system controls the rate and rhythm of your heartbeat.",
+      "source": 0
+    },
+    {
+      "sentence": "In the United States, the most common heart disease is coronary artery disease, which affects blood flow to the heart.",
+      "quote": "The most common type of heart disease in the United States is coronary artery disease (CAD). CAD affects the blood flow to the heart.",
+      "source": 1
+    },
+    {
+      "sentence": "High blood pressure, high cholesterol and smoking are key risk factors, and about half of people in the US, 47 percent, have at least one.",
+      "quote": "High blood pressure , high blood cholesterol , and smoking are key risk factors for heart disease. About half of people in the United States (47%) have at least one of these three risk factors.",
+      "source": 1
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "The heart pumps blood around a network of vessels.",
+      "visual_description": "A beating heart with blood circling.",
+      "visual_style": "hybrid",
+      "motif": "heart_pump"
+    },
+    {
+      "narration_segment": "Blood delivers oxygen and nutrients and carries carbon dioxide away.",
+      "visual_description": "Two flows between blood and organs.",
+      "visual_style": "hybrid",
+      "motif": "blood_delivery"
+    },
+    {
+      "narration_segment": "Blood pressure, cholesterol and smoking are key risks.",
+      "visual_description": "Three risk factor boxes lighting up.",
+      "visual_style": "hybrid",
+      "motif": "heart_risks"
+    }
+  ]
+}
