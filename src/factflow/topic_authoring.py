@@ -26,7 +26,7 @@ from urllib.parse import urlparse
 from factflow.fact_research import _ArticleParser, _publisher_for_url, fetch_article
 from factflow.llm_providers import AllProvidersFailed, ProviderChain
 from factflow.topic_library import register_production_spec
-from factflow.visual_motifs import MOTIFS
+from factflow.visual_motifs import HOLOGRAPHIC_3D, MOTIFS
 
 MIN_WORDS, MAX_WORDS = 60, 170
 MIN_TITLE, MAX_TITLE = 20, 70
@@ -150,6 +150,11 @@ def check_shape(draft: dict[str, Any], existing_titles: set[str]) -> list[str]:
     if not isinstance(scenes, list) or not 3 <= len(scenes) <= 5 or not all(
             isinstance(s, dict) and s.get("visual_description") for s in scenes):
         problems.append("need 3-5 scenes with visual descriptions")
+    else:
+        for number, scene in enumerate(scenes, 1):
+            motif = str(scene.get("motif", "none"))
+            if motif not in HOLOGRAPHIC_3D:
+                problems.append(f"scene {number} needs a 3D holographic motif, got {motif[:90]!r}")
     return problems
 
 
@@ -183,7 +188,7 @@ WRITE_SYSTEM = ("You write a short educational video script in your OWN WORDS us
                 '"claims":[{"sentence":"exact narration sentence","quote":"verbatim 6+ word excerpt from a passage","source":0}],'
                 '"scenes":[{"narration_segment":"...","visual_description":"...","visual_style":"hybrid","motif":"<name or none>"}]}. '
                 "Every narration sentence must have a claim whose quote is copied exactly from the passage with that source index. "
-                "Keep numbers exactly as in the quote. visual_style is one of hybrid, 3d, procedural_2d_holographic. 3-4 scenes. motif must be one of: " + ", ".join(sorted(MOTIFS)) + ", or none; choose the animation that literally shows what that part of the narration says.")
+                "Keep numbers exactly as in the quote. visual_style is one of hybrid, 3d, procedural_2d_holographic. 3-4 scenes. motif must be one of these 3D holographic animations: " + ", ".join(sorted(HOLOGRAPHIC_3D)) + ". Choose the one that literally shows what that part of the narration says. If none does, write \"request: <the 3D animation that is needed>\" instead of picking a poor match.")
 
 
 SEEDED_PROPOSE_SYSTEM = ("You propose evergreen educational science questions for 40-second videos. Reply with JSON only: "

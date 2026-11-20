@@ -24,7 +24,7 @@ def _setup(tmp_path, monkeypatch, narration_ok=True):
     draft = {"title": "Why clouds look white from above", "description": "d", "category": "science",
              "source_urls": ["https://a.example/1", "https://b.example/2"],
              "narration": " ".join(["Warm oceans send up vapour."] + ["Air cools high above."] * 12 + ["Clouds then form."] * 6),
-             "claims": [], "scenes": [{"visual_description": "x", "motif": "evaporation"}] * 3}
+             "claims": [], "scenes": [{"visual_description": "x", "motif": "orbit_3d"}] * 3}
     drafts = tmp_path / "drafts"
     drafts.mkdir()
     (drafts / "one.json").write_text(json.dumps(draft))

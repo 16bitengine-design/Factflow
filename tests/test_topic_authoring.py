@@ -35,7 +35,7 @@ CLAIMS = [
 ]
 DRAFT = {"title": "Why Clouds Need Dust to Exist", "narration": NARRATION, "description": "A cloud starts with a speck.",
          "category": "weather", "claims": CLAIMS,
-         "scenes": [{"narration_segment": "a", "visual_description": "vapour rises", "visual_style": "hybrid"}] * 3}
+         "scenes": [{"narration_segment": "a", "visual_description": "vapour rises", "visual_style": "hybrid", "motif": "orbit_3d"}] * 3}
 PROPOSAL = {"topics": [{"question": "How do clouds form?", "category": "weather",
                         "source_urls": ["https://science.nasa.gov/x", "https://www.noaa.gov/y"]}]}
 OK = {"results": [{"i": i, "supported": True} for i in range(4)], "conflicts": []}
@@ -161,3 +161,19 @@ def test_seeds_already_used_by_a_topic_are_not_offered_again(tmp_path):
     chain = FakeChain([])  # must not be called: only one group is left
     report = author_topics(chain, lib, load_source_registry(), specs, count=1, fetcher=fetcher, today="2026-11-18", seeds=seeds)
     assert report["accepted"] == [] and "no unused verified pages" in report["note"]
+
+
+def test_flat_or_missing_motifs_are_rejected_and_prompt_lists_only_3d():
+    from factflow.topic_authoring import WRITE_SYSTEM  # the writer's instructions
+    from factflow.visual_motifs import HOLOGRAPHIC_3D, MOTIFS
+
+    draft = dict(DRAFT)
+    flat = next(name for name in MOTIFS if name not in HOLOGRAPHIC_3D)
+    draft["scenes"] = [{"visual_description": "x", "motif": flat}, {"visual_description": "y", "motif": "none"},
+                       {"visual_description": "z", "motif": "request: a 3D cutaway of a cell"}]
+    problems = [p for p in check_shape(draft, set()) if "3D holographic motif" in p]
+    assert len(problems) == 3
+    assert flat not in WRITE_SYSTEM and "orbit_3d" in WRITE_SYSTEM and "request:" in WRITE_SYSTEM
+    ok = dict(DRAFT)
+    ok["scenes"] = [{"visual_description": "x", "motif": "heart_pump"}] * 3
+    assert not [p for p in check_shape(ok, set()) if "motif" in p]
