@@ -1,0 +1,58 @@
+{
+  "title": "What Really Happens During an Earthquake",
+  "category": "science",
+  "voice": "af_heart",
+  "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "What Really Happens During an Earthquake | QuantaTale",
+  "post_description": "Why earthquakes happen, how they are recorded and why they cannot be predicted, from the USGS and NASA. Sources: United States Geological Survey https://www.usgs.gov/programs/earthquake-hazards/science-earthquakes and National Aeronautics and Space Administration https://spaceplace.nasa.gov/earthquakes/en/ #Science #ScienceFacts #QuantaTale",
+  "content_id_prefix": "qt-what-really-happens",
+  "publish_timezone": "Africa/Kampala",
+  "editorial_approved": true,
+  "editorial_status": "automated_gate_passed",
+  "editorial_review_required": false,
+  "narration": "What actually happens when the ground shakes? Earth's outer shell is broken into giant puzzle pieces called tectonic plates. The plates keep slowly sliding past and bumping into each other. Rough edges snag on each other, so a fault locks in place even as the plates around it keep creeping along. While the fault stays locked, energy keeps being stored up. When the force finally beats the friction, the fault unsticks and all that energy is released as seismic waves, like ripples on a pond. Instruments called seismographs record the shaking. Scientists have tried many ways to predict earthquakes, but no method has worked, and they cannot say when the next one will strike on any fault.",
+  "sources": [
+    {
+      "publisher": "United States Geological Survey",
+      "title": "The Science of Earthquakes | U.S. Geological Survey",
+      "url": "https://www.usgs.gov/programs/earthquake-hazards/science-earthquakes",
+      "supports": "these puzzle pieces keep slowly moving around, sliding past one another and bumping into each other. | Since the edges of the plates are rough, they get stuck while the rest of the plate keeps moving. | the energy that would normally cause the blocks to slide past one another is being stored up. | When the force of the moving blocks finally overcomes the friction of the jagged edges of the fault and it unsticks, all that stored up energy is released. The energy radiates outward from the fault in all directions in the form of seismic waves like ripples on a pond. | Earthquakes are recorded by i",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-20"
+    },
+    {
+      "publisher": "National Aeronautics and Space Administration",
+      "title": "What Is an Earthquake? | NASA Space Place – NASA Science for Kids",
+      "url": "https://spaceplace.nasa.gov/earthquakes/en/",
+      "supports": "It’s actually made up of giant puzzle pieces called tectonic plates.",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-20"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Rough plate edges stick and energy builds.",
+      "visual_description": "Two blocks locked at a fault with a stress gauge rising.",
+      "visual_style": "hybrid",
+      "motif": "fault_stick_slip"
+    },
+    {
+      "narration_segment": "The fault unsticks and waves spread out.",
+      "visual_description": "Blocks slipping with rings of seismic waves.",
+      "visual_style": "hybrid",
+      "motif": "fault_stick_slip"
+    },
+    {
+      "narration_segment": "Seismographs record the shaking, but no one can predict it.",
+      "visual_description": "A seismogram trace spiking and fading.",
+      "visual_style": "hybrid",
+      "motif": "seismograph_trace"
+    }
+  ],
+  "visual_profile": "holographic_science_v1",
+  "source_passage_verification_required_before_publication": false,
+  "source_assessment": "Automated gates passed on 2026-11-20: each sentence tied to a verbatim source quote, numbers matched, no copied word runs, model entailment check passed, independent publishers. Not complete fact verification.",
+  "authored_by": "assistant_session_draft_then_automated_gates"
+}
