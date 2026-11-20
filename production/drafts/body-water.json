@@ -1,0 +1,67 @@
+{
+  "title": "How Much of You Is Water, and Why It Matters",
+  "description": "How much of the human body is water and what that water does, from the USGS and the NIH.",
+  "category": "science",
+  "source_urls": [
+    "https://www.usgs.gov/water-science-school/science/water-you-water-and-human-body",
+    "https://newsinhealth.nih.gov/2023/05/hydrating-health"
+  ],
+  "narration": "How much of your body is actually water? For an adult, up to 60 percent of the body is water. Your brain and heart are about 73 percent water, and your lungs about 83 percent. Even your bones are about 31 percent water. Babies are born at about 78 percent. Every one of your cells needs water to work. Water also carries waste material out of the body. Sweating, using the bathroom and even breathing out all cost your body water, so you have to drink to replace it.",
+  "claims": [
+    {
+      "sentence": "For an adult, up to 60 percent of the body is water.",
+      "quote": "Up to 60% of the human adult body is water.",
+      "source": 0
+    },
+    {
+      "sentence": "Your brain and heart are about 73 percent water, and your lungs about 83 percent.",
+      "quote": "the brain and heart are composed of 73% water, and the lungs are about 83% water.",
+      "source": 0
+    },
+    {
+      "sentence": "Even your bones are about 31 percent water.",
+      "quote": "and even the bones are watery: 31%.",
+      "source": 0
+    },
+    {
+      "sentence": "Babies are born at about 78 percent.",
+      "quote": "Babies have the most, being born at about 78%.",
+      "source": 0
+    },
+    {
+      "sentence": "Every one of your cells needs water to work.",
+      "quote": "All your cells need water to work.",
+      "source": 1
+    },
+    {
+      "sentence": "Water also carries waste material out of the body.",
+      "quote": "No less important is the ability of water to transport waste material out of our bodies.",
+      "source": 0
+    },
+    {
+      "sentence": "Sweating, using the bathroom and even breathing out all cost your body water, so you have to drink to replace it.",
+      "quote": "Your body loses water when you sweat, go to the bathroom, and even when you just breathe out. So, you need to drink enough water to replace what you lose.",
+      "source": 1
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Water makes up most of the body, from brain to bones.",
+      "visual_description": "Bars showing the water share of body parts.",
+      "visual_style": "hybrid",
+      "motif": "water_share_bars"
+    },
+    {
+      "narration_segment": "Cells need water, and it carries waste out.",
+      "visual_description": "A cell with nutrients arriving and waste leaving.",
+      "visual_style": "hybrid",
+      "motif": "water_carry"
+    },
+    {
+      "narration_segment": "You lose water by sweating, bathroom visits and breathing, so you drink to replace it.",
+      "visual_description": "A fluid gauge draining through three outlets.",
+      "visual_style": "hybrid",
+      "motif": "water_balance"
+    }
+  ]
+}

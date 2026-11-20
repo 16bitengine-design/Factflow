@@ -771,6 +771,164 @@ def ac_relief(draw, p, t, fonts, color):
     _label(draw, (CX, 450), "AIR CONDITIONING IS THE BEST PROTECTION", fonts, CYAN, "mm")
 
 
+def water_share_bars(draw, p, t, fonts, color):
+    rows = (("ADULT BODY", 60), ("BONES", 31), ("BRAIN + HEART", 73), ("LUNGS", 83), ("BABY AT BIRTH", 78))
+    for k, (name, pct) in enumerate(rows):
+        y = 520 + k * 85
+        grow = min(1.0, max(0.0, p * 1.6 - k * 0.15))
+        draw.rectangle((220, y, 640, y + 40), outline=GREY, width=2)
+        draw.rectangle((220, y, 220 + 420 * pct / 100 * grow, y + 40), fill=_c(BLUE, 210))
+        _label(draw, (205, y + 20), name, fonts, WHITE, "rm")
+        _label(draw, (225 + 420 * pct / 100 * grow, y + 20), f"{int(pct * grow)}%", fonts, YELLOW, "lm")
+    _label(draw, (CX, 450), "HOW MUCH IS WATER?", fonts, CYAN, "mm")
+
+
+def water_carry(draw, p, t, fonts, color):
+    draw.ellipse((CX - 130, CY - 120, CX + 130, CY + 120), outline=_c(CYAN, 220), width=5)
+    for k in range(8):
+        a = (t * 0.5 + k / 8) % 1.0
+        _dot(draw, 60 + a * (CX - 190), CY - 80 + (k % 4) * 50, 7, _c(GREEN, 230))
+        _dot(draw, CX + 140 + a * (CX - 190), CY - 80 + (k % 4) * 50, 7, _c(ORANGE, 230))
+    _label(draw, (120, CY - 130), "nutrients in", fonts, GREEN, "mm")
+    _label(draw, (600, CY - 130), "waste out", fonts, ORANGE, "mm")
+    _label(draw, (CX, 450), "WATER CARRIES NUTRIENTS IN AND WASTE OUT", fonts, CYAN, "mm")
+
+
+def water_balance(draw, p, t, fonts, color):
+    level = 0.8 - 0.35 * min(1.0, p * 1.3)
+    if p > 0.75:
+        level += 0.4 * (p - 0.75)
+    _gauge(draw, 140, 520, 860, level, BLUE)
+    for k, name in enumerate(("sweat", "bathroom", "breath")):
+        _arrow(draw, 300, 640 + k * 70, 520, 640 + k * 70, _c(ORANGE, 220), 3)
+        _label(draw, (560, 640 + k * 70), name, fonts, ORANGE, "lm")
+    _label(draw, (CX, 450), "YOU LOSE WATER, SO DRINK TO REPLACE IT", fonts, CYAN, "mm")
+
+
+def aurora_particles(draw, p, t, fonts, color):
+    _glow(draw, 90, CY, 50, _c(YELLOW, 230))
+    _earth(draw, 560, CY, 70)
+    for k in range(5):
+        draw.arc((560 - 150 - 20 * k, CY - 180 - 20 * k, 560 + 150 + 20 * k, CY + 180 + 20 * k), 100, 260, fill=_c(CYAN, 110), width=3)
+    for k in range(8):
+        a = (t * 0.5 + k / 8) % 1.0
+        _dot(draw, 150 + a * 300, CY - 160 + k * 45, 5, _c(YELLOW, 220))
+    for k in range(10):
+        a = (t * 0.8 + k / 10) % 1.0
+        _dot(draw, 560 + 10 * math.sin(k), CY - 70 - 100 * a, 4, _c(GREEN, int(230 * (1 - a * 0.3))))
+    _label(draw, (CX, 400), "SOLAR WIND FILLS THE SHIELD, THEN RAINS DOWN", fonts, CYAN, "mm")
+
+
+def aurora_colours(draw, p, t, fonts, color):
+    for y0, y1, col, label in ((520, 620, RED, "RED: OXYGEN, HIGHEST"), (620, 760, GREEN, "GREEN: OXYGEN, MOST COMMON"), (760, 860, BLUE, "BLUE: NITROGEN")):
+        for k in range(24):
+            x = 90 + k * 25
+            h = (y1 - y0) * (0.6 + 0.4 * math.sin(t * 2 + k * 0.5))
+            draw.line((x, y1, x, y1 - h), fill=_c(col, 130), width=18)
+        _label(draw, (CX, (y0 + y1) / 2), label, fonts, WHITE, "mm")
+    draw.rectangle((60, 880, 660, 940), fill=_c(GREEN, 40))
+    _label(draw, (CX, 450), "THE GAS HIT AND ITS HEIGHT SET THE COLOUR", fonts, CYAN, "mm")
+
+
+def aurora_twin(draw, p, t, fonts, color):
+    _earth(draw, CX, CY, 110)
+    for sign, name in ((-1, "NORTH"), (1, "SOUTH")):
+        pts = [(CX - 90 + 180 * i / 30, CY + sign * (150 + 14 * math.sin(i / 3 + t * 2 * -sign))) for i in range(31)]
+        draw.line(pts, fill=_c(GREEN, 220), width=8)
+        _label(draw, (CX, CY + sign * 215), name, fonts, WHITE, "mm")
+    _label(draw, (CX, 400), "EACH TWIST IN THE NORTH HAS A SOUTHERN COMPANION", fonts, CYAN, "mm")
+
+
+def fault_stick_slip(draw, p, t, fonts, color):
+    stress = min(1.0, p * 1.6)
+    slip = 0 if p < 0.6 else 28 * min(1.0, (p - 0.6) * 4)
+    draw.rectangle((90, 620, 350, 860), fill=(110, 95, 75, 235))
+    draw.rectangle((370 + 0, 620 - slip, 630, 860 - slip), fill=(130, 105, 80, 235))
+    draw.line((360, 620, 360, 860), fill=_c(RED, 220), width=3)
+    _arrow(draw, 250, 560, 250, 560 + 40 * (1 - 0.0), _c(YELLOW, 220), 3)
+    _gauge(draw, 70, 520, 860, stress if p < 0.6 else max(0.05, 1.0 - (p - 0.6) * 2.5), YELLOW)
+    if p >= 0.6:
+        for k in range(3):
+            r = 40 + 130 * (((p - 0.6) * 2 + k * 0.25) % 1.0)
+            draw.arc((360 - r, 740 - r, 360 + r, 740 + r), 0, 360, fill=_c(WHITE, 150), width=3)
+    _label(draw, (CX, 450), "ROUGH EDGES STICK, ENERGY BUILDS, THEN RELEASES", fonts, CYAN, "mm")
+
+
+def seismograph_trace(draw, p, t, fonts, color):
+    pts = []
+    for i in range(120):
+        x = 80 + 560 * i / 120
+        env = 0.0 if i < 40 else math.exp(-(i - 40) / 25)
+        pts.append((x, 700 + 150 * env * math.sin(i * 1.3)))
+        if i / 120 > p * 1.2:
+            break
+    draw.line(pts, fill=_c(CYAN, 230), width=3)
+    _label(draw, (CX, 450), "SEISMOGRAPHS RECORD THE SHAKING", fonts, CYAN, "mm")
+    _label(draw, (CX, 900), "no one can predict when the next one will happen", fonts, WHITE, "mm")
+
+
+def atom_jump(draw, p, t, fonts, color):
+    _glow(draw, CX, CY + 40, 30, _c(RED, 230))
+    for r in (80, 140):
+        draw.ellipse((CX - r, CY + 40 - r, CX + r, CY + 40 + r), outline=_c(GREY, 130), width=2)
+    jump = p > 0.5
+    a = t * 2
+    r = 140 if jump else 80
+    _dot(draw, CX + r * math.cos(a), CY + 40 + r * math.sin(a), 9, YELLOW)
+    _label(draw, (CX, 450), "CESIUM ATOMS MAKE A QUANTUM JUMP", fonts, CYAN, "mm")
+    _label(draw, (CX, 910), "only at exactly the right frequency", fonts, WHITE, "mm")
+
+
+def cycle_counter(draw, p, t, fonts, color):
+    pts = [(80 + 560 * i / 120, 600 + 70 * math.sin(i / 120 * 2 * math.pi * 14 - p * 30)) for i in range(121)]
+    draw.line(pts, fill=_c(CYAN, 230), width=4)
+    count = int(9192631770 * min(1.0, p * 1.1))
+    _label(draw, (CX, 780), f"{count:,}", fonts, YELLOW, "mm")
+    _label(draw, (CX, 830), "CYCLES = ONE SECOND", fonts, WHITE, "mm")
+    _label(draw, (CX, 450), "CESIUM ATOMS DEFINE THE SECOND", fonts, CYAN, "mm")
+
+
+def clock_drift(draw, p, t, fonts, color):
+    for k, (name, width, col) in enumerate((("QUARTZ WRISTWATCH: ~15 SECONDS A MONTH", 360, ORANGE), ("BEST CESIUM CLOCK: ~1/300,000,000 SECOND A YEAR", 4, GREEN))):
+        y = 620 + k * 150
+        draw.rectangle((100, y, 620, y + 40), outline=GREY, width=2)
+        draw.rectangle((100, y, 100 + max(4, width * min(1.0, p * 1.5)), y + 40), fill=_c(col, 220))
+        _label(draw, (CX, y - 28), name, fonts, WHITE, "mm")
+    _label(draw, (CX, 450), "HOW FAR EACH CLOCK DRIFTS", fonts, CYAN, "mm")
+
+
+def glacier_form(draw, p, t, fonts, color):
+    layers = 1 + int(5 * min(1.0, p * 1.2))
+    for k in range(layers):
+        y = 860 - k * 36 * (1.0 - 0.07 * k)
+        h = max(10, 34 - k * 4 * (1.0 if p > 0.5 else 0.2))
+        col = _c(WHITE, 230 - k * 14) if k >= layers - 2 else _c(CYAN, 200)
+        draw.rectangle((140, y - h, 580, y), fill=col)
+    for k in range(10):
+        a = (t * 0.4 + k / 10) % 1.0
+        _dot(draw, 160 + (k * 71) % 400, 430 + a * 160, 4, _c(WHITE, 230))
+    _label(draw, (CX, 390), "SNOW PILES UP AND COMPRESSES INTO ICE", fonts, CYAN, "mm")
+
+
+def glacier_flow(draw, p, t, fonts, color):
+    draw.polygon([(60, 640), (660, 860), (660, 940), (60, 940)], fill=(110, 95, 75, 235))
+    shift = 20 * p
+    draw.polygon([(80 + shift, 640 - 10), (640 + shift, 850 - 10), (640 + shift, 810), (80 + shift, 610)], fill=_c(CYAN, 190))
+    for k in range(5):
+        _arrow(draw, 150 + k * 100 + shift, 640 + k * 38, 190 + k * 100 + shift, 655 + k * 38, _c(WHITE, 210), 3)
+    _dot(draw, 650, 860, 14 + 6 * p, _c(GREY, 220))
+    _label(draw, (CX, 450), "A SLOW RIVER OF ICE THAT GRINDS THE GROUND", fonts, CYAN, "mm")
+
+
+def glacier_share(draw, p, t, fonts, color):
+    for k, (name, pct) in enumerate((("OF THE WORLD'S LAND: ABOUT 10%", 10), ("OF FRESH WATER: ABOUT 69%", 69))):
+        y = 600 + k * 150
+        draw.rectangle((100, y, 620, y + 44), outline=GREY, width=2)
+        draw.rectangle((100, y, 100 + 520 * pct / 100 * min(1.0, p * 1.5), y + 44), fill=_c(CYAN, 220))
+        _label(draw, (CX, y - 28), name, fonts, WHITE, "mm")
+    _label(draw, (CX, 450), "WHAT GLACIERS COVER AND HOLD", fonts, CYAN, "mm")
+
+
 MOTIFS: dict[str, Callable[..., None]] = {
     name: fn for name, fn in {
         "evaporation": evaporation, "rising_cooling": rising_cooling, "condensation": condensation,
@@ -788,6 +946,8 @@ MOTIFS: dict[str, Callable[..., None]] = {
         "salt_sources": salt_sources, "salt_share": salt_share, "dense_float": dense_float, "enso_winds": enso_winds, "jet_stream_shift": jet_stream_shift, "upwelling": upwelling, "hurricane_engine": hurricane_engine, "hurricane_spin": hurricane_spin, "hurricane_landfall": hurricane_landfall, "sleep_vitals": sleep_vitals, "sleep_memory": sleep_memory, "sleep_ages": sleep_ages,
         
         "ozone_shield": ozone_shield, "cfc_cycle": cfc_cycle, "ozone_hole_patch": ozone_hole_patch, "flare_burst": flare_burst, "flare_travel": flare_travel, "geodynamo": geodynamo, "magnetosphere": magnetosphere, "pole_flip": pole_flip, "magma_rise": magma_rise, "gas_pressure": gas_pressure, "sweat_cooling": sweat_cooling, "heat_stroke_gauge": heat_stroke_gauge, "ac_relief": ac_relief,
+        
+        "water_share_bars": water_share_bars, "water_carry": water_carry, "water_balance": water_balance, "aurora_particles": aurora_particles, "aurora_colours": aurora_colours, "aurora_twin": aurora_twin, "fault_stick_slip": fault_stick_slip, "seismograph_trace": seismograph_trace, "atom_jump": atom_jump, "cycle_counter": cycle_counter, "clock_drift": clock_drift, "glacier_form": glacier_form, "glacier_flow": glacier_flow, "glacier_share": glacier_share,
         "geyser_eruption": geyser_eruption, "interval_timeline": interval_timeline, "geyser_cutaway": geyser_cutaway,
     }.items()
 }

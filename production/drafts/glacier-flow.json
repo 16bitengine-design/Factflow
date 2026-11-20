@@ -1,0 +1,62 @@
+{
+  "title": "How Glaciers Form, Flow and Hold Our Water",
+  "description": "How glaciers form from snow, move downhill and store fresh water, from the USGS and NASA.",
+  "category": "science",
+  "source_urls": [
+    "https://www.usgs.gov/water-science-school/science/glaciers-and-icecaps",
+    "https://science.nasa.gov/kids/earth/10-interesting-things-about-glaciers/"
+  ],
+  "narration": "What is a glacier, and how does one begin? A glacier starts life as snowflakes. When far more snow falls than melts each summer, the weight of the pile compresses the old snow into ice. Gravity pulls the ice downhill so slowly that you would not notice it move. On its way, the ice grinds away at the ground like a gigantic bulldozer. Roughly 10 percent of Earth's land area is covered by glaciers. And roughly 69 percent of Earth's fresh water is locked up in glaciers.",
+  "claims": [
+    {
+      "sentence": "A glacier starts life as snowflakes.",
+      "quote": "Glaciers begin life as snowflakes.",
+      "source": 0
+    },
+    {
+      "sentence": "When far more snow falls than melts each summer, the weight of the pile compresses the old snow into ice.",
+      "quote": "When the snowfall in an area far exceeds the melting that occurs during summer, glaciers start to form. The weight of the accumulated snow buries and compresses the previously fallen snow into ice.",
+      "source": 0
+    },
+    {
+      "sentence": "Gravity pulls the ice downhill so slowly that you would not notice it move.",
+      "quote": "Gravity causes the ice inside glaciers to change shape and move. Glaciers flow from higher ground to lower ground. However, they flow so slowly that if you were standing next to a glacier, you probably wouldn't notice it was moving.",
+      "source": 1
+    },
+    {
+      "sentence": "On its way, the ice grinds away at the ground like a gigantic bulldozer.",
+      "quote": "They slowly grind away at the underlying sediment and can push or drag that sediment as if they were a gigantic bulldozer.",
+      "source": 0
+    },
+    {
+      "sentence": "Roughly 10 percent of Earth's land area is covered by glaciers.",
+      "quote": "Glaciers cover about 10 percent of the world's total land area",
+      "source": 1
+    },
+    {
+      "sentence": "And roughly 69 percent of Earth's fresh water is locked up in glaciers.",
+      "quote": "Glaciers hold about 69% of the world's fresh water.",
+      "source": 1
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Snow piles up and compresses into ice.",
+      "visual_description": "Snow layers packing down into ice.",
+      "visual_style": "hybrid",
+      "motif": "glacier_form"
+    },
+    {
+      "narration_segment": "The ice flows slowly downhill and grinds the ground.",
+      "visual_description": "A river of ice sliding down a slope.",
+      "visual_style": "hybrid",
+      "motif": "glacier_flow"
+    },
+    {
+      "narration_segment": "Glaciers cover about 10 percent of land and hold about 69 percent of fresh water.",
+      "visual_description": "Two bars for land cover and fresh water share.",
+      "visual_style": "hybrid",
+      "motif": "glacier_share"
+    }
+  ]
+}
