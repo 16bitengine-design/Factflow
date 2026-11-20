@@ -123,3 +123,30 @@ def test_shape_requires_title_description_length_and_unique_title():
 
 def test_slugify_is_short_and_safe():
     assert slugify("Why Clouds Need Dust to Exist") == "clouds-need-dust"
+
+
+def test_seeded_proposals_only_keep_listed_urls_and_seed_file_loads(tmp_path):
+    from factflow.topic_authoring import load_seeds
+
+    seeds = [{"url": "https://science.nasa.gov/x", "group": "NASA"}, {"url": "https://www.noaa.gov/y", "group": "NOAA"}]
+    proposal = {"topics": [{"question": "How do clouds form?", "category": "weather",
+                            "source_urls": ["https://science.nasa.gov/x", "https://invented.example/z", "https://www.noaa.gov/y"]}]}
+    lib = {"production_specs": [], "discovery_leads": []}
+    chain = FakeChain([proposal, DRAFT, OK])
+    seen = {}
+    original = chain.complete_json
+
+    def spy(system, user, **kw):
+        seen.setdefault("first", (system, user))
+        return original(system, user, **kw)
+
+    chain.complete_json = spy
+    report = author_topics(chain, lib, load_source_registry(), tmp_path / "specs", count=1, fetcher=fetcher,
+                           today="2026-11-18", seeds=seeds)
+    assert len(report["accepted"]) == 1, report
+    assert "Allowed pages" in seen["first"][1] and "invented.example" not in seen["first"][1]
+    assert report["accepted"][0]["spec_path"].endswith(".json")
+    assert load_seeds(tmp_path / "missing.json") == []
+    path = tmp_path / "s.json"
+    path.write_text(json.dumps({"pages": seeds}))
+    assert load_seeds(path) == seeds

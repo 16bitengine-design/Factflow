@@ -186,8 +186,36 @@ WRITE_SYSTEM = ("You write a short educational video script in your OWN WORDS us
                 "Keep numbers exactly as in the quote. visual_style is one of hybrid, 3d, procedural_2d_holographic. 3-4 scenes. motif must be one of: " + ", ".join(sorted(MOTIFS)) + ", or none; choose the animation that literally shows what that part of the narration says.")
 
 
-def propose_topics(chain: ProviderChain, existing_titles: list[str], count: int) -> list[dict[str, Any]]:
+SEEDED_PROPOSE_SYSTEM = ("You propose evergreen educational science questions for 40-second videos. Reply with JSON only: "
+                         '{"topics":[{"question":"...","category":"...","source_urls":["https://..."]}]}. '
+                         "You may ONLY use URLs from the supplied list, copied exactly. Each topic needs 2-3 URLs from DIFFERENT "
+                         "groups (the group is shown beside each URL) whose pages are about the same subject as the question. "
+                         "Skip a topic if no two pages from different groups fit it.")
+
+
+def load_seeds(path: Path | str) -> list[dict[str, str]]:
+    """Verified page URLs the automatic writer may use; empty when the file is missing."""
+    try:
+        data = json.loads(Path(path).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return []
+    return [p for p in data.get("pages", []) if isinstance(p, dict) and p.get("url") and p.get("group")]
+
+
+def propose_topics(chain: ProviderChain, existing_titles: list[str], count: int,
+                   seeds: list[dict[str, str]] | None = None) -> list[dict[str, Any]]:
     avoid = "; ".join(existing_titles[-60:])
+    if seeds:
+        listing = "\n".join(f"{s['group']} {s['url']}" for s in seeds)
+        reply = chain.complete_json(SEEDED_PROPOSE_SYSTEM,
+                                    f"Propose {count} NEW topics. Do not repeat these: {avoid}\n\nAllowed pages:\n{listing}",
+                                    max_tokens=1800, temperature=0.7)
+        allowed = {s["url"] for s in seeds}
+        topics = reply.get("topics", [])
+        for t in topics:
+            if isinstance(t, dict) and isinstance(t.get("source_urls"), list):
+                t["source_urls"] = [u for u in t["source_urls"] if u in allowed]
+        return [t for t in topics if isinstance(t, dict) and t.get("question") and isinstance(t.get("source_urls"), list)]
     reply = chain.complete_json(PROPOSE_SYSTEM, f"Propose {count} NEW topics. Do not repeat these: {avoid}", max_tokens=1500, temperature=0.8)
     topics = reply.get("topics", [])
     return [t for t in topics if isinstance(t, dict) and t.get("question") and isinstance(t.get("source_urls"), list)]
@@ -237,7 +265,7 @@ def build_spec(draft: dict[str, Any], sources: list[dict[str, Any]], today: str)
 
 def author_topics(chain: ProviderChain, library: dict[str, Any], registry: dict[str, Any], specs_dir: Path, *,
                   count: int = 3, fetcher: Fetcher = default_fetcher, today: str | None = None,
-                  max_attempts: int | None = None) -> dict[str, Any]:
+                  max_attempts: int | None = None, seeds: list[dict[str, str]] | None = None) -> dict[str, Any]:
     """Create up to ``count`` gated specs; returns a report of accepted and rejected topics."""
     today = today or datetime.now(timezone.utc).date().isoformat()
     specs_dir.mkdir(parents=True, exist_ok=True)
@@ -246,7 +274,7 @@ def author_topics(chain: ProviderChain, library: dict[str, Any], registry: dict[
     report: dict[str, Any] = {"accepted": [], "rejected": [], "provider_usage": {}}
     budget = max_attempts or count * 3
     try:
-        proposals = propose_topics(chain, sorted(existing), budget)
+        proposals = propose_topics(chain, sorted(existing), budget, seeds)
     except AllProvidersFailed as exc:
         report["error"] = str(exc)
         return report
