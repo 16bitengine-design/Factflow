@@ -306,45 +306,114 @@ def _wrap(draw: Any, text: str, font: Any, max_width: int) -> list[str]:
     return lines
 
 
+_STOP = {"the", "and", "that", "this", "with", "from", "into", "than", "then", "when", "while", "your", "their", "there",
+         "they", "them", "what", "which", "will", "have", "been", "were", "also", "each", "over", "more", "most", "some"}
+
+
+def _tokens(text: str) -> set[str]:
+    words = {w.strip(".,;:!?\"'()").lower() for w in text.split()}
+    return {w for w in words if len(w) > 3 and w not in _STOP}
+
+
+def sentence_scene_map(narration: str, scenes: list[dict[str, Any]]) -> tuple[list[float], list[int]]:
+    """Which scene each narrated sentence belongs to, and each sentence's share of the video.
+
+    Scenes keep their order and each is used at least once; a sentence goes with the
+    scene whose ``narration_segment`` shares the most words with it.
+    """
+    sentences = [x.strip() for x in narration.replace("\u2014", ",").split(".") if x.strip()]
+    if not sentences or not scenes:
+        return [1.0], [0]
+    weights = [max(1, len(x.split())) for x in sentences]
+    total = float(sum(weights))
+    shares = [w / total for w in weights]
+    n, m = len(sentences), len(scenes)
+    if n < m:  # fewer sentences than scenes: spread scenes evenly over time instead
+        return [1.0 / m] * m, list(range(m))
+    seg_tokens = [_tokens(str(sc.get("narration_segment", "")) + " " + str(sc.get("visual_description", ""))) for sc in scenes]
+    score = [[len(_tokens(sent) & seg_tokens[j]) / (1.0 + 0.5 * len(seg_tokens[j])) for j in range(m)] for sent in sentences]
+    neg = float("-inf")
+    best = [[neg] * m for _ in range(n)]
+    back = [[0] * m for _ in range(n)]
+    best[0][0] = score[0][0]
+    for i in range(1, n):
+        for j in range(m):
+            for prev in (j, j - 1):
+                if prev >= 0 and best[i - 1][prev] > neg and best[i - 1][prev] + score[i][j] > best[i][j]:
+                    best[i][j] = best[i - 1][prev] + score[i][j]
+                    back[i][j] = prev
+    j = m - 1
+    assignment = [0] * n
+    for i in range(n - 1, -1, -1):
+        assignment[i] = j
+        j = back[i][j]
+    return shares, assignment
+
+
+def scene_position(narration: str, scenes: list[dict[str, Any]], seconds: float, duration: float) -> tuple[int, float]:
+    """Scene index and 0-1 progress inside it for this moment of the narration."""
+    shares, assignment = sentence_scene_map(narration, scenes)
+    fraction = min(0.9999, max(0.0, seconds / duration if duration else 0.0))
+    spans: dict[int, list[float]] = {}
+    cursor = 0.0
+    for share, scene in zip(shares, assignment):
+        lo, hi = spans.setdefault(scene, [cursor, cursor])
+        spans[scene] = [lo, cursor + share]
+        cursor += share
+    for scene, (lo, hi) in spans.items():
+        if lo <= fraction < hi or (scene == max(spans) and fraction >= lo):
+            return scene, (fraction - lo) / max(1e-6, hi - lo)
+    return 0, 0.0
+
+
+def _draw_motif_raised(draw: Any, motif: str, progress: float, seconds: float, fonts: dict[str, Any], color: Any) -> None:
+    """Draw the motif on its own layer and lift it into the free space under the title."""
+    from PIL import Image, ImageDraw
+    from .visual_motifs import draw_motif
+
+    base = getattr(draw, "_image", None) or getattr(draw, "im", None)
+    if not isinstance(base, Image.Image):
+        draw_motif(motif, draw, progress, seconds, fonts, color)
+        return
+    layer = Image.new("RGBA", base.size, (0, 0, 0, 0))
+    draw_motif(motif, ImageDraw.Draw(layer, "RGBA"), progress, seconds, fonts, color)
+    region = layer.crop((0, 300, base.width, 985))
+    base.paste(region.convert("RGB") if base.mode == "RGB" else region, (0, 205), region)
+
+
 def draw_generic_science_scene(draw: Any, scene: int, progress: float, seconds: float,
-                               fonts: dict[str, Any], scenes: list[dict[str, Any]]) -> tuple[str, str]:
+                               fonts: dict[str, Any], scenes: list[dict[str, Any]],
+                               narration: str = "", duration: float = 0.0) -> tuple[str, str]:
     """Generic holographic scene for authored topics.
 
-    The topic's own scene description is shown as an on-screen explanation card,
-    over an animated holographic core. Per-topic bespoke animation is not
-    implied; the description and captions carry the explanation.
+    Each scene shows its own animated motif, switched in step with the narrated sentences.
+    Nothing from the scene notes is printed on screen: the picture must explain the narration.
     """
     from .visual_motifs import MOTIFS, draw_motif
 
     count = max(1, len(scenes))
-    overall = min(0.9999, (scene + min(1.0, max(0.0, progress))) / 4)
-    position = min(count - 1, int(overall * count))
-    local_progress = overall * count - position
-    description = str(scenes[position].get("visual_description", "")).strip() if scenes else ""
+    if narration and duration and scenes:
+        position, local_progress = scene_position(narration, scenes, seconds, duration)
+    else:
+        overall = min(0.9999, (scene + min(1.0, max(0.0, progress))) / 4)
+        position = min(count - 1, int(overall * count))
+        local_progress = overall * count - position
     palette = [CYAN, VIOLET, BLUE, CYAN]
     color = palette[position % 4]
     cx, cy = 360, 690
     scan = int((seconds * 110) % 560)
     draw.line((90, 250 + scan, 630, 250 + scan), fill=(75, 226, 255, 35), width=2)
 
-    # Explanation card from the scene description.
-    lines = _wrap(draw, description, fonts["label"], 560)[:4]
-    card_h = 28 + 34 * max(1, len(lines))
-    draw.rounded_rectangle((60, 215, 660, 215 + card_h), radius=18, fill=(3, 15, 36, 205),
-                           outline=(*color[:3], 170), width=2)
-    for i, line in enumerate(lines):
-        draw.text((80, 230 + i * 34), line, font=fonts["label"], fill=WHITE)
-
     motif = str(scenes[position].get("motif", "")) if scenes else ""
     if motif in MOTIFS:
-        draw_motif(motif, draw, local_progress, seconds, fonts, color)
+        _draw_motif_raised(draw, motif, local_progress, seconds, fonts, color)
         if position == 0:
             headline = "THE QUESTION"
         elif position == count - 1:
             headline = "THE TAKEAWAY"
         else:
             headline = "HOW IT WORKS"
-        return headline, f"Scene {position + 1} of {count}"
+        return headline, ""
 
     # Pulsing holographic core with orbiting nodes; node count grows with the scene.
     for k in range(4):
@@ -370,4 +439,4 @@ def draw_generic_science_scene(draw: Any, scene: int, progress: float, seconds: 
         headline = "THE TAKEAWAY"
     else:
         headline = "HOW IT WORKS"
-    return headline, f"Scene {position + 1} of {count}"
+    return headline, ""
