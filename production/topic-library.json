@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-20T03:24:58.909727+00:00",
+  "updated_at": "2026-11-20T08:10:43.802151+00:00",
   "production_specs": [
     {
       "spec_path": "examples/videos/why-the-sky-is-blue-production.json",
@@ -2116,6 +2116,105 @@
       "published": "Wed, 18 Nov 2026 20:43:18 EST",
       "description": "USGS Hawaiian Volcano Observatory scientists conducted a monitoring and mapping overflight of Kīlauea's summit region on November 18, 2026.",
       "discovered_at": "2026-11-19T08:26:45.249400+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000135",
+      "title": "APOD: 2026 November 20 – V-G-R",
+      "url": "https://science.nasa.gov/image-article/apod-2026-november-20-v-g-r/",
+      "publisher_id": "NASA",
+      "published": "Fri, 20 Nov 2026 05:05:00 +0000",
+      "description": "APOD Science APOD APOD: 2026 November… Today’s APOD Archive Submissions Index Search Calendar RSS Education About Discuss APOD Astronomy Picture of the Day Discover the cosmos! Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer. V-G-R Explanation: On November 17, […]",
+      "discovered_at": "2026-11-20T08:10:43.801582+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000136",
+      "title": "Challenge: Public Input on Life and the World in 2075",
+      "url": "https://www.nasa.gov/directorates/stmd/prizes-challenges-crowdsourcing-program/center-of-excellence-for-collaborative-innovation-coeci/challenge-public-input-on-life-and-the-world-in-2075/",
+      "publisher_id": "NASA",
+      "published": "Thu, 19 Nov 2026 19:34:20 +0000",
+      "description": "NASA’s Transformational Tools and Technologies (TTT) is gathering public perspectives on life today and how the world may change by 2075. This challenge asks for conceptual ideas about life in 2075 across four challenge topics. Ideas should explore how future aviation or aerospace systems could: Ideas should be conceptual rather than technical. Award: $20,000 in […]",
+      "discovered_at": "2026-11-20T08:10:43.801610+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000137",
+      "title": "Lake Pelku",
+      "url": "https://www.nasa.gov/image-article/lake-pelku/",
+      "publisher_id": "NASA",
+      "published": "Thu, 19 Nov 2026 15:32:39 +0000",
+      "description": "An astronaut on the International Space Station captured this photograph of Lake Pelku (near center) as the station orbited above Asia. The International Space Station serves as a unique platform for observing Earth with both hands-on and automated equipment. Station crew members have produced hundreds of thousands of images. These images record phenomena in real […]",
+      "discovered_at": "2026-11-20T08:10:43.801626+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000138",
+      "title": "NASA Conducts Latest RS-25 Engine Test in Support of Future Artemis Missions",
+      "url": "https://www.nasa.gov/image-article/latest-rs-25-engine-test-in-support-of-future-artemis-missions/",
+      "publisher_id": "NASA",
+      "published": "Thu, 19 Nov 2026 14:44:39 +0000",
+      "description": "NASA tested RS-25 engine No. 10001 on Nov. 18 on the Fred Haise Test Stand at NASA’s Stennis Space Center near Bay St. Louis, Mississippi. Test teams fired the developmental engine for the planned duration of three minutes and 20 seconds (200 seconds). While this developmental engine will not be used in flight, the hot […]",
+      "discovered_at": "2026-11-20T08:10:43.801637+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000139",
+      "title": "NASA Science Data Powers New Method to Discover Hard-to-Find Pulsars",
+      "url": "https://science.nasa.gov/open-science/fermi-data-pulsar-discovery/",
+      "publisher_id": "NASA",
+      "published": "Thu, 19 Nov 2026 15:33:55 +0000",
+      "description": "Open data from NASA’s Fermi mission helped an international team of scientists develop a method for finding pulsars about a million times faster than before.",
+      "discovered_at": "2026-11-20T08:10:43.801646+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000140",
+      "title": "NASA’s Voyager 1 Makes History Reaching One Light-Day From Earth",
+      "url": "https://www.nasa.gov/news-release/nasas-voyager-1-makes-history-reaching-one-light-day-from-earth/",
+      "publisher_id": "NASA",
+      "published": "Thu, 19 Nov 2026 14:31:15 +0000",
+      "description": "NASA’s Voyager 1 probe, humanity’s farthest-flying spacecraft, has reached one light-day from Earth, after more than 49 years of constant travel. A light-day is the distance light travels in 24 hours, equaling about 16.1 billion miles (25.9 billion kilometers). The spacecraft achieved the milestone at 2:16 a.m. PST (5:16 a.m. EST) Nov. 18. Voyager team […]",
+      "discovered_at": "2026-11-20T08:10:43.801662+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000141",
+      "title": "The Stormy Southwest Pacific",
+      "url": "https://science.nasa.gov/earth/earth-observatory/the-stormy-southwest-pacific/",
+      "publisher_id": "NASA",
+      "published": "Fri, 20 Nov 2026 05:01:00 +0000",
+      "description": "Tropical Cyclone Xavier launched the basin’s storm season with a bang.",
+      "discovered_at": "2026-11-20T08:10:43.801670+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000142",
+      "title": "Volcano Minute — Puzzling together the eruptive history of Kīlauea",
+      "url": "https://www.usgs.gov/observatories/hvo/news/volcano-minute-puzzling-together-eruptive-history-kilauea?utm_source=comms&amp;utm_medium=rss&amp;utm_campaign=news",
+      "publisher_id": "USGS",
+      "published": "Thu, 19 Nov 2026 06:06:37 EST",
+      "description": "Kīlauea is one of the most active volcanoes on Earth, and it keeps rewriting its own history.",
+      "discovered_at": "2026-11-20T08:10:43.801812+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000143",
+      "title": "Volcano Watch — Kīlauea’s enigmatic past",
+      "url": "https://www.usgs.gov/observatories/hvo/news/volcano-watch-kilaueas-enigmatic-past?utm_source=comms&amp;utm_medium=rss&amp;utm_campaign=news",
+      "publisher_id": "USGS",
+      "published": "Thu, 19 Nov 2026 11:37:01 EST",
+      "description": "Kīlauea recently underwent its 56th lava fountaining episode since December 2024. This is just the most-recent eruptive activity from one of the world’s most active volcanoes. While frequent eruptions add new land to Kīlauea, lava flows and tephra deposits can also bury older erupted material. This can make it difficult to unravel the history of such an active volcano.",
+      "discovered_at": "2026-11-20T08:10:43.801832+00:00",
       "status": "candidate_unreviewed",
       "editorial_review_required": false
     }
