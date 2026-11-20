@@ -315,5 +315,15 @@
       }
     },
     "scheduled_at": "2026-11-20T11:28:48.523500+00:00"
+  },
+  "qt-earth-has-magnetic-20261120-1923": {
+    "status": "reserved",
+    "spec": "production/specs/earth-has-magnetic.json",
+    "due_at": "2026-11-20T19:23:29+03:00",
+    "reserved_at": "2026-11-20T16:03:29+00:00",
+    "workflow_run_id": "44769460321",
+    "slot_local": "2026-11-20 19:23",
+    "publish_timezone": "Africa/Kampala",
+    "recovers_slot": "2026-11-20 18:00"
   }
 }
