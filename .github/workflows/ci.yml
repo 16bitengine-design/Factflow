@@ -37,6 +37,9 @@ jobs:
       - name: Run automated tests
         run: python -m pytest
 
+      - name: Report flat animations still used by topics
+        run: python -m factflow.cli motif-report
+
       - name: Validate sample topic
         run: quantatale validate examples/topics/why-the-sky-is-blue.json
 

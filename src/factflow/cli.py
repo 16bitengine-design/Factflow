@@ -117,6 +117,9 @@ def build_parser() -> argparse.ArgumentParser:
     probe_parser.add_argument("--registry", default=None)
     probe_parser.add_argument("--max-paragraphs", type=int, default=16)
 
+    motif_parser = subparsers.add_parser("motif-report", help="Count 3D vs flat animations and list flat ones still used by topics.")
+    motif_parser.add_argument("--specs-dir", default="production/specs")
+
     stock_parser = subparsers.add_parser("topic-stock", help="Report never-used publishable topics.")
     stock_parser.add_argument("--library", default="production/topic-library.json")
     stock_parser.add_argument("--ledger", default="production/publishing-ledger.json")
@@ -168,6 +171,22 @@ def main() -> int:
         print(f"Added {result['added']} leads; skipped {result['duplicates']} duplicates.")
         print(f"Library totals: {summary}")
         print("All discovered leads remain unreviewed and blocked from production.")
+        return 0
+
+    if args.command == "motif-report":
+        import json as _json
+        from collections import Counter
+        from factflow.visual_motifs import HOLOGRAPHIC_3D, MOTIFS
+        used: Counter[str] = Counter()
+        for path in sorted(Path(args.specs_dir).glob("*.json")):
+            spec = _json.loads(path.read_text(encoding="utf-8"))
+            for scene in spec.get("scenes", []):
+                used[str(scene.get("motif", "none"))] += 1
+        flat_used = {name: n for name, n in used.items() if name not in HOLOGRAPHIC_3D}
+        print(f"Motifs: {len(HOLOGRAPHIC_3D)} holographic 3D of {len(MOTIFS)} total")
+        print(f"Scenes in topics: {sum(used.values())}; still flat: {sum(flat_used.values())}")
+        for name, n in sorted(flat_used.items(), key=lambda kv: -kv[1]):
+            print(f"  flat: {name} x{n}")
         return 0
 
     if args.command == "source-text":

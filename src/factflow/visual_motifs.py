@@ -1074,3 +1074,6 @@ def draw_motif(name: str | None, draw: Any, progress: float, seconds: float, fon
 from .visual_motifs_3d import MOTIFS_3D  # noqa: E402  (3D versions replace the flat ones of the same name)
 
 MOTIFS.update(MOTIFS_3D)
+
+# Motifs that show the idea as a holographic 3D figure. New topics may use only these.
+HOLOGRAPHIC_3D = frozenset(name for name in MOTIFS if name in MOTIFS_3D or name.endswith("_3d"))

@@ -47,3 +47,15 @@ the draft stays for the next run.
 Run the "source page probe" workflow with space-separated page URLs. It prints, per page, the paragraphs the
 evidence gates would see, or why the page could not be fetched (for example Britannica answers HTTP 403).
 Quotes in drafts must be copied from that text.
+
+## Every scene must be a 3D holographic figure
+
+New topics, whether written by the automatic writer or in an assistant session, may only use motifs in
+`HOLOGRAPHIC_3D` (`visual_motifs.py`). `check_shape` rejects a scene whose motif is flat, missing (`none`)
+or unknown, and the writer is told to answer `request: <the 3D animation that is needed>` when nothing
+listed fits, so a poor match is never used. A rejected draft stays visible in the run log with the reason,
+which is the work queue for the next 3D motif. `quantatale motif-report` (also run in CI) counts 3D vs flat
+motifs and lists the flat ones still used by existing topics, most-used first, so they can be converted.
+
+To add a 3D motif: put the function in `visual_motifs_3d.py` (or name it `*_3d`), add it to `MOTIFS_3D`,
+render a frame to check it, and make sure its on-screen text states only what the sources support.
