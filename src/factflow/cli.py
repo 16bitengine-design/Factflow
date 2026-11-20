@@ -101,6 +101,7 @@ def build_parser() -> argparse.ArgumentParser:
     author_parser.add_argument("--library", default="production/topic-library.json", help="Persistent topic library JSON.")
     author_parser.add_argument("--specs-dir", default="production/specs", help="Directory for new specs.")
     author_parser.add_argument("--registry", default=None, help="Optional publisher registry JSON.")
+    author_parser.add_argument("--seeds", default="production/source-seeds.json", help="Verified source pages the writer may use.")
     author_parser.add_argument("--output", default="build/topic-authoring.json", help="JSON report path.")
 
     ingest_parser = subparsers.add_parser(
@@ -212,12 +213,12 @@ def main() -> int:
 
     if args.command == "author-topics":
         from factflow.llm_providers import ProviderChain
-        from factflow.topic_authoring import author_topics
+        from factflow.topic_authoring import author_topics, load_seeds
         try:
             library = load_library(args.library)
             registry = load_source_registry(args.registry) if args.registry else load_source_registry()
             chain = ProviderChain()
-            report = author_topics(chain, library, registry, Path(args.specs_dir), count=args.count)
+            report = author_topics(chain, library, registry, Path(args.specs_dir), count=args.count, seeds=load_seeds(args.seeds))
             report["provider_failures"] = chain.failures[:40]
             if report["accepted"]:
                 save_library(library, args.library)

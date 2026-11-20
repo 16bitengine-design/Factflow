@@ -1,0 +1,209 @@
+{
+ "note": "Pages confirmed to load and yield text through the source probe. The automatic topic writer may only use these URLs; add new ones by running the source-probe workflow.",
+ "pages": [
+  {
+   "url": "https://gml.noaa.gov/ozwv/faq_cat-2.html",
+   "group": "NOAA"
+  },
+  {
+   "url": "https://newsinhealth.nih.gov/2013/07/stay-cool",
+   "group": "NIH"
+  },
+  {
+   "url": "https://newsinhealth.nih.gov/2023/05/hydrating-health",
+   "group": "NIH"
+  },
+  {
+   "url": "https://oceanservice.noaa.gov/facts/exploration.html",
+   "group": "NOAA"
+  },
+  {
+   "url": "https://oceanservice.noaa.gov/facts/hurricane.html",
+   "group": "NOAA"
+  },
+  {
+   "url": "https://oceanservice.noaa.gov/facts/ninonina.html",
+   "group": "NOAA"
+  },
+  {
+   "url": "https://oceanservice.noaa.gov/facts/sealevel.html",
+   "group": "NOAA"
+  },
+  {
+   "url": "https://oceanservice.noaa.gov/facts/tides.html",
+   "group": "NOAA"
+  },
+  {
+   "url": "https://oceanservice.noaa.gov/facts/upwelling.html",
+   "group": "NOAA"
+  },
+  {
+   "url": "https://oceanservice.noaa.gov/facts/whysalty.html",
+   "group": "NOAA"
+  },
+  {
+   "url": "https://science.nasa.gov/earth/explore/nasa-knows-the-ozone-hole/",
+   "group": "NASA"
+  },
+  {
+   "url": "https://science.nasa.gov/kids/earth/10-interesting-things-about-glaciers/",
+   "group": "NASA"
+  },
+  {
+   "url": "https://science.nasa.gov/moon/facts/",
+   "group": "NASA"
+  },
+  {
+   "url": "https://science.nasa.gov/moon/moon-phases/",
+   "group": "NASA"
+  },
+  {
+   "url": "https://science.nasa.gov/science-research/earth-science/earths-magnetosphere-protecting-our-planet-from-harmful-space-energy/",
+   "group": "NASA"
+  },
+  {
+   "url": "https://science.nasa.gov/solar-system/meteors-meteorites/facts/",
+   "group": "NASA"
+  },
+  {
+   "url": "https://science.nasa.gov/sun/auroras/",
+   "group": "NASA"
+  },
+  {
+   "url": "https://science.nasa.gov/sun/facts/",
+   "group": "NASA"
+  },
+  {
+   "url": "https://science.nasa.gov/sun/solar-storms-and-flares/",
+   "group": "NASA"
+  },
+  {
+   "url": "https://science.nasa.gov/universe/black-holes/",
+   "group": "NASA"
+  },
+  {
+   "url": "https://spaceplace.nasa.gov/atmosphere/en/",
+   "group": "NASA"
+  },
+  {
+   "url": "https://spaceplace.nasa.gov/earthquakes/en/",
+   "group": "NASA"
+  },
+  {
+   "url": "https://spaceplace.nasa.gov/el-nino/en/",
+   "group": "NASA"
+  },
+  {
+   "url": "https://spaceplace.nasa.gov/hurricanes/en/",
+   "group": "NASA"
+  },
+  {
+   "url": "https://spaceplace.nasa.gov/seasons/en/",
+   "group": "NASA"
+  },
+  {
+   "url": "https://spaceplace.nasa.gov/volcanoes/en/",
+   "group": "NASA"
+  },
+  {
+   "url": "https://www.cdc.gov/niosh/heat-stress/about/illnesses.html",
+   "group": "CDC"
+  },
+  {
+   "url": "https://www.cdc.gov/niosh/noise/about/index.html",
+   "group": "CDC"
+  },
+  {
+   "url": "https://www.cdc.gov/sleep/about/index.html",
+   "group": "CDC"
+  },
+  {
+   "url": "https://www.nasa.gov/missions/tech-demonstration/deep-space-atomic-clock/what-is-an-atomic-clock/",
+   "group": "NASA"
+  },
+  {
+   "url": "https://www.ncei.noaa.gov/news/science-beauty-and-mystery-auroras",
+   "group": "NOAA"
+  },
+  {
+   "url": "https://www.ncei.noaa.gov/news/what-is-space-weather",
+   "group": "NOAA"
+  },
+  {
+   "url": "https://www.nhlbi.nih.gov/health/sleep/why-sleep-important",
+   "group": "NIH"
+  },
+  {
+   "url": "https://www.nidcd.nih.gov/health/how-do-we-hear",
+   "group": "NIH"
+  },
+  {
+   "url": "https://www.nist.gov/how-do-you-measure-it/how-do-you-measure-second",
+   "group": "NIST"
+  },
+  {
+   "url": "https://www.nist.gov/pml/weights-and-measures/metric-si/si-units",
+   "group": "NIST"
+  },
+  {
+   "url": "https://www.usgs.gov/faqs/how-do-volcanoes-erupt",
+   "group": "USGS"
+  },
+  {
+   "url": "https://www.usgs.gov/programs/earthquake-hazards/science-earthquakes",
+   "group": "USGS"
+  },
+  {
+   "url": "https://www.usgs.gov/programs/geomagnetism/introduction-geomagnetism",
+   "group": "USGS"
+  },
+  {
+   "url": "https://www.usgs.gov/water-science-school/science/glaciers-and-icecaps",
+   "group": "USGS"
+  },
+  {
+   "url": "https://www.usgs.gov/water-science-school/science/saline-water-and-salinity",
+   "group": "USGS"
+  },
+  {
+   "url": "https://www.usgs.gov/water-science-school/science/water-cycle",
+   "group": "USGS"
+  },
+  {
+   "url": "https://www.usgs.gov/water-science-school/science/water-you-water-and-human-body",
+   "group": "USGS"
+  },
+  {
+   "url": "https://www.weather.gov/safety/lightning-science",
+   "group": "NOAA"
+  },
+  {
+   "url": "https://www.weather.gov/safety/lightning-science-thunder",
+   "group": "NOAA"
+  },
+  {
+   "url": "https://www.nhlbi.nih.gov/health/heart",
+   "group": "NIH"
+  },
+  {
+   "url": "https://www.cdc.gov/heart-disease/about/index.html",
+   "group": "CDC"
+  },
+  {
+   "url": "https://www.cdc.gov/vaccines/basics/explaining-how-vaccines-work.html",
+   "group": "CDC"
+  },
+  {
+   "url": "https://www.nei.nih.gov/learn-about-eye-health/healthy-vision/how-eyes-work",
+   "group": "NIH"
+  },
+  {
+   "url": "https://www.cdc.gov/skin-cancer/sun-safety/index.html",
+   "group": "CDC"
+  },
+  {
+   "url": "https://www.cdc.gov/nutrition/php/about/index.html",
+   "group": "CDC"
+  }
+ ]
+}
