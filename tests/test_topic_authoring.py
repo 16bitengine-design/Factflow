@@ -150,3 +150,14 @@ def test_seeded_proposals_only_keep_listed_urls_and_seed_file_loads(tmp_path):
     path = tmp_path / "s.json"
     path.write_text(json.dumps({"pages": seeds}))
     assert load_seeds(path) == seeds
+
+
+def test_seeds_already_used_by_a_topic_are_not_offered_again(tmp_path):
+    specs = tmp_path / "specs"
+    specs.mkdir()
+    (specs / "old.json").write_text(json.dumps({"sources": [{"url": "https://science.nasa.gov/x"}]}))
+    seeds = [{"url": "https://science.nasa.gov/x", "group": "NASA"}, {"url": "https://www.noaa.gov/y", "group": "NOAA"}]
+    lib = {"production_specs": [], "discovery_leads": []}
+    chain = FakeChain([])  # must not be called: only one group is left
+    report = author_topics(chain, lib, load_source_registry(), specs, count=1, fetcher=fetcher, today="2026-11-18", seeds=seeds)
+    assert report["accepted"] == [] and "no unused verified pages" in report["note"]
