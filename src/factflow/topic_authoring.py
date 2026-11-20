@@ -38,7 +38,9 @@ Fetcher = Callable[[str, dict[str, Any]], dict[str, Any]]
 
 def _norm(text: str) -> str:
     text = text.replace("’", "'").replace("‘", "'").replace("“", '"').replace("”", '"')
-    return " ".join(re.sub(r"[^a-z0-9%.' ]+", " ", text.lower()).split())
+    cleaned = " ".join(re.sub(r"[^a-z0-9%.' ]+", " ", text.lower()).split())
+    # Web pages often render a linked term as "word ." with a space before the stop.
+    return re.sub(r" \.", ".", cleaned)
 
 
 def _words(text: str) -> list[str]:

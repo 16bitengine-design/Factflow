@@ -46,3 +46,11 @@ def test_draft_stays_when_no_checker_is_reachable(tmp_path, monkeypatch):
     monkeypatch.setattr(ta, "check_originality", lambda *a: [])
     report = ingest_drafts(FakeChain(fail=True), {"production_specs": []}, {}, tmp_path / "specs", drafts)
     assert len(report["deferred"]) == 1 and (drafts / "one.json").exists()
+
+
+def test_quote_matches_page_text_with_space_before_full_stop():
+    from factflow.topic_authoring import check_grounding
+
+    sources = [{"paragraphs": ["Earthquakes are recorded by instruments called seismographs . The recording is a seismogram ."]}]
+    claims = [{"sentence": "Seismographs record the shaking.", "quote": "Earthquakes are recorded by instruments called seismographs.", "source": 0}]
+    assert check_grounding("Seismographs record the shaking.", claims, sources) == []
