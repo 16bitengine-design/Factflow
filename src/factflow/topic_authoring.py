@@ -202,6 +202,18 @@ def load_seeds(path: Path | str) -> list[dict[str, str]]:
     return [p for p in data.get("pages", []) if isinstance(p, dict) and p.get("url") and p.get("group")]
 
 
+def used_source_urls(specs_dir: Path) -> set[str]:
+    """Every source URL already behind a topic, so new topics start from fresh pages."""
+    used: set[str] = set()
+    for path in Path(specs_dir).glob("*.json"):
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        used.update(str(src.get("url")) for src in data.get("sources", []) if isinstance(src, dict) and src.get("url"))
+    return used
+
+
 def propose_topics(chain: ProviderChain, existing_titles: list[str], count: int,
                    seeds: list[dict[str, str]] | None = None) -> list[dict[str, Any]]:
     avoid = "; ".join(existing_titles[-60:])
@@ -273,6 +285,12 @@ def author_topics(chain: ProviderChain, library: dict[str, Any], registry: dict[
     existing_prefixes = {str(i.get("content_id_prefix", "")) for i in library.get("production_specs", [])}
     report: dict[str, Any] = {"accepted": [], "rejected": [], "provider_usage": {}}
     budget = max_attempts or count * 3
+    if seeds is not None:
+        used = used_source_urls(specs_dir)
+        seeds = [x for x in seeds if x["url"] not in used]
+        if len({x["group"] for x in seeds}) < 2:
+            report["note"] = "no unused verified pages left in production/source-seeds.json; run the source probe and add more"
+            return report
     try:
         proposals = propose_topics(chain, sorted(existing), budget, seeds)
     except AllProvidersFailed as exc:

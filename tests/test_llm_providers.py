@@ -35,9 +35,9 @@ def test_failover_on_rate_limit_then_success_and_usage_counted():
             raise urllib.error.HTTPError(request.full_url, 429, "limit", {}, None)
         return _ok("hello")
 
-    chain = ProviderChain(default_providers({"GROQ_API_KEY": "k"}), opener=opener)
+    chain = ProviderChain(default_providers({"GROQ_API_KEY": "k"}), opener=opener, sleeper=lambda s: None)
     assert chain.complete("s", "u") == "hello"
-    assert len(calls) == 2 and chain.usage == {"ovhcloud": 1}
+    assert len(calls) == 4 and chain.usage == {"ovhcloud": 1}  # groq tried 3 times, then ovh
 
 
 def test_provider_without_key_is_skipped_not_called():
@@ -73,7 +73,7 @@ def test_chain_records_why_each_provider_was_skipped():
             import urllib.error
             raise urllib.error.HTTPError("u", 429, "rate", {}, None)
 
-    chain = ProviderChain([Provider("a", "http://x", "m1", None), Provider("b", "http://x", "m2", "k")], opener=Boom())
+    chain = ProviderChain([Provider("a", "http://x", "m1", None), Provider("b", "http://x", "m2", "k")], opener=Boom(), sleeper=lambda s: None)
     try:
         chain.complete("s", "u")
     except Exception:
@@ -105,3 +105,25 @@ def test_groq_default_uses_low_reasoning_and_room_to_answer():
     groq = default_providers({"GROQ_API_KEY": "k"})[0]
     assert groq.model == "openai/gpt-oss-120b"
     assert groq.extra_payload == {"reasoning_effort": "low"} and groq.min_tokens >= 4000
+
+
+def test_rate_limit_waits_and_retries_the_same_provider():
+    import urllib.error
+    from email.message import Message
+
+    from factflow.llm_providers import Provider, ProviderChain
+
+    headers = Message()
+    headers["Retry-After"] = "7"
+    state = {"n": 0}
+    waits = []
+
+    def opener(request, timeout):
+        state["n"] += 1
+        if state["n"] == 1:
+            raise urllib.error.HTTPError("u", 429, "rate", headers, None)
+        return _ok("fine")
+
+    chain = ProviderChain([Provider("groq", "http://x", "m", "k")], opener=opener, sleeper=waits.append)
+    assert chain.complete("s", "u") == "fine"
+    assert waits == [7.0] and chain.usage == {"groq": 1}

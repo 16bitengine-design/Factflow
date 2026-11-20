@@ -233,6 +233,8 @@ def main() -> int:
         print(f"Accepted {len(report['accepted'])}, rejected {len(report['rejected'])}; providers used: {report['provider_usage']}")
         for item in report["rejected"]:
             print(f"  rejected: {item['question'][:70]} -> {item['reason'][:160]}")
+        if report.get("note"):
+            print(f"  note: {report['note']}")
         if report.get("error"):
             print(f"TOPIC AUTHORING ERROR: {report['error']}", file=sys.stderr)
             return 1

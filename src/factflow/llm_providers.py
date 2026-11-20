@@ -10,12 +10,15 @@ from __future__ import annotations
 
 import json
 import os
+import time
 import urllib.error
 import urllib.request
 from dataclasses import dataclass, field
 from typing import Any, Callable
 
 DEFAULT_TIMEOUT = 90
+RATE_LIMIT_RETRIES = 2
+RATE_LIMIT_MAX_WAIT = 30.0
 
 
 class ProviderError(RuntimeError):
@@ -45,7 +48,8 @@ class Provider:
         return bool(self.api_key) or not self.requires_key
 
     def complete(self, system: str, user: str, *, max_tokens: int, temperature: float,
-                 opener: Callable[..., Any] = urllib.request.urlopen) -> str:
+                 opener: Callable[..., Any] = urllib.request.urlopen,
+                 sleeper: Callable[[float], Any] = time.sleep) -> str:
         payload = {
             "model": self.model,
             "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
@@ -57,13 +61,19 @@ class Provider:
         if self.api_key:
             headers["Authorization"] = f"Bearer {self.api_key}"
         request = urllib.request.Request(self.url, data=json.dumps(payload).encode("utf-8"), headers=headers, method="POST")
-        try:
-            with opener(request, timeout=DEFAULT_TIMEOUT) as response:
-                body = json.loads(response.read().decode("utf-8"))
-        except urllib.error.HTTPError as exc:  # 429 quota, 5xx outage, 4xx bad model
-            raise ProviderError(f"HTTP {exc.code}") from exc
-        except (urllib.error.URLError, TimeoutError, OSError, ValueError) as exc:
-            raise ProviderError(f"{type(exc).__name__}: {exc}") from exc
+        body = None
+        for wait_round in range(RATE_LIMIT_RETRIES + 1):
+            try:
+                with opener(request, timeout=DEFAULT_TIMEOUT) as response:
+                    body = json.loads(response.read().decode("utf-8"))
+                break
+            except urllib.error.HTTPError as exc:  # 429 quota, 5xx outage, 4xx bad model
+                if exc.code == 429 and wait_round < RATE_LIMIT_RETRIES:
+                    sleeper(_retry_after(exc))  # free tiers reset per minute: wait, then ask again
+                    continue
+                raise ProviderError(f"HTTP {exc.code}") from exc
+            except (urllib.error.URLError, TimeoutError, OSError, ValueError) as exc:
+                raise ProviderError(f"{type(exc).__name__}: {exc}") from exc
         try:
             text = body["choices"][0]["message"]["content"]
         except (KeyError, IndexError, TypeError) as exc:
@@ -71,6 +81,15 @@ class Provider:
         if not isinstance(text, str) or not text.strip():
             raise ProviderError("empty reply")
         return text
+
+
+def _retry_after(exc: Any) -> float:
+    """Seconds to wait after HTTP 429: the Retry-After header when present, else a short default, capped."""
+    try:
+        value = float(exc.headers.get("Retry-After"))
+    except (AttributeError, TypeError, ValueError):
+        value = 20.0
+    return max(1.0, min(value, RATE_LIMIT_MAX_WAIT))
 
 
 def default_providers(env: dict[str, str] | None = None) -> list[Provider]:
@@ -96,9 +115,11 @@ class ProviderChain:
     """Try providers in order; skip unavailable ones and report why each failed."""
 
     def __init__(self, providers: list[Provider] | None = None,
-                 opener: Callable[..., Any] = urllib.request.urlopen) -> None:
+                 opener: Callable[..., Any] = urllib.request.urlopen,
+                 sleeper: Callable[[float], Any] = time.sleep) -> None:
         self.providers = providers if providers is not None else default_providers()
         self.opener = opener
+        self.sleeper = sleeper
         self.usage: dict[str, int] = {}
         self.failures: list[str] = []  # every skipped provider and why, for the run log
 
@@ -114,7 +135,7 @@ class ProviderChain:
             result, failed = None, False
             for attempt in (1, 2):  # a malformed JSON reply is retried once on the same provider
                 try:
-                    text = provider.complete(system, user, max_tokens=max_tokens, temperature=temperature, opener=self.opener)
+                    text = provider.complete(system, user, max_tokens=max_tokens, temperature=temperature, opener=self.opener, sleeper=self.sleeper)
                     result = validate(text) if validate else text
                     failed = False
                     break
