@@ -156,21 +156,6 @@ def _fit_font(draw: Any, text: str, font: Any, max_width: int, min_size: int = 1
         fitted = fitted.font_variant(size=max(min_size, size - 1))
     return fitted
 
-def _sources_label(spec: dict[str, Any]) -> str:
-    """Short on-screen credit such as 'Sources: NASA, NOAA', taken from the topic's own source URLs."""
-    from urllib.parse import urlparse
-
-    generic = {"gov", "uk", "co", "com", "org", "edu", "int", "net", "ac"}
-    names: list[str] = []
-    for source in spec.get("sources", []):
-        parts = urlparse(str(source.get("url", ""))).netloc.lower().split(".")
-        core = [x for x in parts if x not in generic]
-        name = (core[-1] if core else (parts[-1] if parts else "")).upper()
-        if name and name not in names:
-            names.append(name)
-    return ("Sources: " + ", ".join(names[:3])) if names else ""
-
-
 def _draw_frame(spec: dict[str, Any], seconds: float, duration: float, caption: str, fonts: dict[str, Any], stars: list[tuple[int, int, int]]) -> Any:
     """Render a narration-led frame using only holographic scientific imagery."""
     from PIL import Image, ImageDraw
@@ -201,21 +186,22 @@ def _draw_frame(spec: dict[str, Any], seconds: float, duration: float, caption: 
     if profile == "holographic_science_v1":
         headline, subline = draw_generic_science_scene(draw, scene_index, scene_progress, seconds, fonts, spec.get("scenes") or [],
                                                        narration=str(spec.get("narration", "")), duration=duration)
-        subline = _sources_label(spec)
+        headline = subline = ""  # science topics show animation only: no banner, no source credit
     else:
         scene_renderer = draw_sunset_scene if profile == "sunset_red_v1" else draw_holographic_scene
         headline, subline = scene_renderer(draw, scene_index, scene_progress, seconds, fonts)
 
     # Scene identity is explicit and changes with the narrated explanation.
-    panel = (48, 985, WIDTH-48, 1080)
-    draw.rounded_rectangle(panel, radius=18, fill=(3, 15, 36, 225),
-                           outline=(73, 226, 255, 175), width=2)
-    headline_font = _fit_font(draw, headline, fonts["heading"], panel[2] - panel[0] - 44)
-    headline_width = draw.textbbox((0, 0), headline, font=headline_font)[2]
-    draw.text(((WIDTH-headline_width)//2, 1000), headline, font=headline_font, fill=CYAN)
-    subline_font = _fit_font(draw, subline, fonts["small"], panel[2] - panel[0] - 44)
-    subline_width = draw.textbbox((0, 0), subline, font=subline_font)[2]
-    draw.text(((WIDTH-subline_width)//2, 1044), subline, font=subline_font, fill=WHITE)
+    if headline:
+        panel = (48, 985, WIDTH-48, 1080)
+        draw.rounded_rectangle(panel, radius=18, fill=(3, 15, 36, 225),
+                               outline=(73, 226, 255, 175), width=2)
+        headline_font = _fit_font(draw, headline, fonts["heading"], panel[2] - panel[0] - 44)
+        headline_width = draw.textbbox((0, 0), headline, font=headline_font)[2]
+        draw.text(((WIDTH-headline_width)//2, 1000), headline, font=headline_font, fill=CYAN)
+        subline_font = _fit_font(draw, subline, fonts["small"], panel[2] - panel[0] - 44)
+        subline_width = draw.textbbox((0, 0), subline, font=subline_font)[2]
+        draw.text(((WIDTH-subline_width)//2, 1044), subline, font=subline_font, fill=WHITE)
 
     # Synchronized caption area remains separate from scene labels.
     caption_lines = _wrap_text(draw, caption, fonts["caption"], WIDTH-112)[:2]

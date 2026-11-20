@@ -366,6 +366,22 @@ def scene_position(narration: str, scenes: list[dict[str, Any]], seconds: float,
     return 0, 0.0
 
 
+def _hologram_stage(draw: Any, seconds: float, color: Any) -> None:
+    """Projector platform under the animation: rotating rings and a faint light cone."""
+    cx, cy = 360, 1010
+    for i in range(14):  # light cone fading upward
+        y = cy - i * 38
+        half = 250 - i * 6
+        draw.line((cx - half, y, cx + half, y), fill=(*color[:3], max(6, 34 - i * 2)), width=3)
+    for k, (rx, ry) in enumerate(((290, 52), (225, 40), (160, 28))):
+        draw.ellipse((cx - rx, cy - ry, cx + rx, cy + ry), outline=(*color[:3], 190 - k * 40), width=3 - (k == 2))
+        for t in range(24):
+            ang = seconds * (0.6 + 0.25 * k) * (-1 if k % 2 else 1) + t * math.tau / 24
+            x, y = cx + rx * math.cos(ang), cy + ry * math.sin(ang)
+            draw.line((x, y, x, y - 9), fill=(*color[:3], 170), width=2)
+    draw.ellipse((cx - 14, cy - 5, cx + 14, cy + 5), fill=(*color[:3], 220))
+
+
 def _draw_motif_raised(draw: Any, motif: str, progress: float, seconds: float, fonts: dict[str, Any], color: Any) -> None:
     """Draw the motif on its own layer and lift it into the free space under the title."""
     from PIL import Image, ImageDraw
@@ -377,8 +393,8 @@ def _draw_motif_raised(draw: Any, motif: str, progress: float, seconds: float, f
         return
     layer = Image.new("RGBA", base.size, (0, 0, 0, 0))
     draw_motif(motif, ImageDraw.Draw(layer, "RGBA"), progress, seconds, fonts, color)
-    region = layer.crop((0, 300, base.width, 985))
-    base.paste(region.convert("RGB") if base.mode == "RGB" else region, (0, 205), region)
+    region = layer.crop((0, 300, base.width, 1100))
+    base.paste(region.convert("RGB") if base.mode == "RGB" else region, (0, 255), region)
 
 
 def draw_generic_science_scene(draw: Any, scene: int, progress: float, seconds: float,
@@ -406,6 +422,7 @@ def draw_generic_science_scene(draw: Any, scene: int, progress: float, seconds: 
 
     motif = str(scenes[position].get("motif", "")) if scenes else ""
     if motif in MOTIFS:
+        _hologram_stage(draw, seconds, color)
         _draw_motif_raised(draw, motif, local_progress, seconds, fonts, color)
         if position == 0:
             headline = "THE QUESTION"

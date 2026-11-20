@@ -204,14 +204,6 @@ def test_scenes_follow_the_narrated_sentences_in_order():
     assert scene_position(narration, scenes, 19.5, 20.0)[0] == 1
 
 
-def test_sources_credit_uses_the_topic_urls():
-    from factflow.video_render import _sources_label
-
-    spec = {"sources": [{"url": "https://oceanservice.noaa.gov/x"}, {"url": "https://science.nasa.gov/y"}, {"url": "https://www.metoffice.gov.uk/z"}]}
-    assert _sources_label(spec) == "Sources: NOAA, NASA, METOFFICE"
-    assert _sources_label({}) == ""
-
-
 def test_captions_are_split_so_no_words_are_dropped():
     from factflow.video_render import _caption_segments
 
