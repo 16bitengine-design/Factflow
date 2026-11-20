@@ -282,5 +282,15 @@
       }
     },
     "scheduled_at": "2026-11-19T16:32:29.085480+00:00"
+  },
+  "qt-atomic-clocks-define-20261120-1447": {
+    "status": "reserved",
+    "spec": "production/specs/atomic-clocks-define.json",
+    "due_at": "2026-11-20T14:47:01+03:00",
+    "reserved_at": "2026-11-20T11:27:01+00:00",
+    "workflow_run_id": "44727684295",
+    "slot_local": "2026-11-20 14:47",
+    "publish_timezone": "Africa/Kampala",
+    "recovers_slot": "2026-11-20 12:00"
   }
 }
