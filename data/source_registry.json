@@ -193,6 +193,132 @@
         "history"
       ],
       "independence_group": "OUR_WORLD_IN_DATA"
+    },
+    {
+      "id": "ESA",
+      "name": "European Space Agency",
+      "domains": [
+        "esa.int"
+      ],
+      "areas": [
+        "space",
+        "earth observation",
+        "astronomy"
+      ],
+      "independence_group": "ESA"
+    },
+    {
+      "id": "NPS",
+      "name": "United States National Park Service",
+      "domains": [
+        "nps.gov"
+      ],
+      "areas": [
+        "geology",
+        "wildlife",
+        "history",
+        "nature"
+      ],
+      "independence_group": "NPS"
+    },
+    {
+      "id": "EPA",
+      "name": "United States Environmental Protection Agency",
+      "domains": [
+        "epa.gov"
+      ],
+      "areas": [
+        "environment",
+        "pollution",
+        "climate"
+      ],
+      "independence_group": "EPA"
+    },
+    {
+      "id": "SMITHSONIAN",
+      "name": "Smithsonian Institution",
+      "domains": [
+        "si.edu"
+      ],
+      "areas": [
+        "natural history",
+        "history",
+        "science"
+      ],
+      "independence_group": "SMITHSONIAN"
+    },
+    {
+      "id": "NHS",
+      "name": "National Health Service (UK)",
+      "domains": [
+        "nhs.uk"
+      ],
+      "areas": [
+        "health",
+        "medicine"
+      ],
+      "independence_group": "NHS"
+    },
+    {
+      "id": "CERN",
+      "name": "CERN",
+      "domains": [
+        "home.cern",
+        "cern.ch"
+      ],
+      "areas": [
+        "physics",
+        "particles"
+      ],
+      "independence_group": "CERN"
+    },
+    {
+      "id": "MET_OFFICE",
+      "name": "Met Office (UK)",
+      "domains": [
+        "metoffice.gov.uk"
+      ],
+      "areas": [
+        "weather",
+        "climate"
+      ],
+      "independence_group": "MET_OFFICE"
+    },
+    {
+      "id": "NSF",
+      "name": "United States National Science Foundation",
+      "domains": [
+        "nsf.gov"
+      ],
+      "areas": [
+        "science",
+        "research"
+      ],
+      "independence_group": "NSF"
+    },
+    {
+      "id": "DOE",
+      "name": "United States Department of Energy",
+      "domains": [
+        "energy.gov"
+      ],
+      "areas": [
+        "energy",
+        "physics"
+      ],
+      "independence_group": "DOE"
+    },
+    {
+      "id": "USFWS",
+      "name": "United States Fish and Wildlife Service",
+      "domains": [
+        "fws.gov"
+      ],
+      "areas": [
+        "wildlife",
+        "nature"
+      ],
+      "independence_group": "USFWS"
     }
   ]
 }
