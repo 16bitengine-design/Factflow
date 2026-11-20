@@ -298,7 +298,9 @@
         "buffer_status": "scheduled",
         "due_at": "2026-11-20T11:47:01.000Z",
         "verification": {
-          "status": "awaiting_confirmation"
+          "status": "awaiting_confirmation",
+          "buffer_status": "scheduled",
+          "checked_at": "2026-11-20T11:29:13+00:00"
         }
       },
       "tiktok": {
@@ -306,7 +308,9 @@
         "buffer_status": "scheduled",
         "due_at": "2026-11-20T11:47:01.000Z",
         "verification": {
-          "status": "awaiting_confirmation"
+          "status": "awaiting_confirmation",
+          "buffer_status": "scheduled",
+          "checked_at": "2026-11-20T11:29:13+00:00"
         }
       }
     },
