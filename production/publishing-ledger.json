@@ -355,5 +355,15 @@
       }
     },
     "scheduled_at": "2026-11-20T16:06:36.838021+00:00"
+  },
+  "qt-glaciers-form-flow-20261121-1259": {
+    "status": "reserved",
+    "spec": "production/specs/glaciers-form-flow.json",
+    "due_at": "2026-11-21T12:59:33+03:00",
+    "reserved_at": "2026-11-21T09:39:33+00:00",
+    "workflow_run_id": "44890607302",
+    "slot_local": "2026-11-21 12:59",
+    "publish_timezone": "Africa/Kampala",
+    "recovers_slot": "2026-11-21 12:00"
   }
 }
