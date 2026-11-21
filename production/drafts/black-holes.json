@@ -1,0 +1,77 @@
+{
+  "title": "What a Black Hole Really Is and How One Forms",
+  "description": "What black holes are, how massive stars collapse into them and how scientists find them, from NASA and ESA.",
+  "category": "space",
+  "source_urls": [
+    "https://science.nasa.gov/universe/black-holes/",
+    "https://www.esa.int/Science_Exploration/Space_Science/Black_holes"
+  ],
+  "narration": "What kind of object is so dense that even light cannot escape it? Black holes are not really holes but huge concentrations of matter packed into tiny spaces. Their gravity is so intense that not even light can get out from beyond a boundary called the event horizon. One kind is born when a massive star runs out of fuel and explodes in a supernova. As the core collapses, the outer layers rebound and are thrown into space. If the core left behind is more than three times the Sun's mass, it keeps being crushed into a smaller and smaller volume. Black holes neither emit nor reflect light, so scientists detect them by how they affect their surroundings. The closest known black hole, Gaia BH1, lies roughly 1,500 light-years from us. Our galaxy's central black hole, Sagittarius A*, is 4 million times the Sun's mass. In 2019 the Event Horizon Telescope produced the earliest direct picture of one, a dark silhouette against glowing matter.",
+  "claims": [
+    {
+      "sentence": "Black holes are not really holes but huge concentrations of matter packed into tiny spaces.",
+      "quote": "These objects aren’t really holes. They’re huge concentrations of matter packed into very tiny spaces.",
+      "source": 0
+    },
+    {
+      "sentence": "Their gravity is so intense that not even light can get out from beyond a boundary called the event horizon.",
+      "quote": "A black hole is so dense that gravity just beneath its surface, the event horizon, is strong enough that nothing – not even light – can escape.",
+      "source": 0
+    },
+    {
+      "sentence": "One kind is born when a massive star runs out of fuel and explodes in a supernova.",
+      "quote": "One type of black hole is born when massive stars run out of fuel and explode in supernovae.",
+      "source": 0
+    },
+    {
+      "sentence": "As the core collapses, the outer layers rebound and are thrown into space.",
+      "quote": "But larger stars with iron cores begin to collapse, starting with the innermost layers. When the outer layers fall onto this compact core, they bounce back and are expelled into space as a supernova",
+      "source": 1
+    },
+    {
+      "sentence": "If the core left behind is more than three times the Sun's mass, it keeps being crushed into a smaller and smaller volume.",
+      "quote": "If the compact core that remains is more than three times the mass of the Sun, it is crushed into a smaller and smaller volume, its gravitational attraction increases, and its escape velocity becomes larger.",
+      "source": 1
+    },
+    {
+      "sentence": "Black holes neither emit nor reflect light, so scientists detect them by how they affect their surroundings.",
+      "quote": "Black holes don’t emit or reflect light, making them effectively invisible to telescopes. Scientists primarily detect and study them based on how they affect their surroundings",
+      "source": 0
+    },
+    {
+      "sentence": "The closest known black hole, Gaia BH1, lies roughly 1,500 light-years from us.",
+      "quote": "The nearest known black hole, called Gaia BH1, is about 1,500 light-years away.",
+      "source": 0
+    },
+    {
+      "sentence": "Our galaxy's central black hole, Sagittarius A*, is 4 million times the Sun's mass.",
+      "quote": "Ours is called Sagittarius A* (pronounced ey-star), and it’s 4 million times the Sun’s mass.",
+      "source": 0
+    },
+    {
+      "sentence": "In 2019 the Event Horizon Telescope produced the earliest direct picture of one, a dark silhouette against glowing matter.",
+      "quote": "As for the first direct image of a black hole, in 2019 the Event Horizon Telescope captured a black hole’s dark silhouette cast against light from matter in its immediate surroundings.",
+      "source": 1
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Black holes trap even light behind the event horizon.",
+      "visual_description": "A black hole with a glowing disk bending light.",
+      "visual_style": "hybrid",
+      "motif": "black_hole_3d"
+    },
+    {
+      "narration_segment": "A massive star runs out of fuel, collapses and explodes, leaving a black hole.",
+      "visual_description": "A star collapsing and a supernova shell.",
+      "visual_style": "hybrid",
+      "motif": "star_collapse_3d"
+    },
+    {
+      "narration_segment": "Our galaxy's central black hole is 4 million times the Sun's mass.",
+      "visual_description": "Stars orbiting a central black hole.",
+      "visual_style": "hybrid",
+      "motif": "galaxy_core_3d"
+    }
+  ]
+}
