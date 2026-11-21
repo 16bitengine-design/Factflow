@@ -390,7 +390,7 @@
     "scheduled_at": "2026-11-21T09:41:20.115488+00:00"
   },
   "qt-hearing-works-and-20261121-1836": {
-    "status": "reserved",
+    "status": "scheduled",
     "spec": "production/specs/hearing-works-and.json",
     "due_at": "2026-11-21T18:36:11+03:00",
     "reserved_at": "2026-11-21T15:16:11+00:00",
@@ -415,6 +415,7 @@
           "status": "awaiting_confirmation"
         }
       }
-    }
+    },
+    "scheduled_at": "2026-11-21T15:18:01.083971+00:00"
   }
 }
