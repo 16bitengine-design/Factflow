@@ -388,5 +388,15 @@
       }
     },
     "scheduled_at": "2026-11-21T09:41:20.115488+00:00"
+  },
+  "qt-hearing-works-and-20261121-1836": {
+    "status": "reserved",
+    "spec": "production/specs/hearing-works-and.json",
+    "due_at": "2026-11-21T18:36:11+03:00",
+    "reserved_at": "2026-11-21T15:16:11+00:00",
+    "workflow_run_id": "44918261935",
+    "slot_local": "2026-11-21 18:36",
+    "publish_timezone": "Africa/Kampala",
+    "recovers_slot": "2026-11-21 18:00"
   }
 }
