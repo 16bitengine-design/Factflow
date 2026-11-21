@@ -1,0 +1,58 @@
+{
+  "title": "How Vaccines Train Your Immune System",
+  "category": "health",
+  "voice": "af_heart",
+  "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "How Vaccines Train Your Immune System | QuantaTale",
+  "post_description": "How a vaccine teaches the body to defend itself and why protection can last, from the CDC and WHO. Sources: Centers for Disease Control and Prevention https://www.cdc.gov/vaccines/basics/explaining-how-vaccines-work.html and World Health Organization https://www.who.int/news-room/questions-and-answers/item/vaccines-and-immunization-what-is-vaccination #Science #ScienceFacts #QuantaTale",
+  "content_id_prefix": "qt-vaccines-train-your",
+  "publish_timezone": "Africa/Kampala",
+  "editorial_approved": true,
+  "editorial_status": "automated_gate_passed",
+  "editorial_review_required": false,
+  "narration": "How can a harmless dose teach your body to beat a disease? Vaccines help the body learn to defend itself without a full-blown infection. The germs in vaccines are killed or weakened, so the vaccine does not cause the disease. Every vaccine has an antigen, which makes the immune system begin producing antibodies. After the threat is gone, white blood cells stop multiplying until only a few remain to keep watch. Your immune system remembers, so you typically stay protected for years, decades or even a lifetime. The World Health Organization estimates that every year, vaccines given in childhood alone save over 4 million lives. A vaccinated person can still catch an infection, but is much less likely to become seriously ill or die. Some people, such as very young babies, cannot be vaccinated, so they depend on others being vaccinated to stay safe.",
+  "sources": [
+    {
+      "publisher": "Centers for Disease Control and Prevention",
+      "title": "Explaining How Vaccines Work | Vaccines & Immunizations | CDC",
+      "url": "https://www.cdc.gov/vaccines/basics/explaining-how-vaccines-work.html",
+      "supports": "Vaccines help the body learn how to defend itself from disease without the dangers of a full-blown infection. | The active ingredient in all vaccines is an antigen | After they have eliminated an infection, white blood cells stop multiplying and their numbers dwindle until only a few are left to keep watch. | Even after that, vaccinated people can and sometimes do get infected. But a vaccinated person is far less likely to die or become seriously ill than someone whose immune system is unprepared to fight an infection.",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-21"
+    },
+    {
+      "publisher": "World Health Organization",
+      "title": "Vaccines and immunization: What is vaccination?",
+      "url": "https://www.who.int/news-room/questions-and-answers/item/vaccines-and-immunization-what-is-vaccination",
+      "supports": "Vaccines train your immune system to create antibodies, just as it does when it’s exposed to a disease. However, because vaccines contain only killed or weakened forms of germs like viruses or bacteria, they do not cause the disease or put you at risk of its complications. | Once exposed to one or more doses of a vaccine, we typically remain protected against a disease for years, decades or even a lifetime. | WHO estimates that childhood vaccines alone save over 4 million lives every year. | Because not everyone can be vaccinated – including very young babies, those who are seriously ill or ha",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-21"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "A vaccine shows the immune system a weakened germ so it makes antibodies.",
+      "visual_description": "An immune cell sending antibodies to a weakened germ.",
+      "visual_style": "hybrid",
+      "motif": "antibody_train_3d"
+    },
+    {
+      "narration_segment": "White blood cells multiply, then a few keep watch, and protection lasts.",
+      "visual_description": "White blood cell counts rising and falling.",
+      "visual_style": "hybrid",
+      "motif": "immune_memory_3d"
+    },
+    {
+      "narration_segment": "Vaccinated people also protect those who cannot be vaccinated.",
+      "visual_description": "A crowd where protected people shield others.",
+      "visual_style": "hybrid",
+      "motif": "herd_shield_3d"
+    }
+  ],
+  "visual_profile": "holographic_science_v1",
+  "source_passage_verification_required_before_publication": false,
+  "source_assessment": "Automated gates passed on 2026-11-21: each sentence tied to a verbatim source quote, numbers matched, no copied word runs, model entailment check passed, independent publishers. Not complete fact verification.",
+  "authored_by": "assistant_session_draft_then_automated_gates"
+}

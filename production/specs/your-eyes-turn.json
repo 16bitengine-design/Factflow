@@ -1,0 +1,58 @@
+{
+  "title": "How Your Eyes Turn Light Into Sight",
+  "category": "health",
+  "voice": "af_heart",
+  "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "How Your Eyes Turn Light Into Sight | QuantaTale",
+  "post_description": "How the eye focuses light into signals for the brain and how common vision problems are, from the NIH and WHO. Sources: National Institutes of Health https://www.nei.nih.gov/eye-health-information/healthy-vision/how-eyes-work and World Health Organization https://www.who.int/news-room/fact-sheets/detail/blindness-and-visual-impairment #Science #ScienceFacts #QuantaTale",
+  "content_id_prefix": "qt-your-eyes-turn",
+  "publish_timezone": "Africa/Kampala",
+  "editorial_approved": true,
+  "editorial_status": "automated_gate_passed",
+  "editorial_review_required": false,
+  "narration": "How does light become the picture you see? Light enters through the cornea, the clear dome at the front, which bends it to help the eye focus. The coloured iris adjusts how much light the pupil admits. The lens and cornea together focus light onto the retina, where photoreceptor cells turn it into electrical signals. Those signals travel along the optic nerve to the brain, which converts them into the image you see. The World Health Organization reports that at least 2.2 billion people worldwide have impaired near or distance vision. In at least 1 billion of those cases, the impairment could have been prevented or has not yet been addressed. Uncorrected refractive error is a leading cause of impaired vision in every country, among children and adults alike. Glasses for refractive error and cataract surgery are among the most cost-effective health-care interventions there are.",
+  "sources": [
+    {
+      "publisher": "National Institutes of Health",
+      "title": "How the Eyes Work | National Eye Institute",
+      "url": "https://www.nei.nih.gov/eye-health-information/healthy-vision/how-eyes-work",
+      "supports": "First, light passes through the cornea (the clear front layer of the eye). The cornea is shaped like a dome and bends light to help the eye focus. | The iris (the colored part of the eye) controls how much light the pupil lets in. | The lens works together with the cornea to focus light correctly on the retina. When light hits the retina (a light-sensitive layer of tissue at the back of the eye), special cells called photoreceptors turn the light into electrical signals. | These electrical signals travel from the retina through the optic nerve to the brain. Then the brain turns the signals int",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-21"
+    },
+    {
+      "publisher": "World Health Organization",
+      "title": "Blindness and vision impairment",
+      "url": "https://www.who.int/news-room/fact-sheets/detail/blindness-and-visual-impairment",
+      "supports": "Globally, at least 2.2 billion people have a near or distance vision impairment. | In at least 1 billion – or almost half – of these cases, vision impairment could have been prevented or has yet to be addressed. | Uncorrected refractive error remains a leading cause of vision impairment in all countries amongst both children and adult populations. | Eyeglasses correction for refractive error and surgery for cataract are among the most cost-effective of all health-care interventions.",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-21"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "Light is focused by the cornea and lens onto the retina, then signals reach the brain.",
+      "visual_description": "An eye focusing light onto the retina.",
+      "visual_style": "hybrid",
+      "motif": "eye_path_3d"
+    },
+    {
+      "narration_segment": "At least 2.2 billion people have impaired vision, and about 1 billion cases were preventable or unaddressed.",
+      "visual_description": "Two columns comparing the counts.",
+      "visual_style": "hybrid",
+      "motif": "vision_counts"
+    },
+    {
+      "narration_segment": "Glasses correct refractive error by focusing light on the retina.",
+      "visual_description": "A lens moving the focus onto the retina.",
+      "visual_style": "hybrid",
+      "motif": "lens_focus_3d"
+    }
+  ],
+  "visual_profile": "holographic_science_v1",
+  "source_passage_verification_required_before_publication": false,
+  "source_assessment": "Automated gates passed on 2026-11-21: each sentence tied to a verbatim source quote, numbers matched, no copied word runs, model entailment check passed, independent publishers. Not complete fact verification.",
+  "authored_by": "assistant_session_draft_then_automated_gates"
+}

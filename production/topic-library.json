@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-21T08:41:07.275079+00:00",
+  "updated_at": "2026-11-21T11:21:34.807071+00:00",
   "production_specs": [
     {
       "spec_path": "examples/videos/why-the-sky-is-blue-production.json",
@@ -664,6 +664,106 @@
         {
           "publisher": "National Aeronautics and Space Administration",
           "url": "https://science.nasa.gov/sun/facts/",
+          "review_status": "passage_checked_supports_claim"
+        }
+      ]
+    },
+    {
+      "spec_path": "production/specs/what-black-hole.json",
+      "content_id_prefix": "qt-what-black-hole",
+      "title": "What a Black Hole Really Is and How One Forms | QuantaTale",
+      "publish_time_local": null,
+      "publish_timezone": "Africa/Kampala",
+      "publishing_enabled": true,
+      "status": "eligible_ready",
+      "editorial_approved": true,
+      "editorial_approval_basis": "explicit_project_owner_approval",
+      "registered_at": "2026-11-21T11:21:30.123913+00:00",
+      "source_passage_verification_required_before_publication": false,
+      "sources": [
+        {
+          "publisher": "National Aeronautics and Space Administration",
+          "url": "https://science.nasa.gov/universe/black-holes/",
+          "review_status": "passage_checked_supports_claim"
+        },
+        {
+          "publisher": "European Space Agency",
+          "url": "https://www.esa.int/articles/about-us/directorates/science/black-holes",
+          "review_status": "passage_checked_supports_claim"
+        }
+      ]
+    },
+    {
+      "spec_path": "production/specs/your-eyes-turn.json",
+      "content_id_prefix": "qt-your-eyes-turn",
+      "title": "How Your Eyes Turn Light Into Sight | QuantaTale",
+      "publish_time_local": null,
+      "publish_timezone": "Africa/Kampala",
+      "publishing_enabled": true,
+      "status": "eligible_ready",
+      "editorial_approved": true,
+      "editorial_approval_basis": "explicit_project_owner_approval",
+      "registered_at": "2026-11-21T11:21:31.838373+00:00",
+      "source_passage_verification_required_before_publication": false,
+      "sources": [
+        {
+          "publisher": "National Institutes of Health",
+          "url": "https://www.nei.nih.gov/eye-health-information/healthy-vision/how-eyes-work",
+          "review_status": "passage_checked_supports_claim"
+        },
+        {
+          "publisher": "World Health Organization",
+          "url": "https://www.who.int/news-room/fact-sheets/detail/blindness-and-visual-impairment",
+          "review_status": "passage_checked_supports_claim"
+        }
+      ]
+    },
+    {
+      "spec_path": "production/specs/ultraviolet-light-reac.json",
+      "content_id_prefix": "qt-ultraviolet-light-reac",
+      "title": "How Ultraviolet Light Reaches You and How to Block It | QuantaTale",
+      "publish_time_local": null,
+      "publish_timezone": "Africa/Kampala",
+      "publishing_enabled": true,
+      "status": "eligible_ready",
+      "editorial_approved": true,
+      "editorial_approval_basis": "explicit_project_owner_approval",
+      "registered_at": "2026-11-21T11:21:33.332775+00:00",
+      "source_passage_verification_required_before_publication": false,
+      "sources": [
+        {
+          "publisher": "Centers for Disease Control and Prevention",
+          "url": "https://www.cdc.gov/skin-cancer/sun-safety/index.html",
+          "review_status": "passage_checked_supports_claim"
+        },
+        {
+          "publisher": "World Health Organization",
+          "url": "https://www.who.int/news-room/questions-and-answers/item/radiation-ultraviolet-(uv)",
+          "review_status": "passage_checked_supports_claim"
+        }
+      ]
+    },
+    {
+      "spec_path": "production/specs/vaccines-train-your.json",
+      "content_id_prefix": "qt-vaccines-train-your",
+      "title": "How Vaccines Train Your Immune System | QuantaTale",
+      "publish_time_local": null,
+      "publish_timezone": "Africa/Kampala",
+      "publishing_enabled": true,
+      "status": "eligible_ready",
+      "editorial_approved": true,
+      "editorial_approval_basis": "explicit_project_owner_approval",
+      "registered_at": "2026-11-21T11:21:34.806928+00:00",
+      "source_passage_verification_required_before_publication": false,
+      "sources": [
+        {
+          "publisher": "Centers for Disease Control and Prevention",
+          "url": "https://www.cdc.gov/vaccines/basics/explaining-how-vaccines-work.html",
+          "review_status": "passage_checked_supports_claim"
+        },
+        {
+          "publisher": "World Health Organization",
+          "url": "https://www.who.int/news-room/questions-and-answers/item/vaccines-and-immunization-what-is-vaccination",
           "review_status": "passage_checked_supports_claim"
         }
       ]
