@@ -204,6 +204,22 @@
   {
    "url": "https://www.cdc.gov/nutrition/php/about/index.html",
    "group": "CDC"
+  },
+  {
+   "url": "https://www.who.int/news-room/questions-and-answers/item/vaccines-and-immunization-what-is-vaccination",
+   "group": "WHO"
+  },
+  {
+   "url": "https://www.esa.int/Science_Exploration/Space_Science/Black_holes",
+   "group": "ESA"
+  },
+  {
+   "url": "https://www.who.int/news-room/fact-sheets/detail/blindness-and-visual-impairment",
+   "group": "WHO"
+  },
+  {
+   "url": "https://www.who.int/news-room/questions-and-answers/item/radiation-ultraviolet-(uv)",
+   "group": "WHO"
   }
  ]
 }

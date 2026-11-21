@@ -1,0 +1,72 @@
+{
+  "title": "How Vaccines Train Your Immune System",
+  "description": "How a vaccine teaches the body to defend itself and why protection can last, from the CDC and WHO.",
+  "category": "health",
+  "source_urls": [
+    "https://www.cdc.gov/vaccines/basics/explaining-how-vaccines-work.html",
+    "https://www.who.int/news-room/questions-and-answers/item/vaccines-and-immunization-what-is-vaccination"
+  ],
+  "narration": "How can a harmless dose teach your body to beat a disease? Vaccines help the body learn to defend itself without a full-blown infection. The germs in vaccines are killed or weakened, so the vaccine does not cause the disease. Every vaccine has an antigen, which makes the immune system begin producing antibodies. After the threat is gone, white blood cells stop multiplying until only a few remain to keep watch. Your immune system remembers, so you typically stay protected for years, decades or even a lifetime. The World Health Organization estimates that every year, vaccines given in childhood alone save over 4 million lives. A vaccinated person can still catch an infection, but is much less likely to become seriously ill or die. Some people, such as very young babies, cannot be vaccinated, so they depend on others being vaccinated to stay safe.",
+  "claims": [
+    {
+      "sentence": "Vaccines help the body learn to defend itself without a full-blown infection.",
+      "quote": "Vaccines help the body learn how to defend itself from disease without the dangers of a full-blown infection.",
+      "source": 0
+    },
+    {
+      "sentence": "The germs in vaccines are killed or weakened, so the vaccine does not cause the disease.",
+      "quote": "Vaccines train your immune system to create antibodies, just as it does when it’s exposed to a disease. However, because vaccines contain only killed or weakened forms of germs like viruses or bacteria, they do not cause the disease or put you at risk of its complications.",
+      "source": 1
+    },
+    {
+      "sentence": "Every vaccine has an antigen, which makes the immune system begin producing antibodies.",
+      "quote": "The active ingredient in all vaccines is an antigen",
+      "source": 0
+    },
+    {
+      "sentence": "After the threat is gone, white blood cells stop multiplying until only a few remain to keep watch.",
+      "quote": "After they have eliminated an infection, white blood cells stop multiplying and their numbers dwindle until only a few are left to keep watch.",
+      "source": 0
+    },
+    {
+      "sentence": "Your immune system remembers, so you typically stay protected for years, decades or even a lifetime.",
+      "quote": "Once exposed to one or more doses of a vaccine, we typically remain protected against a disease for years, decades or even a lifetime.",
+      "source": 1
+    },
+    {
+      "sentence": "The World Health Organization estimates that every year, vaccines given in childhood alone save over 4 million lives.",
+      "quote": "WHO estimates that childhood vaccines alone save over 4 million lives every year.",
+      "source": 1
+    },
+    {
+      "sentence": "A vaccinated person can still catch an infection, but is much less likely to become seriously ill or die.",
+      "quote": "Even after that, vaccinated people can and sometimes do get infected. But a vaccinated person is far less likely to die or become seriously ill than someone whose immune system is unprepared to fight an infection.",
+      "source": 0
+    },
+    {
+      "sentence": "Some people, such as very young babies, cannot be vaccinated, so they depend on others being vaccinated to stay safe.",
+      "quote": "Because not everyone can be vaccinated – including very young babies, those who are seriously ill or have certain allergies – they depend on others being vaccinated to ensure they are also safe from vaccine-preventable diseases.",
+      "source": 1
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "A vaccine shows the immune system a weakened germ so it makes antibodies.",
+      "visual_description": "An immune cell sending antibodies to a weakened germ.",
+      "visual_style": "hybrid",
+      "motif": "antibody_train_3d"
+    },
+    {
+      "narration_segment": "White blood cells multiply, then a few keep watch, and protection lasts.",
+      "visual_description": "White blood cell counts rising and falling.",
+      "visual_style": "hybrid",
+      "motif": "immune_memory_3d"
+    },
+    {
+      "narration_segment": "Vaccinated people also protect those who cannot be vaccinated.",
+      "visual_description": "A crowd where protected people shield others.",
+      "visual_style": "hybrid",
+      "motif": "herd_shield_3d"
+    }
+  ]
+}
