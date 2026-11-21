@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-21T08:01:11.825763+00:00",
+  "updated_at": "2026-11-21T08:41:07.275079+00:00",
   "production_specs": [
     {
       "spec_path": "examples/videos/why-the-sky-is-blue-production.json",
@@ -639,6 +639,31 @@
         {
           "publisher": "Centers for Disease Control and Prevention",
           "url": "https://www.cdc.gov/heart-disease/about/index.html",
+          "review_status": "passage_checked_supports_claim"
+        }
+      ]
+    },
+    {
+      "spec_path": "production/specs/upwelling-fuels-ocean.json",
+      "content_id_prefix": "qt-upwelling-fuels-ocean",
+      "title": "How Upwelling Fuels Ocean Life | QuantaTale",
+      "publish_time_local": null,
+      "publish_timezone": "Africa/Kampala",
+      "publishing_enabled": true,
+      "status": "eligible_ready",
+      "editorial_approved": true,
+      "editorial_approval_basis": "explicit_project_owner_approval",
+      "registered_at": "2026-11-21T08:39:17.777769+00:00",
+      "source_passage_verification_required_before_publication": false,
+      "sources": [
+        {
+          "publisher": "National Oceanic and Atmospheric Administration",
+          "url": "https://oceanservice.noaa.gov/facts/upwelling.html",
+          "review_status": "passage_checked_supports_claim"
+        },
+        {
+          "publisher": "National Aeronautics and Space Administration",
+          "url": "https://science.nasa.gov/sun/facts/",
           "review_status": "passage_checked_supports_claim"
         }
       ]

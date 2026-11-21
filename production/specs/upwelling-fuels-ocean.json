@@ -1,0 +1,64 @@
+{
+  "title": "How Upwelling Fuels Ocean Life",
+  "category": "Science",
+  "voice": "af_heart",
+  "production_label": "QUANTATALE ORIGINAL",
+  "post_title": "How Upwelling Fuels Ocean Life | QuantaTale",
+  "post_description": "Discover how wind‑driven upwelling lifts nutrient‑laden water to the surface, fueling ocean productivity. Sources: National Oceanic and Atmospheric Administration https://oceanservice.noaa.gov/facts/upwelling.html and National Aeronautics and Space Administration https://science.nasa.gov/sun/facts/ #Science #ScienceFacts #QuantaTale",
+  "content_id_prefix": "qt-upwelling-fuels-ocean",
+  "publish_timezone": "Africa/Kampala",
+  "editorial_approved": true,
+  "editorial_status": "automated_gate_passed",
+  "editorial_review_required": false,
+  "narration": "When winds blow parallel to a coastline, they push surface water away, creating a gap that must be filled. Cold, nutrient‑rich water from deeper layers then wells up to replace the displaced water. This rising water is colder than the surrounding surface and carries high concentrations of nutrients. Those nutrients fertilize the upper ocean, sparking bursts of plankton growth and making the area a hotspot for fish and other marine life.",
+  "sources": [
+    {
+      "publisher": "National Oceanic and Atmospheric Administration",
+      "title": "What is upwelling?",
+      "url": "https://oceanservice.noaa.gov/facts/upwelling.html",
+      "supports": "Winds blowing across the ocean surface push water away. | This graphic shows how displaced surface waters are replaced by cold, nutrient-rich water that “wells up” from below. | Water that rises to the surface as a result of upwelling is typically colder and is rich in nutrients. | These nutrients “fertilize” surface waters, meaning that these surface waters often have high biological productivity.",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-21"
+    },
+    {
+      "publisher": "National Aeronautics and Space Administration",
+      "title": "Sun: Facts - NASA Science",
+      "url": "https://science.nasa.gov/sun/facts/",
+      "supports": "",
+      "review_status": "passage_checked_supports_claim",
+      "review_method": "automated_quote_grounding_and_model_entailment",
+      "reviewed_at": "2026-11-21"
+    }
+  ],
+  "scenes": [
+    {
+      "narration_segment": "When winds blow parallel to a coastline, they push surface water away, creating a gap that must be filled.",
+      "visual_description": "Coastal view with wind arrows moving along the shore, surface water being displaced outward.",
+      "visual_style": "hybrid",
+      "motif": "tide_alignment"
+    },
+    {
+      "narration_segment": "Cold, nutrient‑rich water from deeper layers then wells up to replace the displaced water.",
+      "visual_description": "Cross‑section of ocean showing deep, dark water rising up through a transparent column to the surface.",
+      "visual_style": "hybrid",
+      "motif": "water_share_bars"
+    },
+    {
+      "narration_segment": "This rising water is colder than the surrounding surface and carries high concentrations of nutrients.",
+      "visual_description": "Temperature gradient overlay with blue tones descending, particles representing nutrients swirling upward.",
+      "visual_style": "hybrid",
+      "motif": "glacier_share"
+    },
+    {
+      "narration_segment": "Those nutrients fertilize the upper ocean, sparking bursts of plankton growth and making the area a hotspot for fish and other marine life.",
+      "visual_description": "Surface layer blooming with glowing plankton and schools of fish appearing around the upwelling zone.",
+      "visual_style": "hybrid",
+      "motif": "salt_share"
+    }
+  ],
+  "visual_profile": "holographic_science_v1",
+  "source_passage_verification_required_before_publication": false,
+  "source_assessment": "Automated gates passed on 2026-11-21: each sentence tied to a verbatim source quote, numbers matched, no copied word runs, model entailment check passed, independent publishers. Not complete fact verification.",
+  "authored_by": "automated_topic_authoring"
+}
