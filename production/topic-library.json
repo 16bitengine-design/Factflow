@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-20T08:10:43.802151+00:00",
+  "updated_at": "2026-11-21T08:01:11.825763+00:00",
   "production_specs": [
     {
       "spec_path": "examples/videos/why-the-sky-is-blue-production.json",
@@ -2215,6 +2215,61 @@
       "published": "Thu, 19 Nov 2026 11:37:01 EST",
       "description": "Kīlauea recently underwent its 56th lava fountaining episode since December 2024. This is just the most-recent eruptive activity from one of the world’s most active volcanoes. While frequent eruptions add new land to Kīlauea, lava flows and tephra deposits can also bury older erupted material. This can make it difficult to unravel the history of such an active volcano.",
       "discovered_at": "2026-11-20T08:10:43.801832+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000144",
+      "title": "APOD: 2026 November 21 – Voyager’s Neptune",
+      "url": "https://science.nasa.gov/image-article/apod-2026-november-21-voyagers-neptune/",
+      "publisher_id": "NASA",
+      "published": "Sat, 21 Nov 2026 05:05:00 +0000",
+      "description": "APOD Science APOD APOD: 2026 November 21 –… Today’s APOD Archive Submissions Index Search Calendar RSS Education About Discuss APOD Astronomy Picture of the Day Discover the cosmos! Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer. Voyager’s Neptune Explanation: […]",
+      "discovered_at": "2026-11-21T08:01:11.824995+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000145",
+      "title": "Curiosity Spots Drifting Twilight Clouds",
+      "url": "https://science.nasa.gov/photojournal/curiosity-spots-drifting-twilight-clouds/",
+      "publisher_id": "NASA",
+      "published": "Fri, 20 Nov 2026 22:27:05 +0000",
+      "description": "Description NASA’s Curiosity Mars rover captured these drifting clouds on Oct. 31, 2026, the 5,061st Martian day, or sol, of the mission. The rover uses its navigation cameras to capture post-sunset clouds, called twilight clouds, which appear for only a short time each fall over Gale Crater, which it has been exploring for more than […]",
+      "discovered_at": "2026-11-21T08:01:11.825023+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000146",
+      "title": "NASA Honor Awards Ceremony Recognizes Employees at Stennis Space Center",
+      "url": "https://www.nasa.gov/centers-and-facilities/stennis/honor-awards-ceremony-at-stennis/",
+      "publisher_id": "NASA",
+      "published": "Fri, 20 Nov 2026 16:27:46 +0000",
+      "description": "Employees contributing to NASA’s mission at the agency’s Stennis Space Center near Bay St. Louis, Mississippi, were recognized during the center’s Honor Awards ceremony on Nov. 18. Presenting the awards were Christine Powell, NASA Stennis center director, and Jeremy Parsons, the agency’s Artemis program manager responsible for management and oversight of NASA’s initiative to return […]",
+      "discovered_at": "2026-11-21T08:01:11.825037+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000147",
+      "title": "NASA’s Curiosity Mars Rover Collects Samples",
+      "url": "https://www.nasa.gov/image-article/nasas-curiosity-mars-rover-collects-samples/",
+      "publisher_id": "NASA",
+      "published": "Fri, 20 Nov 2026 15:53:24 +0000",
+      "description": "This Nov. 16 collage shows 49 drill holes captured by NASA’s Curiosity Mars rover as of November 2026. Each hole represents a sample collected from rocks on the Martian surface; Curiosity’s drill, located on the end of its robotic arm, drops pulverized rock samples into instruments in its belly that analyze their composition. Learn more […]",
+      "discovered_at": "2026-11-21T08:01:11.825050+00:00",
+      "status": "candidate_unreviewed",
+      "editorial_review_required": false
+    },
+    {
+      "lead_id": "lead-000148",
+      "title": "New NASA Seed Funding Primes Small Businesses for Innovation",
+      "url": "https://www.nasa.gov/directorates/rtmd/new-nasa-seed-funding-primes-small-businesses-for-innovation/",
+      "publisher_id": "NASA",
+      "published": "Fri, 20 Nov 2026 20:46:14 +0000",
+      "description": "Awards to small businesses around the country are addressing some of NASA’s most crucial technology needs for exploration of the Moon and Mars while fueling the U.S. space economy. NASA’s Small Business Innovation Research/Small Business Technology Transfer (SBIR/STTR) program recently selected 302 innovative projects, for a total investment of up to $171 million in seed […]",
+      "discovered_at": "2026-11-21T08:01:11.825059+00:00",
       "status": "candidate_unreviewed",
       "editorial_review_required": false
     }
